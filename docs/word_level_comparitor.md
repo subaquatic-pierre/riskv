@@ -2,9 +2,9 @@
 
 ## Functional Overview
 
-The **Word-Level Comparator (`WordLevelComparator`)** is a passive logic block that handles all value comparisons inside the processor. Instead of using its own heavy mathematical circuits to figure out if one number is larger, smaller, or equal to another, it cleanly reuses the work already done by the main 32-bit adder/subtractor unit.
+The **Word-Level Comparator (`WordLevelComparator`)** evaluates value comparisons by reusing the flags generated from a subtraction operation ($A - B$) performed by an external Two's Complement Adder.
 
-By looking at the outputs of a subtraction operation ($A - B$), this module instantly calculates whether the two numbers are equal, smaller than each other as unsigned numbers (like memory addresses), or smaller than each other as signed numbers (positive and negative integers). It boxes up this logic in one clean component, preventing a mess of loose wires in the main ALU.
+By interpreting the subtraction result, carry-out, and original operand sign bits, this module evaluates equality (`EQ`), unsigned less-than (`LTU`), and signed less-than (`LTS`) conditions.
 
 ---
 
@@ -12,20 +12,20 @@ By looking at the outputs of a subtraction operation ($A - B$), this module inst
 
 ### Input Signals
 
-| Pin Name    | Bit Width | Direction | Functional Description                               |
-| :---------- | :-------: | :-------: | :--------------------------------------------------- |
-| `Result_In` |    32     |   Input   | The 32-bit output bus from the main adder/subtractor |
-| `Cout_In`   |     1     |   Input   | The raw carry-out bit from the main adder/subtractor |
-| `A_Sign`    |     1     |   Input   | Bit 31 (the sign bit) of input operand $A$           |
-| `B_Sign`    |     1     |   Input   | Bit 31 (the sign bit) of input operand $B$           |
+| Pin Name          | Bit Width | Direction | Functional Description                         |
+| :---------------- | :-------: | :-------: | :--------------------------------------------- |
+| `Result_In[31:0]` |    32     |   Input   | Output bus from the adder/subtractor block.    |
+| `Cout_In`         |     1     |   Input   | Carry-out bit from the adder/subtractor block. |
+| `A_Sign`          |     1     |   Input   | Sign bit (bit 31) of input operand $A$.        |
+| `B_Sign`          |     1     |   Input   | Sign bit (bit 31) of input operand $B$.        |
 
 ### Output Signals
 
-| Pin Name | Bit Width | Direction | Functional Description                                                 |
-| :------- | :-------: | :-------: | :--------------------------------------------------------------------- |
-| `EQ`     |     1     |  Output   | **Equal:** Goes high (`1`) if $A$ is exactly equal to $B$              |
-| `LTU`    |     1     |  Output   | **Less-Than Unsigned:** Goes high (`1`) if $A < B$ using unsigned math |
-| `LTS`    |     1     |  Output   | **Less-Than Signed:** Goes high (`1`) if $A < B$ using signed math     |
+| Pin Name | Bit Width | Direction | Functional Description                                                |
+| :------- | :-------: | :-------: | :-------------------------------------------------------------------- |
+| `EQ`     |     1     |  Output   | **Equal:** Asserts high if $A == B$.                                  |
+| `LTU`    |     1     |  Output   | **Less-Than Unsigned:** Asserts high if $A < B$ under unsigned rules. |
+| `LTS`    |     1     |  Output   | **Less-Than Signed:** Asserts high if $A < B$ under signed rules.     |
 
 ---
 
@@ -33,23 +33,33 @@ By looking at the outputs of a subtraction operation ($A - B$), this module inst
 
 ### 1. Equality (`EQ`)
 
-If $A$ and $B$ are equal, subtracting them ($A - B$) results in exactly `0`.
+When $A == B$, the subtraction result ($A - B$) equals zero.
 
-- The module passes all 32 bits of `Result_In` through a wide NOR tree (a 32-input OR gate flipped by a NOT gate).
-- If every single bit is `0`, the output settles high (`1`).
+- The 32-bit `Result_In` bus passes through a 32-input NOR tree.
+- If all bits are `0`, `EQ` evaluates to `1`.
 
 ### 2. Unsigned Comparison (`LTU`)
 
-In unsigned hardware subtraction, the carry-out pin acts as a "no borrow" flag. If $A$ is smaller than $B$, the subtraction underflows and drops `Cout_In` to `0`.
+In unsigned subtraction, the carry-out pin acts as an inverted borrow bit. If $A < B$, the subtraction underflows, driving `Cout_In` low.
 
-- The module routes `Cout_In` through a single NOT gate.
-- A flipped `0` becomes a `1`, cleanly signaling that $A < B$.
+- `Cout_In` is routed through an inverter.
+- `LTU = NOT(Cout_In)`
 
 ### 3. Signed Comparison (`LTS`)
 
-Signed numbers require sorting by positive and negative states. An XOR gate checks if the sign bits of $A$ and $B$ match:
+Signed evaluations depend on whether the operands share the same sign bit. An XOR gate determines the routing pathway:
 
-- **Signs Match (XOR output = `0`):** There is no risk of signed overflow tricks. The multiplexer selects the raw unsigned underflow logic (`LTU`).
-- **Signs Differ (XOR output = `1`):** A negative number is always smaller than a positive one. Because of this, the answer to "$A < B$" is identical to the sign bit of $A$. The multiplexer selects `A_Sign` directly.
+- **Signs Match (`A_Sign XOR B_Sign = 0`):** Overflow is impossible. The calculation relies on the subtraction sign flag, which matches the unsigned underflow status (`LTU`).
+- **Signs Differ (`A_Sign XOR B_Sign = 1`):** A negative number is always smaller than a positive number. Therefore, the result of $A < B$ matches `A_Sign` directly.
+
+A multiplexer uses the `A_Sign XOR B_Sign` state as the selector to drive the final `LTS` output line.
 
 ---
+
+### Driver Gate Formulas
+
+```text
+EQ  = NOT(Result_In[0] OR Result_In[1] OR ... OR Result_In[31])
+LTU = NOT(Cout_In)
+LTS = (A_Sign AND (A_Sign XOR B_Sign)) OR (LTU AND NOT(A_Sign XOR B_Sign))
+```

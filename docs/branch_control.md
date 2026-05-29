@@ -1,6 +1,6 @@
 # Branch Control Component Documentation
 
-The **Branch Control** component is a self-contained combinatorial module designed to evaluate conditional branch execution flags independently of the main ALU. By processing source register values alongside the instruction's verification fields, it determines whether a conditional execution path should be taken (`TakeBranch = 1`) or if the pipeline should proceed sequentially (`TakeBranch = 0`).
+The **Branch Control** component is a top-level macro-module that encapsulates the pipeline's conditional and unconditional execution analysis. It acts as a structural wrapper around an internal Two's Complement Adder, the `WordLevelComparator`, and the `BranchSelector` modules. It combines raw arithmetic processing with instruction verification to determine if the program counter should branch or jump (`TakeBranch = 1`) or proceed sequentially (`TakeBranch = 0`).
 
 ---
 
@@ -8,65 +8,53 @@ The **Branch Control** component is a self-contained combinatorial module design
 
 #### Input Signals
 
-- **`rs1_data[31:0]` (32 bits):** The data word read from Register File Port 1.
-- **`rs2_data[31:0]` (32 bits):** The data word read from Register File Port 2.
-- **`BrSel[2:0]` (3 bits):** The condition selection bus, wired directly from the instruction's `funct3` field (`Instruction[14:12]`).
+| Pin Name         | Bit Width | Direction | Functional Description                                                                                                                                                                                                                      |
+| :--------------- | :-------: | :-------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `rs1_data[31:0]` |    32     |   Input   | The data word read from Register File Port 1 (Operand A).                                                                                                                                                                                   |
+| `rs2_data[31:0]` |    32     |   Input   | The data word read from Register File Port 2 (Operand B).                                                                                                                                                                                   |
+| `BrSel[4:0]`     |     5     |   Input   | **Composite Selection Bus:**<br>• `BrSel[4:2]`: Maps to `funct3` (`Instruction[14:12]`) <br>• `BrSel[1]`: Maps to `Is_Branch` verification from Main Controller.<br>• `BrSel[0]`: Maps to `Is_Jump` status (asserted high for JAL or JALR). |
 
 #### Output Signals
 
-- **`TakeBranch` (1 bit):** Status flag asserted high (`1`) if the input data satisfies the condition selected by `BrSel`. Otherwise defaults to low (`0`).
+| Pin Name     | Bit Width | Direction | Functional Description                                                                                                       |
+| :----------- | :-------: | :-------: | :--------------------------------------------------------------------------------------------------------------------------- |
+| `TakeBranch` |     1     |  Output   | Final jump signal sent to execution steering logic (`1` = valid branch/jump condition met, `0` = safe sequential execution). |
 
 ---
 
-### Internal Architecture
+### Submodule Processing Flow
 
-The component isolates its evaluation logic into two stages: **Arithmetic Difference Generation** and **Condition Matching Selection**.
+Execution within the component flows through four sequential abstraction layers:
 
-#### 1. Arithmetic Difference Generation
+#### 1. Two's Complement Arithmetic Execution
 
-The module routes `rs1_data` and `rs2_data` into an internal 32-bit subtractor to evaluate structural inequality without modifying the main processor state:
+The module takes `rs1_data` and `rs2_data` and actively calculates subtraction by executing an addition of the inverted second operand plus one ($A + \text{NOT}(B) + 1$). This internal generation yields the explicit intermediate flags (the result bus, underflow bit, and overflow state) required for clean evaluation.
 
-$$\text{Diff} = \text{rs1\_data} - \text{rs2\_data}$$
+#### 2. Flag Translation (`WordLevelComparator`)
 
-From this operation, the block derives four hardware status flags:
+The arithmetic results are evaluated by the companion comparator layer. This block interprets the sum, explicit underflow bit, and signed overflow conditions to extract true logical comparisons, exposing three condition indicators:
 
-- **Zero Flag ($Z$):** Asserted if every bit of $\text{Diff}$ is zero. Indicated mathematically as:
-  $$Z = \neg(\text{Diff}[31] \lor \text{Diff}[30] \lor \dots \lor \text{Diff}[0])$$
-- **Negative Flag ($N$):** Tracks the sign bit of the raw difference:
-  $$N = \text{Diff}[31]$$
-- **Overflow Flag ($V$):** Asserted if the subtraction of two signed numbers results in an arithmetic overflow:
-  $$V = (\text{rs1\_data}[31] \land \neg\text{rs2\_data}[31] \land \neg\text{Diff}[31]) \lor (\neg\text{rs1\_data}[31] \land \text{rs2\_data}[31] \land \text{Diff}[31])$$
-- **Unsigned Borrow Flag ($C$):** The raw carry-out/borrow bit generated directly by the unsigned execution of the subtractor.
+- `EQ`: Active high if rs1 == rs2.
+- `LTS`: Active high if rs1 < rs2 under signed Two's Complement rules.
+- `LTU`: Active high if rs1 < rs2 under unsigned magnitude rules.
 
-#### 2. Evaluated Status Flags
+#### 3. Filtering and Selection (`BranchSelector`)
 
-Using the raw signals above, the block establishes signed and unsigned less-than markers:
+The raw status bits (`EQ`, `LTS`, `LTU`) pass into the internal `BranchSelector` submodule.
+The top three bits of the selection bus (`BrSel[4:2]`), which represent the `funct3` field from the instruction, are wired directly to the selector's `Branch_Op` port to filter the active flag state:
+ConditionMet = BranchSelector(EQ, LTS, LTU, BrSel[4:2])
 
-- **`LessSigned`:** Derived by checking if the result is structurally negative without overflow anomalies:
-  $$\text{LessSigned} = N \oplus V$$
-- **`LessUnsigned`:** Equal to the raw borrow state ($C$) of the hardware subtraction block.
+#### 4. Operation Gating and Validation
 
----
+To accurately isolate true branch instructions and unconditional jumps, execution paths are gated independently before merging:
 
-### Condition Selection Matrix
-
-The internal selection logic uses a 3-bit multiplexer or sum-of-products gate array driven by `BrSel[2:0]` to select which status flag rules the final output line:
-
-| BrSel[2:0] | Target Instruction          | Output Condition Formula         | Functional Description                                            |
-| :--------: | :-------------------------- | :------------------------------- | :---------------------------------------------------------------- |
-| **`000`**  | `BEQ` (Equal)               | `TakeBranch = Z`                 | Asserted if values are identical ($\text{Diff} = 0$).             |
-| **`001`**  | `BNE` (Not Equal)           | `TakeBranch = NOT(Z)`            | Asserted if values differ ($\text{Diff} \neq 0$).                 |
-| **`100`**  | `BLT` (Less Than)           | `TakeBranch = LessSigned`        | Asserted if $rs1 < rs2$ using two's complement interpretation.    |
-| **`101`**  | `BGE` (Greater / Equal)     | `TakeBranch = NOT(LessSigned)`   | Asserted if $rs1 \geq rs2$ using two's complement interpretation. |
-| **`110`**  | `BLTU` (Less Than Un)       | `TakeBranch = LessUnsigned`      | Asserted if $rs1 < rs2$ using raw magnitude interpretation.       |
-| **`111`**  | `BGEU` (Greater / Equal Un) | `TakeBranch = NOT(LessUnsigned)` | Asserted if $rs1 \geq rs2$ using raw magnitude interpretation.    |
+- **Conditional Branch Line:** The `ConditionMet` flag evaluated by the companion selector is logically ANDed with the `BrSel[1]` verification line (`Is_Branch`). This guarantees that matching arithmetic configurations in non-branching ops cannot trigger a PC update.
+- **Unconditional Jump Override:** The `BrSel[0]` bit captures whether a `JAL` or `JALR` instruction is in flight. Because jumps skip the comparator check entirely, this control flag bypasses the branch gating entirely via a final OR validation gate.
 
 ---
 
-### Pipeline Integration
-
-The output of this component is designed to interface directly with the stage control logic at the pipeline boundary. Because it only checks if a branch condition is met, its output must be qualified by the main decoder's `Branch` opcode wire to verify that a branch operation is actually being executed:
+### Final Control Verification Formula
 
 ```text
-PCSel = JAL OR JALR OR (Branch AND TakeBranch)
+TakeBranch = (ConditionMet AND BrSel[1]) OR BrSel[0]
 ```

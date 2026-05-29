@@ -1,0 +1,53 @@
+v3.0 hex
+000000b7     # lui x1, 0x00000         # Hard-clear x1 using upper immediate zeroing
+00000137     # lui x2, 0x00000         # Hard-clear x2 using upper immediate zeroing
+000001b7     # lui x3, 0x00000         # Hard-clear x3 using upper immediate zeroing
+00000237     # lui x4, 0x00000         # Hard-clear x4 using upper immediate zeroing
+00000fb7     # lui x31, 0x00000        # Clear diagnostic tracking register x31 to 0
+00002537     # lui x10, 0x00002        # Load upper immediate 0x00002000 into x10
+00001597     # auipc x11, 0x00001      # Calculate PC + 0x00001000 and store result into x11
+00f00093     # addi x1, x0, 15         # x1 = 0 + 15 = 15
+0140a113     # slti x2, x1, 20         # x2 = 1 (since 15 < 20 signed)
+00a0b193     # sltiu x3, x1, 10        # x3 = 0 (since 15 < 10 unsigned is false)
+fff0c213     # xori x4, x1, -1         # x4 = bitwise NOT of 15 (inverts all bits)
+0010e293     # ori x5, x1, 1           # x5 = 15 OR 1 = 15
+0010f313     # andi x6, x1, 1          # x6 = 15 AND 1 = 1
+00209393     # slli x7, x1, 2          # x7 = 15 << 2 = 60
+0010d413     # srli x8, x1, 1          # x8 = 15 >> 1 logical = 7
+40125493     # srai x9, x4, 1          # x9 = x4 >> 1 arithmetic (preserves sign bit)
+00708633     # add x12, x1, x7         # x12 = 15 + 60 = 75
+401386b3     # sub x13, x7, x1         # x13 = 60 - 15 = 45
+00609733     # sll x14, x1, x6         # x14 = 15 << 1 = 30
+00c2a7b3     # slt x15, x5, x12        # x15 = 1 (since 15 < 75 signed)
+00563833     # sltu x16, x12, x5       # x16 = 0 (since 75 < 15 unsigned is false)
+0050c8b3     # xor x17, x1, x5         # x17 = 15 XOR 15 = 0
+0063d933     # srl x18, x7, x6         # x18 = 60 >> 1 logical = 30
+406259b3     # sra x19, x4, x6         # x19 = x4 >> 1 arithmetic (sign preservation)
+0060ea33     # or x20, x1, x6          # x20 = 15 OR 1 = 15
+0060fab3     # and x21, x1, x6         # x21 = 15 AND 1 = 1
+04000b13     # addi x22, x0, 64        # Set base memory offset to address 64 (0x40)
+abcdebb7     # lui x23, 0xABCDE        # Populate upper memory raw signature block
+4f0b8b93     # addi x23, x23, 1264     # Complete 32-bit signature value 0xABCDE4F0 without colon
+017b2023     # sw x23, 0(x22)          # Store full 32-bit word to RAM[64]
+000b2c03     # lw x24, 0(x22)          # Load full 32-bit word back from RAM[64]
+00508463     # beq x1, x5, test_bne    # Branch to test_bne if 15 == 15 (Valid)
+0480006f     # jal x0, fault           # Unconditional raw drop-through protection trap
+00709463     # bne x1, x7, test_blt    # Branch to test_blt if 15 != 60 (Valid)
+0400006f     # jal x0, fault           # Unconditional raw drop-through protection trap
+0072c463     # blt x5, x7, test_bge    # Branch to test_bge if 15 < 60 signed (Valid)
+0380006f     # jal x0, fault           # Unconditional raw drop-through protection trap
+0053d463     # bge x7, x5, test_bltu   # Branch to test_bltu if 60 >= 15 signed (Valid)
+0300006f     # jal x0, fault           # Unconditional raw drop-through protection trap
+0072e463     # bltu x5, x7, test_bgeu  # Branch to test_bgeu if 15 < 60 unsigned (Valid)
+0280006f     # jal x0, fault           # Unconditional raw drop-through protection trap
+0053f463     # bgeu x7, x5, test_jal   # Branch to test_jal if 60 >= 15 unsigned (Valid)
+0200006f     # jal x0, fault           # Unconditional raw drop-through protection trap
+00c00eef     # jal x29, target_label   # Jump to target_label and link return address in x29
+00ce8067     # jalr x0, x29, 12         # Jump to x29 + 12 bytes (skips the immediate fault trap below)
+0140006f     # jal x0, fault           # Unconditional raw drop-through protection trap
+ff9ff06f     # jal x0, return_anchor   # Safe unconditional jump back to the anchor loop
+00000000     # addi x31, x0, 1         # Write successful status flag 1 into register x31
+00100f93     # jal x0, terminal        # Jump to final halt loop
+0080006f     # addi x31, x0, -1        # Write execution fault flag -1 into register x31
+fff00f93     # jal x0, terminal        # Infinite loop holding core simulation static
+0000006f     
