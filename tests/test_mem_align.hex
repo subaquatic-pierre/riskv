@@ -1,0 +1,34 @@
+v3.0 hex
+deadc137     # lui   x2, 0xDEADC        # Setup test word pattern
+eef10113     # addi  x2, x2, -273       # x2  = 0xDEADBEEF
+0ff00193     # addi  x3, x0, 255        # x3  = 0x000000FF (Byte boundary check)
+55555237     # lui   x4, 0x55555        # Setup alternative pattern
+55520213     # addi  x4, x4, 1365       # x4  = 0x55555555
+00000293     # addi  x5, x0, 0          # x5  = Aligned address (Offset 00) -> 0x00000000
+00100313     # addi  x6, x0, 1          # x6  = Unaligned address (Offset 01) -> 0x00000001
+00200393     # addi  x7, x0, 2          # x7  = Unaligned address (Offset 10) -> 0x00000002
+00300413     # addi  x8, x0, 3          # x8  = Unaligned address (Offset 11) -> 0x00000003
+0022a023     # sw    x2, 0(x5)          # [MEM] Slot 0 = 0xDEADBEEF
+0002a503     # lw    x10, 0(x5)         # x10 = 0xDEADBEEF
+00328023     # sb    x3, 0(x5)          # [MEM] Overwrites DE with FF -> 0xFFADBEEF
+00028583     # lb    x11, 0(x5)         # x11 = 0xFFFFFFFF (Signed read of 0xFF)
+0002c603     # lbu   x12, 0(x5)         # x12 = 0x000000FF (Unsigned read of 0xFF)
+00430023     # sb    x4, 0(x6)          # [MEM] Overwrites AD with 55 -> 0xFF55BEEF
+00030683     # lb    x13, 0(x6)         # x13 = 0x00000055 (Signed read of 0x55 at offset 01)
+00338023     # sb    x3, 0(x7)          # [MEM] Overwrites BE with FF -> 0xFF55FFEF
+00038703     # lb    x14, 0(x7)         # x14 = 0xFFFFFFFF (Signed read of 0xFF at offset 10)
+00440023     # sb    x4, 0(x8)          # [MEM] Overwrites EF with 55 -> 0xFF55FF55
+00044783     # lbu   x15, 0(x8)         # x15 = 0x00000055 (Unsigned read of 0x55 at offset 11)
+0002a803     # lw    x16, 0(x5)         # x16 = 0xFF55FF55 (Verify complete altered word via aligned register)
+0022a023     # sw    x2, 0(x5)          # Reset memory to 0xDEADBEEF
+00429023     # sh    x4, 0(x5)          # [MEM] Overwrites DEAD with 5555 -> 0x5555BEEF
+00029883     # lh    x17, 0(x5)         # x17 = 0x00005555 (Signed read)
+00239023     # sh    x2, 0(x7)          # [MEM] Overwrites BEEF with BEEF (no change) -> 0x5555BEEF
+00039903     # lh    x18, 0(x7)         # x18 = 0xFFFFBEEF (Signed read at offset 10)
+0003d983     # lhu   x19, 0(x7)         # x19 = 0x0000BEEF (Unsigned read at offset 10)
+0022a023     # sw    x2, 0(x5)          # Reset memory to 0xDEADBEEF
+00431023     # sh    x4, 0(x6)          # [MEM] Active mask 0110. Overwrites AD and BE with 5555 -> 0xDE5555EF
+00030a83     # lb    x21, 0(x6)         # x21 = 0x00000055 (Read Byte 2 via x6)
+00038b03     # lb    x22, 0(x7)         # x22 = 0x00000055 (Read Byte 1 via x7)
+00031b83     # lh    x23, 0(x6)         # x23 = 0x00005555 (Read unaligned half-word via x6)
+0002ac03     # lw    x24, 0(x5)         # x24 = 0xDE5555EF (Verify final layout structure via aligned x5)

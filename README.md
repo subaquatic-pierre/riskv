@@ -1,44 +1,73 @@
-# Risk-V Implementation
+# RISC-V 32-Bit Processor Core
 
-# RV32I Arithmetic & Logic Core Components
+A 32-bit RISC-V processor implementation modeled after the UC Berkeley CS61C computer architecture curriculum. The execution engine is constructed using Logisim-Evolution to map custom hardware modules, control paths, and arithmetic execution units into a unified processing canvas.
 
-Phase 5: The Control Units (The Brain)
-Before you drop everything onto one canvas, you need the circuits that read the instruction bits and orchestrate the control lines (like RegWrite, W_En, ImmSel, and your ALU operations).
+---
 
-1. Main Control Decoder Circuit
-   What it does: Takes the 7-bit opcode (bits [6:0] of the instruction) and outputs primary execution flags.
+## Architecture Blueprint
 
-Outputs to generate: RegWrite (enable register writes), ALUSrc (choose between Register Port 2 or the Immediate Generator output), MemRead/MemWrite (data memory signals), and Branch (tells the system an evaluation is happening).
+The microarchitecture uses a single-cycle datapath layout where every committed instruction processes entirely within one clock cycle.
 
-2. ALU Control Decoder Circuit
-   What it does: A secondary decoding block that combines the ALUOp signals from the main controller with the instruction's funct3 (bits [14:12]) and funct7 (bit 30).
+- **Datapath Model:** Single-cycle execution loop.
+- **Instruction Set Architecture:** RV32I Base Integer Instruction Set.
+- **Current Support Matrix:** Includes all fundamental computational, control-flow, and word-level storage operations. Sub-word byte and half-word memory operations are bypass-routed for future expansion.
 
-Why it matters: It keeps the main decoder lean. This sub-circuit handles routing the precise 3-bit operations to your AdderSub32, UniversalShifter, and BitwiseLogicUnit.
+---
 
-Phase 6: Top-Level Datapath Integration
-This is where you stop creating new components and begin your master wiring assembly on the main canvas (main circuit).
+## Core Component Modules
 
-3. Integrated Arithmetic Logic Unit (ALU Shell)
-   What it does: You will create a single unified ALU shell. Inside, you place your AdderSub32, UniversalShifter, and BitwiseLogicUnit in parallel.
+The microarchitecture is split into specialized structural components located across functional circuit domains:
 
-The Routing Layer: You add a large 32-bit output multiplexer controlled by your ALU Control Decoder to select which mathematical unit's result gets passed out of the ALU.
+- **Program Counter (`ProgramCounter`):** Dedicated 32-bit execution pointer tracking synchronous sequence increments ($PC + 4$) and handling asynchronous clear lines and runtime branch/jump target interruptions.
+- **Immediate Generator (`ImmGen`):** Combinational wire-splicing matrix that extracts, rearranges, and sign-extends immediate constants from I, S, B, U, and J instruction formats without generating explicit shift gate delay.
+- **Unified Adder/Subtractor (`AdderSub32`):** Linear ripple-carry core using a conditional XOR inverter layer to combine addition, two's complement subtraction, and cascaded multi-word carry processing into one block.
+- **Integrated Barrel Shifter (`UniShifter`):** 5-stage log-scaled right-shifting multiplexer cascade featuring complement-inversion logic to run left shifts natively through right-handed hardware lanes.
+- **Word-Level Comparator (`WordLevelComparator`):** Flag-processing array that samples output buses and overflow bits directly from the subtraction channel to evaluate `EQ`, `LTU`, and `LTS` metrics without extra arithmetic structures.
+- **Multi-Port Register File (`RegisterFile`):** Parallel storage cell matrix supporting two independent combinational read ports and one exclusive, decoder-gated write port simultaneously.
 
-4. Memory-Interface Alignment Logic
-   What it does: A small combinational block sitting between your CPU registers and the data memory.
+---
 
-Why it matters: RISC-V requires byte and half-word operations (lb, lh, sb, sh). This block handles shifting and sign-extending data when reading or writing fractions of a 32-bit word from memory.
+## Assembly Toolchain & ROM Target Creation
 
-Phase 7: The Final System Shell 5. The Unified Core Canvas (Core)
-The final assembly circuit. You stitch the complete circular loop together:
+To execute tests on the hardware canvas, the environment includes compilation scripts to convert bare-metal RISC-V assembly source code into compatible hex images for Logisim ROM/RAM components.
 
-Connect the Program Counter output to the Instruction Memory address line.
+### Compilation Toolchain Prerequisites
 
-Split the returning 32-bit instruction bus and route the address bits to the Register File, the format bits to the Immediate Generator, and the operational bits to your Control Decoders.
+Running assembly files requires the RISC-V GNU Compiler Collection (`riscv-gnu-toolchain`) target configured for 32-bit bare-metal execution.
 
-Feed the outputs of the Register File and Immediate Generator directly into your ALU Shell.
+Install the necessary cross-compilers via your platform packages:
 
-Loop the final calculation or memory output back around into the Register File's W_Data port.
+```bash
+# Ubuntu/Debian Target Architecture Tools
+sudo apt-get install gcc-riscv64-unknown-elf binutils-riscv64-unknown-elf
 
-Once Phase 5 is laid down, your processor will officially transition from a collection of parts into a self-directed, executing machine.
+# macOS Target Architecture Tools (via Homebrew)
+brew tap riscv-software-src/riscv
+brew install riscv-gnu-toolchain
+```
 
-Are you ready to design the Main Control Decoder logic matrix next?
+### Automation Scripts
+
+The toolchain automation framework provides direct compilation and verification routines:
+
+- **`compile_logisim.sh`:** Automated shell script that compiles raw assembly strings (`.s`), processes object files, extracts text sections, and outputs standard Logisim-compatible hexadecimal vectors (`.hex`) ready for direct memory image streaming.
+
+---
+
+## Execution Verification Strategy
+
+Hardware functionality is maintained using low-level boundary vectors located inside the verification suite. Test routines target explicit code execution paths:
+
+- **Arithmetic & Logic:** Tests verifying standard integer calculation, signed register operations, shifts, and immediate boundaries.
+- **Control Paths:** Validates branching parameters (`beq`, `bne`, etc.), jumps, trap boundaries, and upper-immediate alignment vectors (`lui`, `auipc`).
+- **Memory Routing:** Confirms full-word data store and load configurations passing across the standard data bus layout.
+
+---
+
+## Roadmap & Core Expansion
+
+Future engineering iterations target deeper performance scaling, structural decoupling, and production-grade validation environments:
+
+- [ ] **Sub-Word Memory Integration:** Implement structural masking logic inside the memory access stage to introduce byte and half-word operations (`lb`, `lh`, `sb`, `sh`).
+- [ ] **Pipelined Execution Core:** Transition from a single-cycle implementation to a high-frequency 5-stage pipeline architecture (Fetch, Decode, Execute, Memory, Writeback) complete with hazard resolution and forwarding networks.
+- [ ] **HDL Migration:** Port validated Logisim schematics into fully descriptive digital logic frameworks using Digital or hardware description languages to evaluate synthesis targets.
