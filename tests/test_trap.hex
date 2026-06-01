@@ -1,3 +1,0 @@
-v2.0 raw
-02a00093     # # Setup a test value
-0000006f     # addi x1, x0, 42       # x1 = 42

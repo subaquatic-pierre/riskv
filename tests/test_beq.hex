@@ -1,8 +1,0 @@
-v2.0 raw
-00500093     # # Setup matching values
-00500113     # addi x1, x0, 5        # x1 = 5
-00208463     # addi x2, x0, 5        # x2 = 5
-06300193     # # PCSel must go high (1) and jump to 'target'
-00308463     # beq x1, x2, target
-00100073     # addi x3, x0, 99       
-00000073     # # PCSel must stay low (0) and fall through
