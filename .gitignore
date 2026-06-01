@@ -1,1 +1,3 @@
-tests/*.hex
+rust/target
+rust/riskv
+**/*.hex
