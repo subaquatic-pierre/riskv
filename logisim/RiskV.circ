@@ -4378,7 +4378,7 @@
   </circuit>
   <circuit name="RiskVCPUSingleCycle">
     <a name="circuit" val="RiskVCPUSingleCycle"/>
-    <a name="simulationFrequency" val="1.0"/>
+    <a name="simulationFrequency" val="128.0"/>
     <comp lib="0" loc="(1040,700)" name="Tunnel">
       <a name="label" val="rdi"/>
       <a name="labelfont" val="SansSerif plain 12"/>
@@ -4810,8 +4810,8 @@
     <comp lib="0" loc="(2170,620)" name="Splitter">
       <a name="appear" val="center"/>
       <a name="bit1" val="0"/>
-      <a name="bit10" val="none"/>
-      <a name="bit11" val="none"/>
+      <a name="bit10" val="1"/>
+      <a name="bit11" val="1"/>
       <a name="bit12" val="none"/>
       <a name="bit13" val="none"/>
       <a name="bit14" val="none"/>
@@ -5049,8 +5049,8 @@
       <a name="appear" val="center"/>
       <a name="bit0" val="none"/>
       <a name="bit1" val="none"/>
-      <a name="bit10" val="none"/>
-      <a name="bit11" val="none"/>
+      <a name="bit10" val="0"/>
+      <a name="bit11" val="0"/>
       <a name="bit12" val="none"/>
       <a name="bit13" val="none"/>
       <a name="bit14" val="none"/>
@@ -5205,6 +5205,7 @@
       <a name="width" val="32"/>
     </comp>
     <comp lib="5" loc="(2230,620)" name="RAM">
+      <a name="addrWidth" val="10"/>
       <a name="appearance" val="classic"/>
       <a name="asyncread" val="true"/>
       <a name="byteenables" val="byteEnables"/>
@@ -5213,12 +5214,24 @@
       <a name="labelvisible" val="true"/>
     </comp>
     <comp lib="5" loc="(560,930)" name="ROM">
+      <a name="addrWidth" val="10"/>
       <a name="appearance" val="classic"/>
-      <a name="contents">addr/data: 8 32
-293 7ff00313 130313 deadc137 eef10113 22a023 628023 28503
-2280a3 128583 12c603 22a023 229023 29683 22a023 229123
-229703 22d783 22a023 2290a3 128803 228883 129903 22a023
-2aa03
+      <a name="contents">addr/data: 10 32
+1117 10113 297 25828293 317 7f030313 397 7f038393
+735c63 2ae03 1c32023 428293 430313 fedff06f 297 7d028293
+317 7c830313 62d863 2a023 428293 ff5ff06f 44000ef 6f
+40006f 6f ff010113 b12423 a12623 40006f 812503 c12583
+a5a023 1010113 8067 50593 5a503 45a583 8067 ff010113
+112623 1537 80850513 a12023 637 1e060613 6400593 97
+fac080e7 12503 450513 637 20060613 c800593 b12223 97
+f8c080e7 500513 a00593 97 80080e7 50593 637 21060613
+513 97 f64080e7 412583 537 26050613 c12423 26052503
+97 54080e7 50593 637 22060613 400513 97 f30080e7
+812503 97 38080e7 50593 637 23060613 800513 97
+f0c080e7 40006f 6f b50533 8067 40b50533 8067 ff010113
+112623 a12023 5b7 24058593 97 efc080e7 12503 b12223
+5b7 25058593 97 ee4080e7 50613 412503 c12423 812583
+97 fac080e7 c12083 1010113 8067 2f637273 1d40073
 </a>
       <a name="dataWidth" val="32"/>
       <a name="label" val="IMem"/>
@@ -5735,6 +5748,11 @@
       <a name="type" val="output"/>
       <a name="width" val="32"/>
     </comp>
+    <comp lib="0" loc="(950,670)" name="Probe">
+      <a name="appearance" val="classic"/>
+      <a name="facing" val="west"/>
+      <a name="radix" val="10unsigned"/>
+    </comp>
     <comp lib="1" loc="(530,520)" name="AND Gate">
       <a name="size" val="30"/>
       <a name="width" val="32"/>
@@ -5911,7 +5929,9 @@
     <wire from="(850,620)" to="(850,640)"/>
     <wire from="(850,620)" to="(870,620)"/>
     <wire from="(850,710)" to="(890,710)"/>
-    <wire from="(890,640)" to="(890,710)"/>
+    <wire from="(890,640)" to="(890,670)"/>
+    <wire from="(890,670)" to="(890,710)"/>
+    <wire from="(890,670)" to="(950,670)"/>
     <wire from="(910,560)" to="(950,560)"/>
   </circuit>
   <circuit name="ALUDataSource">
