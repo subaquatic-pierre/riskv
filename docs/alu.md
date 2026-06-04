@@ -20,10 +20,10 @@ The **Arithmetic Logic Unit (ALU)** is the primary operational core of the execu
 
 ### Selection Bus Bit Mapping
 
-The 4-bit `ALUSel[3:0]` bus is constructed directly from the instruction payload fields inside the control decoder. To align with the layout of your hardware matrix, the instruction modifier bit is mapped directly to the Least Significant Bit (LSB):
+The 4-bit `ALUSel[3:0]` bus is constructed directly from the instruction payload fields inside the control decoder. To align with the layout of your hardware matrix, the instruction modifier bit is mapped directly to the Most Significant Bit (MSB):
 
-- **`ALUSel[3:1]`:** Wired directly to the instruction's **`funct3`** field (`Instruction[14:12]`).
-- **`ALUSel[0]`:** Wired directly to **`Instruction[30]`** (the sign/modifier bit from the `funct7` field).
+- **`ALUSel[3]`:** Wired directly to **`Instruction[30]`** (the sign/modifier bit from the `funct7` field).
+- **`ALUSel[2:0]`:** Wired directly to the instruction's **`funct3`** field (`Instruction[14:12]`).
 
 ---
 
@@ -34,15 +34,15 @@ The execution logic decodes `ALUSel[3:0]` to select the active hardware path. Fo
 | ALUSel[3:0] | Target Instructions         | Internal Core Operation                             | Description                                                     |
 | :---------: | :-------------------------- | :-------------------------------------------------- | :-------------------------------------------------------------- |
 | **`0000`**  | `ADD`, `ADDI`, Loads/Stores | `ALUResult = dataA + dataB`                         | Standard 32-bit two's complement addition.                      |
-| **`0001`**  | `SUB`                       | `ALUResult = dataA - dataB`                         | Standard 32-bit two's complement subtraction.                   |
-| **`0010`**  | `SLL`, `SLLI`               | `ALUResult = dataA << dataB[4:0]`                   | Logical Shift Left (shifts in zeros). Uses bottom 5 bits of B.  |
-| **`0100`**  | `SLT`, `SLTI`               | `ALUResult = (signed)dataA < (signed)dataB ? 1 : 0` | Set Less Than (Signed comparison).                              |
-| **`0110`**  | `SLTU`, `SLTUI`             | `ALUResult = dataA < dataB ? 1 : 0`                 | Set Less Than Unsigned (Magnitude comparison).                  |
-| **`1000`**  | `XOR`, `XORI`               | `ALUResult = dataA ^ dataB`                         | Bitwise bit-by-bit exclusive OR.                                |
-| **`1010`**  | `SRL`, `SRLI`               | `ALUResult = dataA >> dataB[4:0]`                   | Logical Shift Right (shifts in zeros). Uses bottom 5 bits of B. |
-| **`1011`**  | `SRA`, `SRAI`               | `ALUResult = (signed)dataA >> dataB[4:0]`           | Arithmetic Shift Right (preserves the sign bit `dataA[31]`).    |
-| **`1100`**  | `OR`, `ORI`                 | `ALUResult = dataA \| dataB`                        | Bitwise bit-by-bit logical OR.                                  |
-| **`1110`**  | `AND`, `ANDI`               | `ALUResult = dataA & dataB`                         | Bitwise bit-by-bit logical AND.                                 |
+| **`0001`**  | `SLL`, `SLLI`               | `ALUResult = dataA << dataB[4:0]`                   | Logical Shift Left (shifts in zeros). Uses bottom 5 bits of B.  |
+| **`0010`**  | `SLT`, `SLTI`               | `ALUResult = (signed)dataA < (signed)dataB ? 1 : 0` | Set Less Than (Signed comparison).                              |
+| **`0011`**  | `SLTU`, `SLTUI`             | `ALUResult = dataA < dataB ? 1 : 0`                 | Set Less Than Unsigned (Magnitude comparison).                  |
+| **`0100`**  | `XOR`, `XORI`               | `ALUResult = dataA ^ dataB`                         | Bitwise bit-by-bit exclusive OR.                                |
+| **`0101`**  | `SRL`, `SRLI`               | `ALUResult = dataA >> dataB[4:0]`                   | Logical Shift Right (shifts in zeros). Uses bottom 5 bits of B. |
+| **`0110`**  | `OR`, `ORI`                 | `ALUResult = dataA \| dataB`                        | Bitwise bit-by-bit logical OR.                                  |
+| **`0111`**  | `AND`, `ANDI`               | `ALUResult = dataA & dataB`                         | Bitwise bit-by-bit logical AND.                                 |
+| **`1000`**  | `SUB`                       | `ALUResult = dataA - dataB`                         | Standard 32-bit two's complement subtraction.                   |
+| **`1101`**  | `SRA`, `SRAI`               | `ALUResult = (signed)dataA >> dataB[4:0]`           | Arithmetic Shift Right (preserves the sign bit `dataA[31]`).    |
 
 ---
 

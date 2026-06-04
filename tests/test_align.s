@@ -44,3 +44,4 @@ _start:
   lb    x27, 0(x7)         # x27 = 0x0000007F (Signed read verifies positive byte zero extension)
   sw    x4, 0(x6)          # Execute full sw using unaligned address register x6
   lw    x28, 0(x5)         # x28 = 0x55555555 (Verifies Word signal overrides mis_align block completely)
+  ebreak

@@ -12,7 +12,7 @@ The **Branch Control** component is a top-level macro-module that encapsulates t
 | :--------------- | :-------: | :-------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `rs1_data[31:0]` |    32     |   Input   | The data word read from Register File Port 1 (Operand A).                                                                                                                                                                                   |
 | `rs2_data[31:0]` |    32     |   Input   | The data word read from Register File Port 2 (Operand B).                                                                                                                                                                                   |
-| `BrSel[4:0]`     |     5     |   Input   | **Composite Selection Bus:**<br>• `BrSel[4:2]`: Maps to `funct3` (`Instruction[14:12]`) <br>• `BrSel[1]`: Maps to `Is_Branch` verification from Main Controller.<br>• `BrSel[0]`: Maps to `Is_Jump` status (asserted high for JAL or JALR). |
+| `BrSel[4:0]`     |     5     |   Input   | **Composite Selection Bus:**<br>• `BrSel[2:0]`: Maps to `funct3` (`Instruction[14:12]`) <br>• `BrSel[3]`: Maps to `Is_Branch` verification from Main Controller.<br>• `BrSel[4]`: Maps to `Is_Jump` status (asserted high for JAL or JALR). |
 
 #### Output Signals
 
@@ -48,13 +48,13 @@ ConditionMet = BranchSelector(EQ, LTS, LTU, BrSel[4:2])
 
 To accurately isolate true branch instructions and unconditional jumps, execution paths are gated independently before merging:
 
-- **Conditional Branch Line:** The `ConditionMet` flag evaluated by the companion selector is logically ANDed with the `BrSel[1]` verification line (`Is_Branch`). This guarantees that matching arithmetic configurations in non-branching ops cannot trigger a PC update.
-- **Unconditional Jump Override:** The `BrSel[0]` bit captures whether a `JAL` or `JALR` instruction is in flight. Because jumps skip the comparator check entirely, this control flag bypasses the branch gating entirely via a final OR validation gate.
+- **Conditional Branch Line:** The `ConditionMet` flag evaluated by the companion selector is logically ANDed with the `BrSel[3]` verification line (`Is_Branch`). This guarantees that matching arithmetic configurations in non-branching ops cannot trigger a PC update.
+- **Unconditional Jump Override:** The `BrSel[4]` bit captures whether a `JAL` or `JALR` instruction is in flight. Because jumps skip the comparator check entirely, this control flag bypasses the branch gating entirely via a final OR validation gate.
 
 ---
 
 ### Final Control Verification Formula
 
 ```text
-TakeBranch = (ConditionMet AND BrSel[1]) OR BrSel[0]
+TakeBranch = (ConditionMet AND Branch) OR (JAL OR JALR)
 ```
