@@ -1,0 +1,26 @@
+v3.0 hex
+00000293     # addi  x5, x0, 0          # x5 = Base address 0
+7ff00313     # addi  x6, x0, 2047       # Pre-load raw positive half-word pattern boundary
+00130313     # addi  x6, x6, 1          # x6 = 2048 (0x00000800)
+deadc137     # lui   x2, 0xDEADC        # Setup upper 20 bits for raw test word
+eef10113     # addi  x2, x2, -273       # x2 = 0xDEADBEEF (Byte 3=DE, Byte 2=AD, Byte 1=BE, Byte 0=EF)
+0022a023     # sw    x2, 0(x5)          # [MEM] Slot 0 = 0xDEADBEEF (Initial full word sync)
+00628023     # sb    x6, 0(x5)          # [MEM] Addr 00 Store lower byte (0x00) into Byte 3
+00028503     # lb    x10, 0(x5)         # [RAM] Addr 00 Read Byte 3 (0x00). Expected x10 = 0x00000000
+002280a3     # sb    x2, 1(x5)          # [MEM] Addr 01 Store lower byte (0xEF) into Byte 2
+00128583     # lb    x11, 1(x5)         # [RAM] Addr 01 Read Byte 2 (0xEF). Expected x11 = 0xFFFFFFEF
+0012c603     # lbu   x12, 1(x5)         # [RAM] Addr 01 Read Byte 2 Unsigned. Expected x12 = 0x000000EF
+0022a023     # sw    x2, 0(x5)          # Restore memory slot 0 to standard baseline 0xDEADBEEF
+00229023     # sh    x2, 0(x5)          # [MEM] Addr 00 Store lower 16 bits (0xBEEF) to Bytes 3 & 2
+00029683     # lh    x13, 0(x5)         # [RAM] Addr 00 Read upper half-word. Expected x13 = 0xFFFFBEEF
+0022a023     # sw    x2, 0(x5)          # Restore memory slot 0 to standard baseline 0xDEADBEEF
+00229123     # sh    x2, 2(x5)          # [MEM] Addr 10 Store lower 16 bits (0xBEEF) to Bytes 1 & 0
+00229703     # lh    x14, 2(x5)         # [RAM] Addr 10 Read lower half-word. Expected x14 = 0xFFFFBEEF
+0022d783     # lhu   x15, 2(x5)         # [RAM] Addr 10 Read lower half-word Unsigned. Expected x15 = 0x0000BEEF
+0022a023     # sw    x2, 0(x5)          # Restore memory slot 0 to standard baseline 0xDEADBEEF
+002290a3     # sh    x2, 1(x5)          # [MEM] Addr 01 Active mask 0110 (Writes 0xBEEF to Bytes 2 & 1)
+00128803     # lb    x16, 1(x5)         # [RAM] Addr 01 Read Byte 2 (0xBE). Expected x16 = 0xFFFFFFBE
+00228883     # lb    x17, 2(x5)         # [RAM] Addr 10 Read Byte 1 (0xEF). Expected x17 = 0xFFFFFFEF
+00129903     # lh    x18, 1(x5)         # [RAM] Addr 01 Read unaligned half-word. Expected x18 = 0xFFFFBEEF
+0022a023     # sw    x2, 0(x5)          # Restore memory slot 0 to standard baseline 0xDEADBEEF
+0002aa03     # lw    x20, 0(x5)         # [RAM] Read full word to audit results. Expected x20 = 0xDEADBEEF

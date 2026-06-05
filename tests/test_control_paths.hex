@@ -1,0 +1,26 @@
+v2.0 raw
+00000093     # # =========================================================================
+00000113     # # 1. INITIALIZATION
+00000193     # # =========================================================================
+00000213     # # Clear target registers to establish a clean baseline
+00000293     # addi x1, x0, 0          # Base address pointer zeroing
+04000093     # addi x2, x0, 0          # Data source register zeroing
+02a00113     # addi x3, x0, 0          # Destination register zeroing
+0020a023     # addi x4, x0, 0          # Verification register zeroing
+04000093     # addi x5, x0, 0          # Alternate branch validator zeroing
+0000a183     # # =========================================================================
+02219a63     # # 2. EXPLICIT RegWEn VALIDATION (Store Isolation Test)
+00a00213     # # =========================================================================
+01400293     # # Verify that 'sw' explicitly keeps RegWEn low and does not corrupt rd.
+00001013     # # with the 'rd' position in R-type instructions.
+00026313     # addi x1, x0, 64         # Set base memory pointer to an arbitrary safe RAM offset (64)
+00500213     # addi x2, x0, 42         # Put magic number 42 into source register x2
+00500293     # sw x2, 0(x1)            # Store 42 at RAM[64]. 
+00520463     # # If RegWEn is derived via NOT(Branch OR Store), this is safe.
+0140006f     # # But if an uninitialized instruction is read later, it fails.
+00000000     # # =========================================================================
+00000000     # # 3. ALU ALUSel LOGIC GATING VALIDATION (Load/Store Address Test)
+00100f93     # # =========================================================================
+0000006f     # # Validate that non-arithmetic instructions force ALUSel to 0000 (ADD).
+fff00f93     # # lw/sw use funct3 fields that would map to alternative math operations
+ffdff06f     # # if the arithmetic masking array fails.
