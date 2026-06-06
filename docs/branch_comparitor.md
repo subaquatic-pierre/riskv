@@ -1,8 +1,8 @@
-# 32-Bit Word-Level Comparator Module
+# 32-Bit Branch Comparator Module
 
 ## Functional Overview
 
-The **Word-Level Comparator (`WordLevelComparator`)** evaluates value comparisons by reusing the flags generated from a subtraction operation ($A - B$) performed by an external Two's Complement Adder.
+The **Branch Comparator (`BranchComparator`)** evaluates value comparisons by reusing the flags generated from a subtraction operation ($A - B$) performed by an external Two's Complement Adder.
 
 By interpreting the subtraction result, carry-out, and original operand sign bits, this module evaluates equality (`EQ`), unsigned less-than (`LTU`), and signed less-than (`LTS`) conditions.
 

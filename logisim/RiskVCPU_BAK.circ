@@ -2388,12 +2388,15 @@
     <comp lib="2" loc="(1150,1000)" name="Decoder">
       <a name="select" val="5"/>
     </comp>
-    <comp lib="9" loc="(1241,792)" name="Text">
+    <comp lib="9" loc="(1240,790)" name="Text">
       <a name="font" val="SansSerif plain 14"/>
       <a name="halign" val="left"/>
       <a name="text" val="OP == 01100 == 12"/>
     </comp>
-    <comp lib="9" loc="(1250,766)" name="Text">
+    <comp lib="9" loc="(1250,575)" name="Text">
+      <a name="text" val="OPCODE DECODE"/>
+    </comp>
+    <comp lib="9" loc="(1250,765)" name="Text">
       <a name="font" val="SansSerif plain 14"/>
       <a name="halign" val="left"/>
       <a name="text" val="STORE == 01000 == 8"/>
@@ -2403,48 +2406,45 @@
       <a name="halign" val="left"/>
       <a name="text" val="JAL == 11011 == 27"/>
     </comp>
-    <comp lib="9" loc="(1254,577)" name="Text">
-      <a name="text" val="OPCODE DECODE"/>
-    </comp>
-    <comp lib="9" loc="(1261,722)" name="Text">
+    <comp lib="9" loc="(1260,720)" name="Text">
       <a name="font" val="SansSerif plain 14"/>
       <a name="halign" val="left"/>
       <a name="text" val="OP_IMM == 00100 == 4"/>
     </comp>
-    <comp lib="9" loc="(1263,912)" name="Text">
+    <comp lib="9" loc="(1260,910)" name="Text">
       <a name="font" val="SansSerif plain 14"/>
       <a name="halign" val="left"/>
       <a name="text" val="BRANCH == 11000 == 24"/>
     </comp>
-    <comp lib="9" loc="(1272,815)" name="Text">
+    <comp lib="9" loc="(1270,815)" name="Text">
       <a name="font" val="SansSerif plain 14"/>
       <a name="halign" val="left"/>
       <a name="text" val="LUI == 01101 == 13"/>
     </comp>
-    <comp lib="9" loc="(1308,977)" name="Text">
+    <comp lib="9" loc="(1305,975)" name="Text">
       <a name="font" val="SansSerif plain 14"/>
       <a name="halign" val="left"/>
       <a name="text" val="SYSTEM == 11100 == 28"/>
     </comp>
-    <comp lib="9" loc="(1319,744)" name="Text">
+    <comp lib="9" loc="(1315,740)" name="Text">
       <a name="font" val="SansSerif plain 14"/>
       <a name="halign" val="left"/>
       <a name="text" val="AUIPC == 00101 == 5"/>
     </comp>
-    <comp lib="9" loc="(1320,652)" name="Text">
+    <comp lib="9" loc="(1320,650)" name="Text">
       <a name="font" val="SansSerif plain 14"/>
       <a name="text" val="LOAD == 00000 == 0"/>
     </comp>
-    <comp lib="9" loc="(1336,674)" name="Text">
+    <comp lib="9" loc="(1335,670)" name="Text">
       <a name="font" val="SansSerif plain 14"/>
       <a name="halign" val="left"/>
       <a name="text" val="MISC_MEM == 00011 == 3"/>
     </comp>
-    <comp lib="9" loc="(1378,935)" name="Text">
+    <comp lib="9" loc="(1375,935)" name="Text">
       <a name="font" val="SansSerif plain 14"/>
       <a name="text" val="JALR == 11001 == 25"/>
     </comp>
-    <comp lib="9" loc="(1403,835)" name="Text">
+    <comp lib="9" loc="(1400,835)" name="Text">
       <a name="font" val="SansSerif plain 14"/>
       <a name="text" val="OP_32 == 01110 == 14"/>
     </comp>
@@ -2463,22 +2463,22 @@
     <comp lib="9" loc="(1975,1310)" name="Text">
       <a name="text" val="MEM_Control"/>
     </comp>
-    <comp lib="9" loc="(2041,1505)" name="Text">
+    <comp lib="9" loc="(2040,1505)" name="Text">
       <a name="font" val="SansSerif plain 12"/>
       <a name="halign" val="left"/>
       <a name="text" val="Bus to control which bytes are active during memory read and write"/>
     </comp>
-    <comp lib="9" loc="(2041,1525)" name="Text">
+    <comp lib="9" loc="(2040,1525)" name="Text">
       <a name="font" val="SansSerif plain 12"/>
       <a name="halign" val="left"/>
       <a name="text" val="MemByteSel[0] = func3[2]"/>
     </comp>
-    <comp lib="9" loc="(2041,1545)" name="Text">
+    <comp lib="9" loc="(2040,1545)" name="Text">
       <a name="font" val="SansSerif plain 12"/>
       <a name="halign" val="left"/>
       <a name="text" val="MemByteSel[1] = func3[0]"/>
     </comp>
-    <comp lib="9" loc="(2041,1570)" name="Text">
+    <comp lib="9" loc="(2040,1570)" name="Text">
       <a name="font" val="SansSerif plain 12"/>
       <a name="halign" val="left"/>
       <a name="text" val="MemByteSel[2] = func3[1]"/>
@@ -2504,15 +2504,15 @@
       <a name="font" val="SansSerif plain 12"/>
       <a name="text" val="(1 bit): Enables Data Memory write operations."/>
     </comp>
-    <comp lib="9" loc="(2183,1016)" name="Text">
+    <comp lib="9" loc="(2180,1015)" name="Text">
       <a name="font" val="SansSerif plain 12"/>
       <a name="text" val="ALUSel[1] = funct3[1]"/>
     </comp>
-    <comp lib="9" loc="(2183,1033)" name="Text">
+    <comp lib="9" loc="(2180,1030)" name="Text">
       <a name="font" val="SansSerif plain 12"/>
       <a name="text" val="ALUSel[2] = funct3[2]"/>
     </comp>
-    <comp lib="9" loc="(2184,998)" name="Text">
+    <comp lib="9" loc="(2180,995)" name="Text">
       <a name="font" val="SansSerif plain 12"/>
       <a name="text" val="ALUSel[0] = funct3[0]"/>
     </comp>
@@ -2548,11 +2548,11 @@
       <a name="font" val="SansSerif plain 12"/>
       <a name="text" val="ImmSel[1] = Branch OR LUI OR AUIPC"/>
     </comp>
-    <comp lib="9" loc="(2263,1051)" name="Text">
+    <comp lib="9" loc="(2260,1050)" name="Text">
       <a name="font" val="SansSerif plain 12"/>
       <a name="text" val="ALUSel[3] = funct7[5] AND (RType OR IShift_Right)"/>
     </comp>
-    <comp lib="9" loc="(2264,1071)" name="Text">
+    <comp lib="9" loc="(2260,1070)" name="Text">
       <a name="font" val="SansSerif plain 12"/>
       <a name="text" val="ALUSel[4] = funct7[0] AND (RType OR IShift_Right)"/>
     </comp>
@@ -5003,12 +5003,12 @@
     <comp lib="9" loc="(2300,525)" name="Text">
       <a name="text" val="MEM - Memory"/>
     </comp>
-    <comp lib="9" loc="(2724,763)" name="Text">
+    <comp lib="9" loc="(2720,760)" name="Text">
       <a name="font" val="SansSerif plain 12"/>
       <a name="halign" val="left"/>
       <a name="text" val="00 = ALU"/>
     </comp>
-    <comp lib="9" loc="(2724,798)" name="Text">
+    <comp lib="9" loc="(2720,795)" name="Text">
       <a name="font" val="SansSerif plain 12"/>
       <a name="halign" val="left"/>
       <a name="text" val="11 = PCPlus4"/>
@@ -5558,17 +5558,17 @@
     <comp lib="3" loc="(540,800)" name="Comparator">
       <a name="width" val="32"/>
     </comp>
-    <comp lib="9" loc="(155,542)" name="Text">
+    <comp lib="9" loc="(155,540)" name="Text">
       <a name="font" val="SansSerif plain 12"/>
       <a name="halign" val="left"/>
       <a name="text" val="sel[3] = func7[5]"/>
     </comp>
-    <comp lib="9" loc="(156,566)" name="Text">
+    <comp lib="9" loc="(155,565)" name="Text">
       <a name="font" val="SansSerif plain 12"/>
       <a name="halign" val="left"/>
       <a name="text" val="sel[2:0] = func3"/>
     </comp>
-    <comp lib="9" loc="(210,518)" name="Text">
+    <comp lib="9" loc="(210,515)" name="Text">
       <a name="text" val="Select control"/>
     </comp>
     <comp lib="9" loc="(740,190)" name="Text">
@@ -7292,17 +7292,17 @@
       <a name="select" val="2"/>
       <a name="width" val="32"/>
     </comp>
-    <comp lib="9" loc="(154,564)" name="Text">
+    <comp lib="9" loc="(150,560)" name="Text">
       <a name="font" val="SansSerif plain 12"/>
       <a name="halign" val="left"/>
       <a name="text" val="sel[2:0] = func3"/>
     </comp>
-    <comp lib="9" loc="(155,542)" name="Text">
+    <comp lib="9" loc="(155,540)" name="Text">
       <a name="font" val="SansSerif plain 12"/>
       <a name="halign" val="left"/>
       <a name="text" val="sel[4:3] = func7[0] func7[5]"/>
     </comp>
-    <comp lib="9" loc="(210,518)" name="Text">
+    <comp lib="9" loc="(210,515)" name="Text">
       <a name="text" val="Select control"/>
     </comp>
     <comp loc="(440,250)" name="ALUDataSource"/>
@@ -7487,7 +7487,7 @@
     <comp lib="9" loc="(1085,195)" name="Text">
       <a name="text" val="Select control"/>
     </comp>
-    <comp lib="9" loc="(178,544)" name="Text">
+    <comp lib="9" loc="(175,540)" name="Text">
       <a name="font" val="SansSerif plain 12"/>
       <a name="halign" val="left"/>
       <a name="text" val="sel[2:0] = func3"/>
