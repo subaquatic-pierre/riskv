@@ -45,8 +45,8 @@
   <lib desc="#Input/Output-Extra" name="11"/>
   <lib desc="#Soc" name="12"/>
   <lib desc="file#RiskVALU.circ" name="13"/>
-  <lib desc="file#RiskVControl.circ" name="14"/>
-  <lib desc="file#RiskVMemory.circ" name="15"/>
+  <lib desc="file#RiskVMemory.circ" name="14"/>
+  <lib desc="file#RiskVControl.circ" name="15"/>
   <main name="RiskVCPU"/>
   <options>
     <a name="gateUndefined" val="ignore"/>
@@ -819,16 +819,16 @@
       <a name="width" val="32"/>
     </comp>
     <comp lib="13" loc="(2030,840)" name="ALUControl"/>
-    <comp lib="14" loc="(1320,1010)" name="ImmGen"/>
-    <comp lib="14" loc="(1320,620)" name="MainController"/>
-    <comp lib="14" loc="(2030,610)" name="BranchController"/>
-    <comp lib="14" loc="(3390,640)" name="WriteBackControl"/>
-    <comp lib="14" loc="(800,660)" name="ProgramCounter"/>
-    <comp lib="15" loc="(1330,1160)" name="RegisterFile"/>
-    <comp lib="15" loc="(2660,620)" name="DMem"/>
-    <comp lib="15" loc="(2690,1130)" name="LoadAligner"/>
-    <comp lib="15" loc="(2690,930)" name="StoreAligner"/>
-    <comp lib="15" loc="(780,950)" name="IMem"/>
+    <comp lib="14" loc="(1330,1160)" name="RegisterFile"/>
+    <comp lib="14" loc="(2660,620)" name="DMem"/>
+    <comp lib="14" loc="(2690,1130)" name="LoadAligner"/>
+    <comp lib="14" loc="(2690,930)" name="StoreAligner"/>
+    <comp lib="14" loc="(780,950)" name="IMem"/>
+    <comp lib="15" loc="(1320,1010)" name="ImmGen"/>
+    <comp lib="15" loc="(1320,620)" name="MainController"/>
+    <comp lib="15" loc="(2030,610)" name="BranchController"/>
+    <comp lib="15" loc="(3390,640)" name="WriteBackControl"/>
+    <comp lib="15" loc="(800,660)" name="ProgramCounter"/>
     <comp lib="9" loc="(1210,535)" name="Text">
       <a name="text" val="ID - Instruction Decode"/>
     </comp>
