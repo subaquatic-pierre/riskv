@@ -669,13 +669,22 @@
       <a name="labelfont" val="SansSerif plain 12"/>
       <a name="width" val="5"/>
     </comp>
-    <comp lib="0" loc="(810,870)" name="Probe">
+    <comp lib="0" loc="(810,860)" name="Probe">
       <a name="appearance" val="classic"/>
     </comp>
     <comp lib="0" loc="(830,820)" name="Probe">
       <a name="appearance" val="classic"/>
     </comp>
-    <comp lib="0" loc="(840,920)" name="Probe">
+    <comp lib="0" loc="(840,1020)" name="Probe">
+      <a name="appearance" val="classic"/>
+    </comp>
+    <comp lib="0" loc="(840,900)" name="Probe">
+      <a name="appearance" val="classic"/>
+    </comp>
+    <comp lib="0" loc="(840,940)" name="Probe">
+      <a name="appearance" val="classic"/>
+    </comp>
+    <comp lib="0" loc="(840,980)" name="Probe">
       <a name="appearance" val="classic"/>
     </comp>
     <comp lib="0" loc="(850,820)" name="Tunnel">
@@ -683,15 +692,30 @@
       <a name="labelfont" val="SansSerif plain 12"/>
       <a name="width" val="7"/>
     </comp>
-    <comp lib="0" loc="(860,870)" name="Tunnel">
+    <comp lib="0" loc="(860,1020)" name="Tunnel">
+      <a name="label" val="rs2"/>
+      <a name="labelfont" val="SansSerif plain 12"/>
+      <a name="width" val="5"/>
+    </comp>
+    <comp lib="0" loc="(860,860)" name="Tunnel">
       <a name="label" val="func3"/>
       <a name="labelfont" val="SansSerif plain 12"/>
       <a name="width" val="3"/>
     </comp>
-    <comp lib="0" loc="(860,920)" name="Tunnel">
+    <comp lib="0" loc="(860,900)" name="Tunnel">
       <a name="label" val="func7"/>
       <a name="labelfont" val="SansSerif plain 12"/>
       <a name="width" val="7"/>
+    </comp>
+    <comp lib="0" loc="(860,940)" name="Tunnel">
+      <a name="label" val="rdi"/>
+      <a name="labelfont" val="SansSerif plain 12"/>
+      <a name="width" val="5"/>
+    </comp>
+    <comp lib="0" loc="(860,980)" name="Tunnel">
+      <a name="label" val="rs1"/>
+      <a name="labelfont" val="SansSerif plain 12"/>
+      <a name="width" val="5"/>
     </comp>
     <comp lib="1" loc="(1760,1500)" name="OR Gate">
       <a name="size" val="30"/>
@@ -1107,9 +1131,12 @@
     <wire from="(550,950)" to="(570,950)"/>
     <wire from="(570,1000)" to="(580,1000)"/>
     <wire from="(570,950)" to="(570,1000)"/>
-    <wire from="(810,870)" to="(860,870)"/>
+    <wire from="(810,860)" to="(860,860)"/>
     <wire from="(830,820)" to="(850,820)"/>
-    <wire from="(840,920)" to="(860,920)"/>
+    <wire from="(840,1020)" to="(860,1020)"/>
+    <wire from="(840,900)" to="(860,900)"/>
+    <wire from="(840,940)" to="(860,940)"/>
+    <wire from="(840,980)" to="(860,980)"/>
   </circuit>
   <circuit name="BranchController">
     <a name="appearance" val="logisim_evolution"/>

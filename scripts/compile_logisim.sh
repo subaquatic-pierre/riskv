@@ -16,7 +16,8 @@ echo "v2.0 raw" >"$HEX_FILE"
 # 2. Assemble and read the listing stream line-by-line
 # -march=rv32i: Targets standard 32-bit integer instructions
 # -al: Generates an assembly listing showing line numbers, hex values, and source code
-riscv64-unknown-elf-as -march=rv32i "$ASM_FILE" -al 2>/dev/null | while read -r line; do
+riscv64-unknown-elf-as "$ASM_FILE" -al | while read -r line; do
+	# riscv64-unknown-elf-as -march=rv32im "$ASM_FILE" -al 2>/dev/null | while read -r line; do
 
 	# Match lines containing hex machine code (e.g., "   3 0004 73000000     ecall")
 	# Group 1: Hex Byte Address (4 hex digits)

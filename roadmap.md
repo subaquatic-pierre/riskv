@@ -105,3 +105,41 @@ Deconstruct execution completely into the classic RISC paradigm: **Fetch (IF)** 
   - **Dynamic Misprediction Auditing:** Integrate the branch predictor from Phase 4. If the execution stage determines that the predictor guessed wrong (e.g., predicted Taken, but branch actually evaluated to Not Taken), trigger a recovery routine.
   - **Flushing Infrastructure:** Expand the flush logic to dynamically clear multiple pipeline staging registers (`IF/ID`, `ID/EX`) simultaneously, turning bad speculative instructions into safe `NOP`s while correcting the PC back to the proper execution stream.
   - **Early Branch Resolution:** Move branch target evaluation and comparison logic earlier into the Decode (ID) stage to minimize the misprediction penalty down from three cycles to a single cycle.
+
+## Execution Unit Phase 3: Division Hardware & Pipeline Stall Mechanism
+
+### Prerequisites
+
+- Complete implementation of Control and Status Registers (CSRs).
+- Migration from single-cycle architecture to the 2-stage and 5-stage pipelined processor variations.
+
+### Objective
+
+Integrate support for the RISC-V M-Extension signed and unsigned division/remainder instructions (`div`, `divu`, `rem`, `remu`). This phase transitions the CPU execution unit from a strictly uniform, single-cycle latency block to a multi-cycle execution block utilizing dynamic pipeline interlocks.
+
+---
+
+### Phase Deliverables & Implementation Milestones
+
+#### 1. Hardware Unsigned Division Core
+
+- **Design Strategy:** Implement a synthesizable, sequential 32-cycle shift-and-subtract (restoring or non-restoring) division algorithm using basic logic gates, multiplexers, and shift registers to guarantee full FPGA portability and overcome simulation-only component constraints.
+- **Interface Specification:**
+  - Inputs: `clk`, `rst`, `start`, `dataA_pos` (32-bit absolute dividend), `dataB_pos` (32-bit absolute divisor).
+  - Outputs: `ready` (done flag), `unsigned_quotient` (32-bit), `unsigned_remainder` (32-bit).
+
+#### 2. Pre- and Post-Processing Wrapper Integration
+
+- **Pre-Correction Array:** Connect dual 32-bit XOR-and-Carry-In structures to conditionally negate negative inputs (`dataA`, `dataB`) into absolute positive magnitudes before starting the core.
+- **Post-Correction Array:** Connect dual 32-bit XOR-and-Carry-In structures to the core outputs:
+  - **Quotient:** Conditionally negate based on the input sign exclusive-or mask: `signA ^ signB`.
+  - **Remainder:** Conditionally negate to strictly match the sign of the original dividend: `signA`.
+
+#### 3. Pipeline Stall Interlock Logic
+
+- **Hazard Detection Unit Update:** Modify the pipeline control logic to intercept `div/rem` opcodes decoded in the pipeline.
+- **Stall Controller Implementation:** When a division operation initiates, the internal `ready` flag drops low, triggering a hardware stall across the pipeline:
+  - Force a write-disable to the Program Counter (PC) register to freeze the fetching mechanism.
+  - Force a write-disable to the early-stage pipeline registers (IF/ID, ID/EX) to preserve current instruction states.
+  - Inject execution-stage bubbles (NOPs) downstream into the memory and writeback stages to keep the remaining pipeline clean.
+- **Clearance Hook:** On the 32nd cycle, assert the `ready` signal high to release the pipeline freezes, enable the destination register file write-strobe, and allow normal single-cycle step operations to resume.
