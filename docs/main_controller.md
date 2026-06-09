@@ -273,3 +273,9 @@ Is_Ebreak = System_Op_Valid AND Instruction[20]
 ### Pipeline Safeguards
 
 When either exception flag goes high, `RegWEn`, `MemRead`, and `MemWrite` are driven to `0` to isolate memory structures and halt illegal state modification before a pipeline flush executes.
+
+### NOP
+
+We need to set NOP fields in the case of the following instruction types:
+
+- FENCE

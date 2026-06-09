@@ -143,3 +143,21 @@ Integrate support for the RISC-V M-Extension signed and unsigned division/remain
   - Force a write-disable to the early-stage pipeline registers (IF/ID, ID/EX) to preserve current instruction states.
   - Inject execution-stage bubbles (NOPs) downstream into the memory and writeback stages to keep the remaining pipeline clean.
 - **Clearance Hook:** On the 32nd cycle, assert the `ready` signal high to release the pipeline freezes, enable the destination register file write-strobe, and allow normal single-cycle step operations to resume.
+
+### Pipeline workflow
+
+no, stop, we will go slowly, it is important that you understand the stages first, tell me what you know. this is what happens currently in each stage
+
+IF: PC unit PC to Instruction MEM -> IF/ID regsiter with PC and INStruction
+
+ID: Main controller / Signals, IMM Gen, Register FIle -> ID/EX Register with all values
+
+EX: ALU , Branch controller -> EX/MEM register data
+
+MEM: Memory write -> MEM/WB resgier data
+
+WB: gets data from all the pipeline, including RegWriteEn
+
+It is the last stage i dont really understand
+
+Now that you know. lets walk through a simple addi instruction with no hazards
