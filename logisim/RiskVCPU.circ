@@ -82,7 +82,7 @@
   </toolbar>
   <circuit name="RiskVCPU">
     <a name="circuit" val="RiskVCPU"/>
-    <a name="simulationFrequency" val="2048000.0"/>
+    <a name="simulationFrequency" val="1.0"/>
     <comp lib="0" loc="(1190,1050)" name="Tunnel">
       <a name="facing" val="east"/>
       <a name="label" val="PCPlus4"/>
