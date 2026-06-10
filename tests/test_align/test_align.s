@@ -1,5 +1,27 @@
 .globl _start
 
+# #### Integer Registers
+# | Register | Value |
+# | --- | --- |
+# | `x10` | `0xDEADBEEF` (aligned load) |
+# | `x11` | `-1` (signed byte read) |
+# | `x12` | `255` (unsigned byte read) |
+# | `x13` | `85` (signed byte read at offset 01) |
+# | `x14` | `-1` (signed byte read at offset 10) |
+# | `x15` | `85` (unsigned byte read at offset 11) |
+# | `x16` | `0xFF55FF55` (aligned load) |
+# | `x17` | `22145` (signed half-word read) |
+# | `x18` | `-65281` (signed half-word read at offset 10) |
+# | `x19` | `65280` (unsigned half-word read at offset 10) |
+# | `x20` | `0xDEADBEEF` (aligned load after reset) |
+# | `x21` | `85` (byte read via unaligned address register x6) |
+# | `x22` | `85` (byte read via unaligned address register x7) |
+# | `x23` | `22145` (unaligned half-word read via x6) |
+# | `x24` | `0xDE5555EF` (aligned load after reset) |
+# | `x25` | `-128` (signed byte store at offset 01) |
+# | `x26` | `-128` (signed byte read verifies negative sign extension) |
+# | `x27` | `127` (signed byte read verifies positive zero extension) |
+
 .section .text
 _start:
   lui   x2, 0xDEADC        # Setup test word pattern
@@ -44,4 +66,5 @@ _start:
   lb    x27, 0(x7)         # x27 = 0x0000007F (Signed read verifies positive byte zero extension)
   sw    x4, 0(x6)          # Execute full sw using unaligned address register x6
   lw    x28, 0(x5)         # x28 = 0x55555555 (Verifies Word signal overrides mis_align block completely)
-  ebreak
+loop:
+  jal x0, loop
