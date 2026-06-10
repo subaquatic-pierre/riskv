@@ -43,7 +43,7 @@ abcdebb7     # [0x006c] lui x23, 0xABCDE        # Populate upper memory raw sign
 0053f463     # [0x00a4] bgeu x7, x5, test_jal   # Branch to test_jal if 60 >= 15 unsigned (Valid)
 0200006f     # [0x00a8] jal x0, fault           # Unconditional raw drop-through protection trap
 00c00eef     # [0x00ac] jal x29, target_label   # Jump to target_label and link return address in x29
-008e8067     # [0x00b0] jalr x0, x29, 8        # Jump to x29 + 12 bytes (skips the immediate fault trap below)
+00ce8067     # [0x00b0] jalr x0, x29, 12        # Jump to x29 + 8 bytes (skips the immediate fault trap below)
 0140006f     # [0x00b4] jal x0, fault           # Unconditional raw drop-through protection trap
 ff9ff06f     # [0x00b8] jal x0, return_anchor   # Safe unconditional jump back to the anchor loop
 00000000     # [0x00bc] .word 0x00000000        # Uninitialized memory padding row (handled as add x0,x0,x0)
