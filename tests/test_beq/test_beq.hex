@@ -1,0 +1,10 @@
+v2.0 raw
+00500093     # [0x0000] addi x1, x0, 5        # x1 = 5
+00500113     # [0x0004] addi x2, x0, 5        # x2 = 5
+00208463     # [0x0008] beq x1, x2, target
+06300193     # [0x000c] addi x3, x0, 99
+00308663     # [0x0010] beq x1, x3, fail_trap
+00100f93     # [0x0014] addi x31, x0, 1
+0080006f     # [0x0018] jal x0, halt
+fff00f93     # [0x001c] addi x31, x0, -1
+0000006f     # [0x0020] jal x0, halt

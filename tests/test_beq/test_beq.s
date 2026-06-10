@@ -18,8 +18,14 @@ target:
     beq x1, x3, fail_trap
 
     # SUCCESS: Execution falls here cleanly. Trigger your success trap.
-    ebreak               
+    addi x31, x0, 1
+    jal x0, halt               
 
 fail_trap:
     # If your non-taken branch accidentally jumped, you land here.
-    ecall
+    addi x31, x0, -1
+
+halt:
+    jal x0, halt
+    
+
