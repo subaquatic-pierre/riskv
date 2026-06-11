@@ -27,3 +27,11 @@ _start:
   lh    x18, 1(x5)         # [RAM] Addr 01 Read unaligned half-word. Expected x18 = 0xFFFFBEEF
   sw    x2, 0(x5)          # Restore memory slot 0 to standard baseline 0xDEADBEEF
   lw    x20, 0(x5)         # [RAM] Read full word to audit results. Expected x20 = 0xDEADBEEF
+
+loop:
+  jal x0, loop
+
+
+
+
+
