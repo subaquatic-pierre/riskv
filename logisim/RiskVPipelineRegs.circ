@@ -45,8 +45,8 @@
   <lib desc="#Input/Output-Extra" name="11"/>
   <lib desc="#Soc" name="12"/>
   <lib desc="file#RiskVControl.circ" name="13"/>
-  <lib desc="file#RiskVMemory.circ" name="14"/>
-  <lib desc="file#RiskVALU.circ" name="15"/>
+  <lib desc="file#RiskVALU.circ" name="14"/>
+  <lib desc="file#RiskVMemory.circ" name="15"/>
   <main name="PipelineReg32Bit"/>
   <options>
     <a name="gateUndefined" val="ignore"/>
@@ -1539,57 +1539,67 @@
       <a name="appearance" val="classic"/>
       <a name="facing" val="west"/>
       <a name="label" val="ID_EX_ALUSel"/>
+      <a name="type" val="output"/>
       <a name="width" val="5"/>
     </comp>
     <comp lib="0" loc="(2460,1040)" name="Pin">
       <a name="appearance" val="classic"/>
       <a name="facing" val="west"/>
       <a name="label" val="ID_EX_BrSel"/>
+      <a name="type" val="output"/>
       <a name="width" val="5"/>
     </comp>
     <comp lib="0" loc="(2460,1080)" name="Pin">
       <a name="appearance" val="classic"/>
       <a name="facing" val="west"/>
       <a name="label" val="ID_EX_MemRead"/>
+      <a name="type" val="output"/>
     </comp>
     <comp lib="0" loc="(2460,1130)" name="Pin">
       <a name="appearance" val="classic"/>
       <a name="facing" val="west"/>
       <a name="label" val="ID_EX_MemWrite"/>
+      <a name="type" val="output"/>
     </comp>
     <comp lib="0" loc="(2460,1170)" name="Pin">
       <a name="appearance" val="classic"/>
       <a name="facing" val="west"/>
       <a name="label" val="ID_EX_MemByteSel"/>
       <a name="radix" val="16"/>
+      <a name="type" val="output"/>
       <a name="width" val="3"/>
     </comp>
     <comp lib="0" loc="(2460,1220)" name="Pin">
       <a name="appearance" val="classic"/>
       <a name="facing" val="west"/>
       <a name="label" val="ID_EX_RegWEn"/>
+      <a name="type" val="output"/>
     </comp>
     <comp lib="0" loc="(2460,1270)" name="Pin">
       <a name="appearance" val="classic"/>
       <a name="facing" val="west"/>
       <a name="label" val="ID_EX_WBSel"/>
+      <a name="type" val="output"/>
       <a name="width" val="2"/>
     </comp>
     <comp lib="0" loc="(2460,1310)" name="Pin">
       <a name="appearance" val="classic"/>
       <a name="facing" val="west"/>
       <a name="label" val="ID_EX_ecall"/>
+      <a name="type" val="output"/>
     </comp>
     <comp lib="0" loc="(2460,1360)" name="Pin">
       <a name="appearance" val="classic"/>
       <a name="facing" val="west"/>
       <a name="label" val="ID_EX_ebreak"/>
+      <a name="type" val="output"/>
     </comp>
     <comp lib="0" loc="(2460,1410)" name="Pin">
       <a name="appearance" val="classic"/>
       <a name="facing" val="west"/>
       <a name="label" val="ID_EX_rdi"/>
       <a name="radix" val="16"/>
+      <a name="type" val="output"/>
       <a name="width" val="5"/>
     </comp>
     <comp lib="0" loc="(2460,1460)" name="Pin">
@@ -1597,6 +1607,7 @@
       <a name="facing" val="west"/>
       <a name="label" val="ID_EX_rs1"/>
       <a name="radix" val="16"/>
+      <a name="type" val="output"/>
       <a name="width" val="5"/>
     </comp>
     <comp lib="0" loc="(2460,1510)" name="Pin">
@@ -1604,6 +1615,7 @@
       <a name="facing" val="west"/>
       <a name="label" val="ID_EX_rs2"/>
       <a name="radix" val="16"/>
+      <a name="type" val="output"/>
       <a name="width" val="5"/>
     </comp>
     <comp lib="0" loc="(2460,1550)" name="Pin">
@@ -1611,6 +1623,7 @@
       <a name="facing" val="west"/>
       <a name="label" val="ID_EX_PC"/>
       <a name="radix" val="16"/>
+      <a name="type" val="output"/>
       <a name="width" val="32"/>
     </comp>
     <comp lib="0" loc="(2460,1590)" name="Pin">
@@ -1618,6 +1631,7 @@
       <a name="facing" val="west"/>
       <a name="label" val="ID_EX_PC_4"/>
       <a name="radix" val="16"/>
+      <a name="type" val="output"/>
       <a name="width" val="32"/>
     </comp>
     <comp lib="0" loc="(2460,780)" name="Pin">
@@ -1625,6 +1639,7 @@
       <a name="facing" val="west"/>
       <a name="label" val="ID_EX_RDataA"/>
       <a name="radix" val="16"/>
+      <a name="type" val="output"/>
       <a name="width" val="32"/>
     </comp>
     <comp lib="0" loc="(2460,820)" name="Pin">
@@ -1632,6 +1647,7 @@
       <a name="facing" val="west"/>
       <a name="label" val="ID_EX_RDataB"/>
       <a name="radix" val="16"/>
+      <a name="type" val="output"/>
       <a name="width" val="32"/>
     </comp>
     <comp lib="0" loc="(2460,860)" name="Pin">
@@ -1639,17 +1655,20 @@
       <a name="facing" val="west"/>
       <a name="label" val="ID_EX_Imm"/>
       <a name="radix" val="16"/>
+      <a name="type" val="output"/>
       <a name="width" val="32"/>
     </comp>
     <comp lib="0" loc="(2460,900)" name="Pin">
       <a name="appearance" val="classic"/>
       <a name="facing" val="west"/>
       <a name="label" val="ID_EX_ASel"/>
+      <a name="type" val="output"/>
     </comp>
     <comp lib="0" loc="(2460,950)" name="Pin">
       <a name="appearance" val="classic"/>
       <a name="facing" val="west"/>
       <a name="label" val="ID_EX_BSel"/>
+      <a name="type" val="output"/>
     </comp>
     <comp lib="0" loc="(870,1000)" name="Pin">
       <a name="appearance" val="classic"/>
@@ -1706,9 +1725,11 @@
     </comp>
     <comp lib="0" loc="(870,1520)" name="Pin">
       <a name="appearance" val="classic"/>
+      <a name="label" val="ID_EX_FLUSH"/>
     </comp>
     <comp lib="0" loc="(870,1560)" name="Pin">
       <a name="appearance" val="classic"/>
+      <a name="label" val="SysClk"/>
     </comp>
     <comp lib="0" loc="(870,610)" name="Pin">
       <a name="appearance" val="classic"/>
@@ -2581,6 +2602,7 @@
     </comp>
     <comp lib="0" loc="(710,1180)" name="Pin">
       <a name="appearance" val="classic"/>
+      <a name="label" val="SysClk"/>
     </comp>
     <comp lib="0" loc="(710,530)" name="Pin">
       <a name="appearance" val="classic"/>
@@ -3143,6 +3165,7 @@
       <a name="facing" val="west"/>
       <a name="label" val="MEM_WB_MemOut"/>
       <a name="radix" val="16"/>
+      <a name="type" val="output"/>
       <a name="width" val="32"/>
     </comp>
     <comp lib="0" loc="(1740,600)" name="Pin">
@@ -3150,35 +3173,41 @@
       <a name="facing" val="west"/>
       <a name="label" val="MEM_WB_ALUOut"/>
       <a name="radix" val="16"/>
+      <a name="type" val="output"/>
       <a name="width" val="32"/>
     </comp>
     <comp lib="0" loc="(1740,650)" name="Pin">
       <a name="appearance" val="classic"/>
       <a name="facing" val="west"/>
       <a name="label" val="MEM_WB_RegWEn"/>
+      <a name="type" val="output"/>
     </comp>
     <comp lib="0" loc="(1740,700)" name="Pin">
       <a name="appearance" val="classic"/>
       <a name="facing" val="west"/>
       <a name="label" val="MEM_WB_WBSel"/>
       <a name="radix" val="16"/>
+      <a name="type" val="output"/>
       <a name="width" val="2"/>
     </comp>
     <comp lib="0" loc="(1740,750)" name="Pin">
       <a name="appearance" val="classic"/>
       <a name="facing" val="west"/>
       <a name="label" val="MEM_WB_ecall"/>
+      <a name="type" val="output"/>
     </comp>
     <comp lib="0" loc="(1740,800)" name="Pin">
       <a name="appearance" val="classic"/>
       <a name="facing" val="west"/>
       <a name="label" val="MEM_WB_ebreak"/>
+      <a name="type" val="output"/>
     </comp>
     <comp lib="0" loc="(1740,850)" name="Pin">
       <a name="appearance" val="classic"/>
       <a name="facing" val="west"/>
       <a name="label" val="MEM_WB_rdi"/>
       <a name="radix" val="16"/>
+      <a name="type" val="output"/>
       <a name="width" val="5"/>
     </comp>
     <comp lib="0" loc="(1740,900)" name="Pin">
@@ -3186,6 +3215,7 @@
       <a name="facing" val="west"/>
       <a name="label" val="MEM_WB_PC"/>
       <a name="radix" val="16"/>
+      <a name="type" val="output"/>
       <a name="width" val="32"/>
     </comp>
     <comp lib="0" loc="(1740,950)" name="Pin">
@@ -3193,10 +3223,12 @@
       <a name="facing" val="west"/>
       <a name="label" val="MEM_WB_PC_4"/>
       <a name="radix" val="16"/>
+      <a name="type" val="output"/>
       <a name="width" val="32"/>
     </comp>
     <comp lib="0" loc="(490,1090)" name="Pin">
       <a name="appearance" val="classic"/>
+      <a name="label" val="SysClk"/>
     </comp>
     <comp lib="0" loc="(490,490)" name="Pin">
       <a name="appearance" val="classic"/>

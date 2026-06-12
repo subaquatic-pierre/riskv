@@ -42,4 +42,7 @@ riscv64-unknown-elf-as "$ASM_FILE" -al | while read -r line; do
 	fi
 done
 
+# Remove compiled binary
+rm a.out
+
 echo "Success! Generated: $HEX_FILE"

@@ -30,7 +30,7 @@ _start:
     # =========================================================================
     # Validate that non-arithmetic instructions force ALUSel to 0000 (ADD).
     # lw/sw use funct3 fields that would map to alternative math operations
-    # if the arithmetic masking array fails.
+    #  the arithmetic masking array fails.
     
     addi x1, x0, 64         # Re-verify address pointer
     lw x3, 0(x1)            # Load data from RAM[64] into x3. 
@@ -52,7 +52,7 @@ _start:
     
     # If BrSel[0] (Is_Branch) is missing or leaky, the underlying WordLevelComparator 
     # and BranchSelector will see x4 != x5, triggering a 'BNE' (funct3=001) condition 
-    # if an I-type math instruction with funct3=001 passes down the pipe.
+    #  an I-type math instruction with funct3=001 passes down the pipe.
     
     slli x0, x0, 0          # NOP / structural padding
     ori x6, x4, 0           # funct3 for ORI is 110 (overlaps with BLTU condition).
