@@ -45,8 +45,8 @@
   <lib desc="#Input/Output-Extra" name="11"/>
   <lib desc="#Soc" name="12"/>
   <lib desc="file#RiskVControl.circ" name="13"/>
-  <lib desc="file#RiskVALU.circ" name="14"/>
-  <lib desc="file#RiskVMemory.circ" name="15"/>
+  <lib desc="file#RiskVMemory.circ" name="14"/>
+  <lib desc="file#RiskVALU.circ" name="15"/>
   <main name="PipelineReg32Bit"/>
   <options>
     <a name="gateUndefined" val="ignore"/>
@@ -2612,7 +2612,7 @@
     </comp>
     <comp lib="0" loc="(710,580)" name="Pin">
       <a name="appearance" val="classic"/>
-      <a name="label" val="ID_EX_RDataB"/>
+      <a name="label" val="RDataB"/>
       <a name="radix" val="16"/>
       <a name="width" val="32"/>
     </comp>
