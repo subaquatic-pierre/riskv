@@ -1,0 +1,53 @@
+v2.0 raw
+000000b7     # [0x0000] lui x1, 0x00000         # Hard-clear x1 using upper immediate zeroing
+00000137     # [0x0004] lui x2, 0x00000         # Hard-clear x2 using upper immediate zeroing
+000001b7     # [0x0008] lui x3, 0x00000         # Hard-clear x3 using upper immediate zeroing
+00000237     # [0x000c] lui x4, 0x00000         # Hard-clear x4 using upper immediate zeroing
+00000fb7     # [0x0010] lui x31, 0x00000        # Clear diagnostic tracking register x31 to 0
+00002537     # [0x0014] lui x10, 0x00002        # Load upper immediate 0x00002000 into x10
+00001597     # [0x0018] auipc x11, 0x00001      # Calculate PC + 0x00001000 and store result into x11
+00f00093     # [0x001c] addi x1, x0, 15         # x1 = 0 + 15 = 15
+0140a113     # [0x0020] slti x2, x1, 20         # x2 = 1 (since 15 < 20 signed)
+00a0b193     # [0x0024] sltiu x3, x1, 10        # x3 = 0 (since 15 < 10 unsigned is false)
+fff0c213     # [0x0028] xori x4, x1, -1         # x4 = bitwise NOT of 15 (inverts all bits)
+0010e293     # [0x002c] ori x5, x1, 1           # x5 = 15 OR 1 = 15
+0010f313     # [0x0030] andi x6, x1, 1          # x6 = 15 AND 1 = 1
+00209393     # [0x0034] slli x7, x1, 2          # x7 = 15 << 2 = 60
+0010d413     # [0x0038] srli x8, x1, 1          # x8 = 15 >> 1 logical = 7
+40125493     # [0x003c] srai x9, x4, 1          # x9 = x4 >> 1 arithmetic (preserves sign bit)
+00708633     # [0x0040] add x12, x1, x7         # x12 = 15 + 60 = 75
+401386b3     # [0x0044] sub x13, x7, x1         # x13 = 60 - 15 = 45
+00609733     # [0x0048] sll x14, x1, x6         # x14 = 15 << 1 = 30
+00c2a7b3     # [0x004c] slt x15, x5, x12        # x15 = 1 (since 15 < 75 signed)
+00563833     # [0x0050] sltu x16, x12, x5       # x16 = 0 (since 75 < 15 unsigned is false)
+0050c8b3     # [0x0054] xor x17, x1, x5         # x17 = 15 XOR 15 = 0
+0063d933     # [0x0058] srl x18, x7, x6         # x18 = 60 >> 1 logical = 30
+406259b3     # [0x005c] sra x19, x4, x6         # x19 = x4 >> 1 arithmetic (sign preservation)
+0060ea33     # [0x0060] or x20, x1, x6          # x20 = 15 OR 1 = 15
+0060fab3     # [0x0064] and x21, x1, x6         # x21 = 15 AND 1 = 1
+04000b13     # [0x0068] addi x22, x0, 64        # Set base memory offset to address 64 (0x40)
+abcdebb7     # [0x006c] lui x23, 0xABCDE        # Populate upper memory raw signature block
+4f0b8b93     # [0x0070] addi x23, x23, 1264     # Complete 32-bit signature value 0xABCDE4F0 without colon
+017b2023     # [0x0074] sw x23, 0(x22)          # Store full 32-bit word to RAM[64]
+000b2c03     # [0x0078] lw x24, 0(x22)          # Load full 32-bit word back from RAM[64]
+00508463     # [0x007c] beq x1, x5, test_bne    # Branch to test_bne if 15 == 15 (Valid)
+0480006f     # [0x0080] jal x0, fault           # Unconditional raw drop-through protection trap
+00709463     # [0x0084] bne x1, x7, test_blt    # Branch to test_blt if 15 != 60 (Valid)
+0400006f     # [0x0088] jal x0, fault           # Unconditional raw drop-through protection trap
+0072c463     # [0x008c] blt x5, x7, test_bge    # Branch to test_bge if 15 < 60 signed (Valid)
+0380006f     # [0x0090] jal x0, fault           # Unconditional raw drop-through protection trap
+0053d463     # [0x0094] bge x7, x5, test_bltu   # Branch to test_bltu if 60 >= 15 signed (Valid)
+0300006f     # [0x0098] jal x0, fault           # Unconditional raw drop-through protection trap
+0072e463     # [0x009c] bltu x5, x7, test_bgeu  # Branch to test_bgeu if 15 < 60 unsigned (Valid)
+0280006f     # [0x00a0] jal x0, fault           # Unconditional raw drop-through protection trap
+0053f463     # [0x00a4] bgeu x7, x5, test_jal   # Branch to test_jal if 60 >= 15 unsigned (Valid)
+0200006f     # [0x00a8] jal x0, fault           # Unconditional raw drop-through protection trap
+00c00eef     # [0x00ac] jal x29, target_label   # Jump to target_label and link return address in x29
+00ce8067     # [0x00b0] jalr x0, x29, 12        # Jump to x29 + 8 bytes (skips the immediate fault trap below)
+0140006f     # [0x00b4] jal x0, fault           # Unconditional raw drop-through protection trap
+ff9ff06f     # [0x00b8] jal x0, return_anchor   # Safe unconditional jump back to the anchor loop
+00000000     # [0x00bc] .word 0x00000000        # Uninitialized memory padding row (handled as add x0,x0,x0)
+00100f93     # [0x00c0] addi x31, x0, 1         # Write successful status flag 1 into register x31
+0080006f     # [0x00c4] jal x0, terminal        # Jump to final halt loop
+fff00f93     # [0x00c8] addi x31, x0, -1        # Write execution fault flag -1 into register x31
+0000006f     # [0x00cc] jal x0, terminal        # Infinite loop holding core simulation static...

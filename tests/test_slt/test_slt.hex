@@ -1,0 +1,17 @@
+v2.0 raw
+00000093     # [0x0000] addi x1, x0, 0          # Reset tracking register x1
+00000113     # [0x0004] addi x2, x0, 0          # Reset tracking register x2
+00000193     # [0x0008] addi x3, x0, 0          # Reset validation register x3
+00000213     # [0x000c] addi x4, x0, 0          # Reset validation register x4
+00000fb7     # [0x0010] lui  x31, 0x00000       # Clear master execution status register x31 to 0
+00a00093     # [0x0014] addi x1, x0, 10      # x1 = 10
+01400113     # [0x0018] addi x2, x0, 20      # x2 = 20
+0020a1b3     # [0x001c] slt  x3, x1, x2      # x3 should become 0x00000001 (10 < 20 is True)
+00100f13     # [0x0020] addi x30, x0, 1      # Match register
+01e19a63     # [0x0024] bne  x3, x30, fault  # Verify SLT true-state output execution
+00112233     # [0x0028] slt  x4, x2, x1      # x4 should become 0x00000000 (20 < 10 is False)
+00021663     # [0x002c] bne  x4, x0, fault   # Verify SLT false-state output execution
+00100f93     # [0x0030] addi x31, x0, 1
+0080006f     # [0x0034] jal x0, terminal     # Infinite loop holding core simulation static
+fff00f93     # [0x0038] addi x31, x0, -1     # Write core error identifier -1 to register x31
+0000006f     # [0x003c] jal x0, terminal     # Infinite loop holding core simulation static...

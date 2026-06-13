@@ -1,0 +1,14 @@
+v2.0 raw
+00000fb7     # [0x0000] lui   x31, 0x00000       # Clear diagnostic tracking register x31 to 0
+00000193     # [0x0004] addi  x3, x0, 0          # Hard-initialize x3 to 0
+00500093     # [0x0008] addi x1, x0, 5        # x1 = 5
+00500113     # [0x000c] addi x2, x0, 5        # x2 = 5
+00208463     # [0x0010] beq x1, x2, target
+06300193     # [0x0014] addi x3, x0, 99
+06300213     # [0x0018] addi x4, x0, 99
+00418863     # [0x001c] beq  x3, x4, fail_trap
+00308663     # [0x0020] beq x1, x3, fail_trap
+00100f93     # [0x0024] addi x31, x0, 1
+0080006f     # [0x0028] jal x0, halt
+fff00f93     # [0x002c] addi x31, x0, -1
+0000006f     # [0x0030] jal x0, halt...
