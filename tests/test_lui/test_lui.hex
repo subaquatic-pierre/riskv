@@ -1,0 +1,26 @@
+v2.0 raw
+00000093     # [0x0000] addi x1, x0, 0          # Reset validation register x1
+00000113     # [0x0004] addi x2, x0, 0          # Reset comparison register x2
+00000193     # [0x0008] addi x3, x0, 0          # Reset verification register x3
+00000fb7     # [0x000c] lui  x31, 0x00000       # Clear diagnostic tracking register x31 to 0
+123450b7     # [0x0010] lui x1, 0x12345         # Load upper immediate 0x12345 into x1 (sets bits [31:12])
+12345137     # [0x0014] lui x2, 0x12345
+04209263     # [0x0018] bne x1, x2, immediate_fail # If LUI failed to shift or write back, branch to failure track
+00000197     # [0x001c] auipc x3, 0             # Read current PC into register x3 (Should execute at 0x1C)
+00000137     # [0x0020] lui x2, 0x00000
+01c10113     # [0x0024] addi x2, x2, 28         # Expected raw hardware absolute PC = 0x0000001C (28 dec)
+02219a63     # [0x0028] bne x3, x2, immediate_fail # If AUIPC calculated the wrong PC offset, drop to failure
+00002097     # [0x002c] auipc x1, 0x00002       # Calculate PC + 0x00002000 and store result into x1 (Executes at 0x2C)
+00002137     # [0x0030] lui x2, 0x00002
+02c10113     # [0x0034] addi x2, x2, 44         # Expected composite pattern = 0x0000202C
+02209263     # [0x0038] bne x1, x2, immediate_fail # If the upper immediate addition was offset incorrectly, fail
+02001063     # [0x003c] bne x0, x0, immediate_fail # Ghost branch check to ensure BrSel masking is tight
+00500113     # [0x0040] addi x2, x0, 5
+00000663     # [0x0044] beq  x0, x0, pass_route
+fff00f93     # [0x0048] addi x31, x0, -1        # Catch rogue drop-through if pipeline flush failed
+0140006f     # [0x004c] j simulation_end
+00000000     # [0x0050] .word 0x00000000        # Clear space barrier to verify zero-word instructions are safe
+00100f93     # [0x0054] addi x31, x0, 1         # Write validation pass identifier 1 to register x31
+0080006f     # [0x0058] j simulation_end        # Jump directly to stable termination point
+fff00f93     # [0x005c] addi x31, x0, -1        # Write core error identifier -1 to register x31
+0000006f     # [0x0060] j simulation_end        # Freeze execution to confirm status marker in x31...

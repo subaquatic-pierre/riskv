@@ -1,0 +1,28 @@
+v2.0 raw
+00000093     # [0x0000] addi x1, x0, 0          # Initialize pointer register x1 to 0
+00000113     # [0x0004] addi x2, x0, 0          # Initialize tracking data register x2 to 0
+00000193     # [0x0008] addi x3, x0, 0          # Initialize verification register x3 to 0
+00000213     # [0x000c] addi x4, x0, 0          # Initialize reference register x4 to 0
+00000293     # [0x0010] addi x5, x0, 0          # Initialize reference register x5 to 0
+00000f93     # [0x0014] addi x31, x0, 0         # Clear master execution status register x31
+08000093     # [0x0018] addi x1, x0, 128        # Establish RAM test boundary at address 128
+fff00113     # [0x001c] addi x2, x0, -1         # Generate a continuous 32-bit high bit pattern (0xFFFFFFFF) in x2
+0020a023     # [0x0020] sw x2, 0(x1)            # Perform memory store. Validates that S-type fields do not pull RegWEn
+0000a183     # [0x0024] lw x3, 0(x1)            # Perform memory load. Validates that ALUSel ignores funct3 (0x2) and f
+02219e63     # [0x0028] bne x3, x2, trap_error  # If address logic failed or memory corrupted, jump to error routine
+06400213     # [0x002c] addi x4, x0, 100        # Load baseline condition marker 100 into x4
+0c800293     # [0x0030] addi x5, x0, 200        # Load baseline condition marker 200 into x5
+0042a333     # [0x0034] slt x6, x5, x4          # Perform standard R-type SLT. Result should be 0 (200 < 100 is false)
+02031663     # [0x0038] bne x6, x0, trap_error  # Verify output is strictly 0
+00f24393     # [0x003c] xori x7, x4, 15         # Perform standard I-type XORI (100 XOR 15 = 107)
+06b00f13     # [0x0040] addi x30, x0, 107       # Match register for check
+03e39063     # [0x0044] bne x7, x30, trap_error # Verify XORI operation computed cleanly
+00521663     # [0x0048] bne x4, x5, branch_ok   # Execute standard inequality branch. Verifies BrSel successfully valid
+fff00f93     # [0x004c] addi x31, x0, -1
+0180006f     # [0x0050] j simulation_halt
+00000000     # [0x0054] .word 0x00000000        # Insert zero-word block. Confirms uninitialized streams default safely
+00000000     # [0x0058] .word 0x00000000        # Insert zero-word block. Validates explicit RegWEn boundaries block co
+00100f93     # [0x005c] addi x31, x0, 1         # Assert 1 on status register x31 to signal clean pipeline execution
+0080006f     # [0x0060] j simulation_halt       # Route directly to clean termination phase
+fff00f93     # [0x0064] addi x31, x0, -1        # Assert -1 on status register x31 to signal a control hazard failure
+0000006f     # [0x0068] j simulation_halt       # Permanent trap loop indicating end of verification run...

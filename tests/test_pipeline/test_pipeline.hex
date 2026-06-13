@@ -1,0 +1,47 @@
+v2.0 raw
+000000b7     # [0x0000] lui x1, 0x00000         # Hard-clear x1 using upper immediate zeroing
+00000137     # [0x0004] lui x2, 0x00000         # Hard-clear x2 using upper immediate zeroing
+000001b7     # [0x0008] lui x3, 0x00000         # Hard-clear x3 using upper immediate zeroing
+00000237     # [0x000c] lui x4, 0x00000         # Hard-clear x4 using upper immediate zeroing
+00000fb7     # [0x0010] lui x31, 0x00000        # Clear diagnostic tracking register x31 to 0
+00f00093     # [0x0014] addi x1, x0, 15         # x1 = 15
+00108133     # [0x0018] add x2, x1, x1          # x2 = 15 + 15 = 30 (EX-to-EX hazard on x1)
+ff610193     # [0x001c] addi x3, x2, -10        # x3 = 30 - 10 = 20 (EX-to-EX hazard on x2)
+01400213     # [0x0020] addi x4, x0, 20         # x4 = 20
+00418463     # [0x0024] beq x3, x4, test_mem_fwd # Verify math via branch evaluation
+0880006f     # [0x0028] jal x0, fault           # Catch architecture failure
+06400293     # [0x002c] addi x5, x0, 100        # x5 = 100
+00000313     # [0x0030] addi x6, x0, 0          # Bubble padding
+005283b3     # [0x0034] add x7, x5, x5          # x7 = 100 + 100 = 200 (MEM-to-EX hazard on x5)
+0c800413     # [0x0038] addi x8, x0, 200        # x8 = 200
+00838463     # [0x003c] beq x7, x8, test_load_use # Verify branch
+0700006f     # [0x0040] jal x0, fault
+04000493     # [0x0044] addi x9, x0, 64         # x9 = Base memory pointer 64
+02a00513     # [0x0048] addi x10, x0, 42        # x10 = Data value 42
+00a4a023     # [0x004c] sw x10, 0(x9)           # RAM[64] = 42
+0004a583     # [0x0050] lw x11, 0(x9)           # x11 = 42 (Load instruction enters pipeline)
+00858613     # [0x0054] addi x12, x11, 8        # x12 = 42 + 8 = 50 (Immediate Load-Use Hazard)
+03200693     # [0x0058] addi x13, x0, 50        # x13 = 50
+00d60463     # [0x005c] beq x12, x13, test_store_fwd # Verify load-stall hardware output
+0500006f     # [0x0060] jal x0, fault
+08000713     # [0x0064] addi x14, x0, 128       # x14 = Base memory pointer 128
+06300793     # [0x0068] addi x15, x0, 99        # x15 = 99
+00178813     # [0x006c] addi x16, x15, 1        # x16 = 99 + 1 = 100 (EX-to-EX hazard for store data)
+01072023     # [0x0070] sw x16, 0(x14)          # RAM[128] = x16 (Verifies Forwarding Mux B updates StoreData path)
+00072883     # [0x0074] lw x17, 0(x14)          # Load back to check alignment
+06400913     # [0x0078] addi x18, x0, 100       # x18 = 100
+01288463     # [0x007c] beq x17, x18, test_branch_fwd # Verify data integrity
+0300006f     # [0x0080] jal x0, fault
+1f400993     # [0x0084] addi x19, x0, 500       # x19 = 500
+19000a13     # [0x0088] addi x20, x0, 400       # x20 = 400
+064a0a93     # [0x008c] addi x21, x20, 100      # x21 = 400 + 100 = 500 (EX-to-EX hazard evaluated by Branch Controller
+01598463     # [0x0090] beq x19, x21, test_jalr_target # Branch Controller must capture forwarded data
+01c0006f     # [0x0094] jal x0, fault
+00000b17     # [0x0098] auipc x22, 0x00000      # Get current PC into x22
+010b0b13     # [0x009c] addi x22, x22, 16       # Calculate absolute address of pass_route
+000b0be7     # [0x00a0] jalr x23, x22, 0        # Jump to pass_route, store link return in x23
+00c0006f     # [0x00a4] jal x0, fault           # Trap on sequential drop-through failure
+00100f93     # [0x00a8] addi x31, x0, 1         # Write successful status flag 1 into register x31
+0080006f     # [0x00ac] jal x0, terminal        # Jump to final halt loop
+fff00f93     # [0x00b0] addi x31, x0, -1        # Write execution fault flag -1 into register x31
+0000006f     # [0x00b4] jal x0, terminal        # Infinite loop holding core simulation static...
