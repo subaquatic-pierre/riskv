@@ -1,7 +1,5 @@
 # RISC-V 32-Bit Processor Core
 
-UPDATE HERe
-
 A 32-bit RISC-V processor implementation modeled after the UC Berkeley CS61C computer architecture curriculum. The execution engine is constructed using Logisim-Evolution to map custom hardware modules, control paths, and arithmetic execution units into a unified processing canvas.
 
 ---
