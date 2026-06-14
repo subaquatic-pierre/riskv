@@ -1,0 +1,2339 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Structural verification and architecture layout for a 5-stage RISC-V processor in Logisim.">
+      
+      
+      
+      
+        <link rel="prev" href="../divider/">
+      
+      
+        <link rel="next" href="../hazard_controller/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Main Controller - RiskV Pipeline Processor Project</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="cyan">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#maincontroldecoder-architecture-overview" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="RiskV Pipeline Processor Project" class="md-header__button md-logo" aria-label="RiskV Pipeline Processor Project" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            RiskV Pipeline Processor Project
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Main Controller
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="cyan"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="cyan"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Overview
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../roadmap/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Project Roadmap
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../program_counter/" class="md-tabs__link">
+          
+  
+  
+  Datapath Elements
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+  Control Logic
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../memory/" class="md-tabs__link">
+          
+  
+  
+  Memory Subsystem
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../encoder_decoder/" class="md-tabs__link">
+          
+  
+  
+  Core Elements & Logic
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../tests/" class="md-tabs__link">
+          
+  
+  
+  Verification & Test
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="RiskV Pipeline Processor Project" class="md-nav__button md-logo" aria-label="RiskV Pipeline Processor Project" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    RiskV Pipeline Processor Project
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Project Roadmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Datapath Elements
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Datapath Elements
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../program_counter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Program Counter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../register_file/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Register File
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../immediate_generator/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Immediate Generator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../universal_shifter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Universal Shifter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../alu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ALU Core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_6" id="__nav_3_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Arithmetic Units
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Arithmetic Units
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../half_adder/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Half Adder
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../full_adder/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Full Adder
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adder_sub/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Adder Subtractor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../multiplier/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multiplier
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../divider/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Divider
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Control Logic
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Control Logic
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Main Controller
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Main Controller
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#control-signal-canvas-mapping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Control Signal Canvas Mapping
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#master-interface-signal-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Master Interface Signal Matrix
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#master-instruction-definitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Master Instruction Definitions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#processor-execution-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Processor Execution Flow
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hazard_controller/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hazard Controller
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Branch Units
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Branch Units
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../branch_comparitor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Branch Comparator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../branch_control/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Branch Control
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../branch_selector/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Branch Selector
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Memory Subsystem
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Memory Subsystem
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../memory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Memory Interconnect
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../memory_load_aligner/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Load Aligner
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../memory_store_aligner/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Store Aligner
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../memory_store_mask_gen/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Store Mask Generator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Core Elements & Logic
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Core Elements & Logic
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../encoder_decoder/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Encoder & Decoder
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mux_demux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multiplexers & Demultiplexers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../truth_tables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Truth Tables Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Verification & Test
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Verification & Test
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing Methodology
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#control-signal-canvas-mapping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Control Signal Canvas Mapping
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#master-interface-signal-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Master Interface Signal Matrix
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#master-instruction-definitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Master Instruction Definitions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#processor-execution-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Processor Execution Flow
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="maincontroldecoder-architecture-overview">MainControlDecoder Architecture Overview</h1>
+<p>The <strong>MainControlDecoder</strong> reads raw instructions from memory and drives the control signals and buses required to steer data through the processor.</p>
+<hr />
+<h3 id="control-signal-canvas-mapping">Control Signal Canvas Mapping</h3>
+<div class="highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>+-----------------------------------------------------------------------+
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>|                         MAIN CONTROL DECODER                          |
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>+-----------------------------------------------------------------------+
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>   |                                                                 |
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>   |-- [ID_Control]   --&gt; ImmSel[2:0]                                |
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>   |                                                                 |
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>   |-- [EX_Control]   --&gt; ASel, BSel, ALUSel[3:0], BrSel[4:0]        |
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>   |                                                                 |
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>   |-- [MEM_Control]  --&gt; MemRead, MemWrite                          |
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>   |                                                                 |
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>   |-- [WB_Control]   --&gt; RegWEn, WBSel[1:0]                         |
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>   |                                                                 |
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>   |-- [Trap_Control] --&gt; Is_Ecall, Is_Ebreak                        |
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>+-----------------------------------------------------------------------+
+</span></code></pre></div>
+<hr />
+<h3 id="master-interface-signal-matrix">Master Interface Signal Matrix</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Canvas Group</th>
+<th style="text-align: left;">Signal / Bus Name</th>
+<th style="text-align: center;">Bit Width</th>
+<th style="text-align: left;">Destination Block</th>
+<th style="text-align: left;">Functional Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>ID_Control</strong></td>
+<td style="text-align: left;"><code>ImmSel[2:0]</code></td>
+<td style="text-align: center;">3</td>
+<td style="text-align: left;">Immediate Generator</td>
+<td style="text-align: left;">Selects immediate unpacking and formatting type based on instruction format.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>EX_Control</strong></td>
+<td style="text-align: left;"><code>ASel</code></td>
+<td style="text-align: center;">1</td>
+<td style="text-align: left;">Multiplexer A</td>
+<td style="text-align: left;">Selects ALU Input A: Register Port 1 (<code>0</code>) or Program Counter (<code>1</code>).</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><code>BSel</code></td>
+<td style="text-align: center;">1</td>
+<td style="text-align: left;">Multiplexer B</td>
+<td style="text-align: left;">Selects ALU Input B: Register Port 2 (<code>0</code>) or Immediate (<code>1</code>).</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><code>ALUSel[3:0]</code></td>
+<td style="text-align: center;">4</td>
+<td style="text-align: left;">Execution ALU</td>
+<td style="text-align: left;">Combines <code>funct3</code> and <code>Instruction[30]</code> to command ALU operations. Gated to <code>0000</code> (<code>ADD</code>) for non-arithmetic instructions.</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><code>BrSel[4:0]</code></td>
+<td style="text-align: center;">5</td>
+<td style="text-align: left;">Branch Controller</td>
+<td style="text-align: left;">Composite Bus: <code>[4:2]</code> maps <code>funct3</code>, <code>[1]</code> gates conditional branches (<code>Is_Branch</code>), <code>[0]</code> forces unconditional jumps (<code>Is_Jump</code>).</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>MEM_Control</strong></td>
+<td style="text-align: left;"><code>MemRead</code></td>
+<td style="text-align: center;">1</td>
+<td style="text-align: left;">Data Memory (RAM)</td>
+<td style="text-align: left;">Read-enable switch; active only during Load instructions.</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><code>MemWrite</code></td>
+<td style="text-align: center;">1</td>
+<td style="text-align: left;">Data Memory (RAM)</td>
+<td style="text-align: left;">Write-enable switch; active only during Store instructions.</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><code>MemByteSel[2:0]</code></td>
+<td style="text-align: center;">3</td>
+<td style="text-align: left;">Word Byte Selector</td>
+<td style="text-align: left;">Controls size layout and sign-extension configuration for sub-word alignment. Mapped straight from <code>funct3</code>.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>WB_Control</strong></td>
+<td style="text-align: left;"><code>RegWEn</code></td>
+<td style="text-align: center;">1</td>
+<td style="text-align: left;">Register File</td>
+<td style="text-align: left;">Master register write enable. Active high for instructions writing to register <code>rd</code>.</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><code>WBSel[1:0]</code></td>
+<td style="text-align: center;">2</td>
+<td style="text-align: left;">Writeback MUX</td>
+<td style="text-align: left;">Selects writeback source: Data Memory (<code>00</code>), ALU Result (<code>01</code>), or Sequential PC Address $PC + 4$ (<code>11</code>).</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Trap_Control</strong></td>
+<td style="text-align: left;"><code>Is_Ecall</code></td>
+<td style="text-align: center;">1</td>
+<td style="text-align: left;">Exception Unit</td>
+<td style="text-align: left;">Asserts high on environment call (<code>ecall</code>) to invoke system trap.</td>
+</tr>
+<tr>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><code>Is_Ebreak</code></td>
+<td style="text-align: center;">1</td>
+<td style="text-align: left;">Debug Unit</td>
+<td style="text-align: left;">Asserts high on breakpoint (<code>ebreak</code>) to halt for debugger.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="master-instruction-definitions">Master Instruction Definitions</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Instruction Type</th>
+<th style="text-align: left;">Opcode (Binary)</th>
+<th style="text-align: left;">Opcode (Hex)</th>
+<th style="text-align: left;">Description / Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>R_Type</strong></td>
+<td style="text-align: left;"><code>0110011</code></td>
+<td style="text-align: left;"><code>0x33</code></td>
+<td style="text-align: left;">Register-Register Math (<code>add</code>, <code>sub</code>, <code>slt</code>)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>I_type</strong></td>
+<td style="text-align: left;"><code>0010011</code></td>
+<td style="text-align: left;"><code>0x13</code></td>
+<td style="text-align: left;">Register-Immediate Math (<code>addi</code>, <code>slti</code>)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Load</strong></td>
+<td style="text-align: left;"><code>0000011</code></td>
+<td style="text-align: left;"><code>0x03</code></td>
+<td style="text-align: left;">Load Data from RAM to Register (<code>lw</code>)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Store</strong></td>
+<td style="text-align: left;"><code>0100011</code></td>
+<td style="text-align: left;"><code>0x23</code></td>
+<td style="text-align: left;">Store Data from Register to RAM (<code>sw</code>)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Branch</strong></td>
+<td style="text-align: left;"><code>1100011</code></td>
+<td style="text-align: left;"><code>0x63</code></td>
+<td style="text-align: left;">Conditional PC Jump (<code>beq</code>, <code>bne</code>)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>JAL</strong></td>
+<td style="text-align: left;"><code>1101111</code></td>
+<td style="text-align: left;"><code>0x6F</code></td>
+<td style="text-align: left;">Jump and Link Unconditional (<code>jal</code>)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>JALR</strong></td>
+<td style="text-align: left;"><code>1100111</code></td>
+<td style="text-align: left;"><code>0x67</code></td>
+<td style="text-align: left;">Jump and Link Register Indirect (<code>jalr</code>)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>AUIPC</strong></td>
+<td style="text-align: left;"><code>0010111</code></td>
+<td style="text-align: left;"><code>0x17</code></td>
+<td style="text-align: left;">Add Upper Immediate to PC (<code>auipc</code>)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>LUI</strong></td>
+<td style="text-align: left;"><code>0110111</code></td>
+<td style="text-align: left;"><code>0x37</code></td>
+<td style="text-align: left;">Load Upper Immediate (<code>lui</code>)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>System</strong></td>
+<td style="text-align: left;"><code>1110011</code></td>
+<td style="text-align: left;"><code>0x73</code></td>
+<td style="text-align: left;">Environment Calls / Traps (<code>ecall</code>, <code>ebreak</code>)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="processor-execution-flow">Processor Execution Flow</h3>
+<ol>
+<li><strong>Fetch (IF):</strong> PC outputs next instruction address to Instruction Memory.</li>
+<li><strong>Decode (ID):</strong> Opcode defines <code>ImmSel</code> format. Remaining control signals and bus layouts are resolved concurrently.</li>
+<li><strong>Execute (EX):</strong> <code>ASel</code> and <code>BSel</code> route inputs to the ALU; <code>ALUSel</code> defines operation. <code>BrSel</code> assesses branch/jump conditions.</li>
+<li><strong>Memory (MEM):</strong> <code>MemRead</code> or <code>MemWrite</code> triggers for Loads/Stores. Bypassed for standard arithmetic.</li>
+<li><strong>Writeback (WB):</strong> <code>WBSel</code> routes the chosen data block to the Register File, committed via <code>RegWEn</code>.</li>
+</ol>
+<hr />
+<h1 id="immsel-immediate-select-logic-configuration">ImmSel (Immediate Select) Logic Configuration</h1>
+<h3 id="immsel-multiplexer-routing-table">ImmSel Multiplexer Routing Table</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">ImmSel[2:0] Value</th>
+<th style="text-align: left;">Selected Immediate Format</th>
+<th style="text-align: left;">Target Instruction Types</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>000 (0)</strong></td>
+<td style="text-align: left;"><strong>IType</strong></td>
+<td style="text-align: left;">Standard ALU Immediates, Memory Loads, JALR, System</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>001 (1)</strong></td>
+<td style="text-align: left;"><strong>SType</strong></td>
+<td style="text-align: left;">Memory Stores (<code>sw</code>, <code>sb</code>, <code>sh</code>)</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>010 (2)</strong></td>
+<td style="text-align: left;"><strong>BType</strong></td>
+<td style="text-align: left;">Conditional Branches (<code>beq</code>, <code>bne</code>, <code>blt</code>, <code>bge</code>)</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>011 (3)</strong></td>
+<td style="text-align: left;"><strong>UType</strong></td>
+<td style="text-align: left;">Upper Immediates (<code>lui</code>, <code>auipc</code>)</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>100 (4)</strong></td>
+<td style="text-align: left;"><strong>JType</strong></td>
+<td style="text-align: left;">Unconditional Long Jumps (<code>jal</code>)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="driver-gate-formulas">Driver Gate Formulas</h3>
+<div class="highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>ImmSel[0] = Store OR LUI OR AUIPC
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>ImmSel[1] = Branch OR LUI OR AUIPC
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>ImmSel[2] = JAL
+</span></code></pre></div>
+<hr />
+<h1 id="asel-alu-input-a-select-logic-configuration">ASel (ALU Input A Select) Logic Configuration</h1>
+<h3 id="asel-multiplexer-routing-table">ASel Multiplexer Routing Table</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">ASel Pin Value</th>
+<th style="text-align: left;">Selected ALU Input A Source</th>
+<th style="text-align: left;">Target Instruction Classes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>0</strong></td>
+<td style="text-align: left;"><strong>Register File Port 1 (rs1)</strong></td>
+<td style="text-align: left;">RType, IType, Load, Store, JALR, LUI, System</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>1</strong></td>
+<td style="text-align: left;"><strong>Program Counter (PC)</strong></td>
+<td style="text-align: left;">AUIPC, Branch, JAL</td>
+</tr>
+</tbody>
+</table>
+<h3 id="driver-gate-formula">Driver Gate Formula</h3>
+<div class="highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>ASel = AUIPC OR Branch OR JAL
+</span></code></pre></div>
+<hr />
+<h1 id="bsel-alu-input-b-select-logic-configuration">BSel (ALU Input B Select) Logic Configuration</h1>
+<h3 id="bsel-multiplexer-routing-table">BSel Multiplexer Routing Table</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">BSel Pin Value</th>
+<th style="text-align: left;">Selected ALU Input B Source</th>
+<th style="text-align: left;">Target Instruction Classes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>0</strong></td>
+<td style="text-align: left;"><strong>Register File Port 2 (rs2)</strong></td>
+<td style="text-align: left;">RType, System</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>1</strong></td>
+<td style="text-align: left;"><strong>Immediate Generator Output (Imm)</strong></td>
+<td style="text-align: left;">IType, Load, Store, AUIPC, LUI, JAL, JALR, Branch</td>
+</tr>
+</tbody>
+</table>
+<h3 id="driver-gate-formula_1">Driver Gate Formula</h3>
+<div class="highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>BSel = IType OR Load OR Store OR AUIPC OR LUI OR JAL OR JALR OR Branch
+</span></code></pre></div>
+<hr />
+<h1 id="alusel-alu-operation-select-logic-configuration">ALUSel (ALU Operation Select) Logic Configuration</h1>
+<h3 id="alusel-bus-bit-mapping">ALUSel Bus Bit Mapping</h3>
+<p>The 4-bit <code>ALUSel[3:0]</code> bus handles ALU operation routing. It is derived from <code>funct3</code> and <code>Instruction[30]</code>. Non-arithmetic operations are masked to <code>0000</code> (<code>ADD</code>). Shift-right immediates (<code>srli</code>/<code>srai</code>) use an exception gate to preserve the <code>Instruction[30]</code> modifier bit from being treated as raw numerical data.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Bus Bit</th>
+<th style="text-align: left;">Gated Source Component Mapping</th>
+<th style="text-align: left;">Functional Purpose / Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong><code>ALUSel[3]</code></strong></td>
+<td style="text-align: left;"><code>Instruction[14]</code> AND (<code>R_Type</code> OR <code>I_Type</code>)</td>
+<td style="text-align: left;">High bit of operation code.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong><code>ALUSel[2]</code></strong></td>
+<td style="text-align: left;"><code>Instruction[13]</code> AND (<code>R_Type</code> OR <code>I_Type</code>)</td>
+<td style="text-align: left;">Middle bit of operation code.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong><code>ALUSel[1]</code></strong></td>
+<td style="text-align: left;"><code>Instruction[12]</code> AND (<code>R_Type</code> OR <code>I_Type</code>)</td>
+<td style="text-align: left;">Low bit of operation code.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong><code>ALUSel[0]</code></strong></td>
+<td style="text-align: left;"><code>Instruction[30]</code> AND (<code>R_Type</code> OR <code>IShift_Right</code>)</td>
+<td style="text-align: left;">Modifier bit (<code>add</code>/<code>sub</code>, <code>srli</code>/<code>srai</code>).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="driver-gate-formulas_1">Driver Gate Formulas</h3>
+<div class="highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Is_Arithmetic = R_Type OR I_Type
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>IShift_Right  = I_Type AND Instruction[14] AND NOT(Instruction[13]) AND Instruction[12]
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>ALUSel_Mod_Gate = R_Type OR IShift_Right
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>ALUSel[3] = Instruction[14] AND Is_Arithmetic
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>ALUSel[2] = Instruction[13] AND Is_Arithmetic
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>ALUSel[1] = Instruction[12] AND Is_Arithmetic
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>ALUSel[0] = Instruction[30] AND ALUSel_Mod_Gate
+</span></code></pre></div>
+<hr />
+<h1 id="brsel-branch-operation-select-logic-configuration">BrSel (Branch Operation Select) Logic Configuration</h1>
+<h2 id="brsel-bus-bit-mapping">BrSel Bus Bit Mapping</h2>
+<p>The 5-bit <code>BrSel[4:0]</code> bus governs program counter updates by managing conditional branch verification and unconditional jump overrides.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Bus Bit</th>
+<th style="text-align: left;">Source Component Mapping</th>
+<th style="text-align: left;">Functional Purpose / Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong><code>BrSel[4]</code></strong></td>
+<td style="text-align: left;"><code>funct3[2]</code></td>
+<td style="text-align: left;">High condition select bit (signed/unsigned and equality bounds).</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong><code>BrSel[3]</code></strong></td>
+<td style="text-align: left;"><code>funct3[1]</code></td>
+<td style="text-align: left;">Middle condition select bit.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong><code>BrSel[2]</code></strong></td>
+<td style="text-align: left;"><code>funct3[0]</code></td>
+<td style="text-align: left;">Low condition select bit.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong><code>BrSel[1]</code></strong></td>
+<td style="text-align: left;"><code>MainController (Branch Signal)</code></td>
+<td style="text-align: left;">Validation gate. Asserted high (<code>1</code>) exclusively for B-Type opcodes.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong><code>BrSel[0]</code></strong></td>
+<td style="text-align: left;"><code>MainController (Jump Signal)</code></td>
+<td style="text-align: left;">Unconditional jump override. Asserted high (<code>1</code>) for JAL or JALR opcodes.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="driver-gate-formulas_2">Driver Gate Formulas</h3>
+<div class="highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>BrSel[4] = funct3[2]
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>BrSel[3] =funct3[1]
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>BrSel[2] = funct3[0]
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>BrSel[1] = Branch
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>BrSel[0] = JAL OR JALR
+</span></code></pre></div>
+<hr />
+<h1 id="memory-control-logic-configuration-memread-memwrite-membytesel">Memory Control Logic Configuration (MemRead, MemWrite &amp; MemByteSel)</h1>
+<h3 id="interface-specification">Interface Specification</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Pin / Bus Name</th>
+<th style="text-align: center;">Bit Width</th>
+<th style="text-align: left;">Destination Component</th>
+<th style="text-align: left;">Functional Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong><code>MemRead</code></strong></td>
+<td style="text-align: center;">1</td>
+<td style="text-align: left;">Data Memory</td>
+<td style="text-align: left;">Master read enable. Asserted for Load instructions.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><code>MemWrite</code></strong></td>
+<td style="text-align: center;">1</td>
+<td style="text-align: left;">Data Memory</td>
+<td style="text-align: left;">Master write enable. Asserted for Store instructions.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><code>MemByteSel</code></strong></td>
+<td style="text-align: center;">3</td>
+<td style="text-align: left;">Word Byte Selector</td>
+<td style="text-align: left;">Direct routing bus to command sub-word alignment and sign/zero extension processing.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="operational-truth-table">Operational Truth Table</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Instruction Type</th>
+<th style="text-align: center;">MemRead</th>
+<th style="text-align: center;">MemWrite</th>
+<th style="text-align: left;">Subsystem Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Load</strong></td>
+<td style="text-align: center;"><strong>1</strong></td>
+<td style="text-align: center;"><strong>0</strong></td>
+<td style="text-align: left;">Reads from address generated by ALU to writeback stage.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Store</strong></td>
+<td style="text-align: center;"><strong>0</strong></td>
+<td style="text-align: center;"><strong>1</strong></td>
+<td style="text-align: left;">Writes data from <code>rs2</code> to target address generated by ALU.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>All Other Types</strong></td>
+<td style="text-align: center;"><strong>0</strong></td>
+<td style="text-align: center;"><strong>0</strong></td>
+<td style="text-align: left;">Memory array isolated; output bus ignored.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="membytesel-routing-mapping">MemByteSel Routing Mapping</h3>
+<p>The 3-bit <code>MemByteSel[2:0]</code> bus connects directly to the Word Selector alignment multiplexer, mapped via instruction fields:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Bus Bit</th>
+<th style="text-align: left;">Decoded Target Source</th>
+<th style="text-align: left;">Functional Component Destination</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong><code>MemByteSel[0]</code></strong></td>
+<td style="text-align: left;"><code>funct3[2]</code></td>
+<td style="text-align: left;">MUX Selection Port Bit 0 (<code>S0</code>)</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong><code>MemByteSel[1]</code></strong></td>
+<td style="text-align: left;"><code>funct3[0]</code></td>
+<td style="text-align: left;">MUX Selection Port Bit 1 (<code>S1</code>)</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong><code>MemByteSel[2]</code></strong></td>
+<td style="text-align: left;"><code>funct3[1]</code></td>
+<td style="text-align: left;">MUX Selection Port Bit 2 (<code>S2</code>)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="driver-gate-formulas_3">Driver Gate Formulas</h3>
+<div class="highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>MemRead  = Load
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>MemWrite = Store
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>MemByteSel[0] = funct3[2]
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>MemByteSel[1] = funct3[0]
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>MemByteSel[2] = funct3[1]
+</span></code></pre></div>
+<hr />
+<h1 id="writeback-control-logic-configuration-regwen-wbsel">Writeback Control Logic Configuration (RegWEn &amp; WBSel)</h1>
+<h3 id="interface-specification_1">Interface Specification</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Pin / Bus Name</th>
+<th style="text-align: center;">Bit Width</th>
+<th style="text-align: left;">Destination Component</th>
+<th style="text-align: left;">Functional Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong><code>RegWEn</code></strong></td>
+<td style="text-align: center;">1</td>
+<td style="text-align: left;">Register File</td>
+<td style="text-align: left;">Master write enable. High commits data to register <code>rd</code>.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><code>WBSel[1:0]</code></strong></td>
+<td style="text-align: center;">2</td>
+<td style="text-align: left;">Writeback MUX</td>
+<td style="text-align: left;">Routes selected data source back to the register file.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="writeback-multiplexer-routing-table">Writeback Multiplexer Routing Table</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">WBSel[1:0] Value</th>
+<th style="text-align: left;">Selected Writeback Source</th>
+<th style="text-align: left;">Target Instruction Classes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong><code>00</code> (0)</strong></td>
+<td style="text-align: left;"><strong>Data Memory Output (<code>Mem</code>)</strong></td>
+<td style="text-align: left;">Memory Loads (<code>lw</code>, <code>lb</code>, <code>lh</code>)</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong><code>01</code> (1)</strong></td>
+<td style="text-align: left;"><strong>ALU Result (<code>ALU</code>)</strong></td>
+<td style="text-align: left;">R-Type, I-Type, <code>LUI</code>, <code>AUIPC</code>, Non-writing ops (default)</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong><code>11</code> (3)</strong></td>
+<td style="text-align: left;"><strong>Sequential PC Address ($PC + 4$)</strong></td>
+<td style="text-align: left;">Unconditional Function Jumps (<code>JAL</code>, <code>JALR</code>)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="driver-gate-formulas_4">Driver Gate Formulas</h3>
+<div class="highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>RegWEn   = R_Type OR I_Type OR Load OR JAL OR JALR OR AUIPC OR LUI
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>WBSel[1] = JAL OR JALR
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>WBSel[0] = NOT(Load)
+</span></code></pre></div>
+<hr />
+<h1 id="system-instruction-control-logic-is_ecall-is_ebreak">System Instruction Control Logic (Is_Ecall &amp; Is_Ebreak)</h1>
+<h3 id="operational-matrix">Operational Matrix</h3>
+<p>Both instructions share the <code>SYSTEM</code> opcode (<code>1110011</code>) and a zeroed <code>funct3</code> field. They are differentiated by checking instruction bit 20.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Instruction</th>
+<th style="text-align: center;">Opcode[6:0]</th>
+<th style="text-align: center;">funct3</th>
+<th style="text-align: center;">Instruction[31:20]</th>
+<th style="text-align: center;">Is_Ecall</th>
+<th style="text-align: center;">Is_Ebreak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong><code>ecall</code></strong></td>
+<td style="text-align: center;"><code>1110011</code></td>
+<td style="text-align: center;"><code>000</code></td>
+<td style="text-align: center;"><code>0x000</code></td>
+<td style="text-align: center;"><strong>1</strong></td>
+<td style="text-align: center;"><strong>0</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><code>ebreak</code></strong></td>
+<td style="text-align: center;"><code>1110011</code></td>
+<td style="text-align: center;"><code>000</code></td>
+<td style="text-align: center;"><code>0x001</code></td>
+<td style="text-align: center;"><strong>0</strong></td>
+<td style="text-align: center;"><strong>1</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>CSR/Other</strong></td>
+<td style="text-align: center;"><code>1110011</code></td>
+<td style="text-align: center;">$\neq$ <code>000</code></td>
+<td style="text-align: center;">CSR Address</td>
+<td style="text-align: center;"><strong>0</strong></td>
+<td style="text-align: center;"><strong>0</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="driver-gate-formulas_5">Driver Gate Formulas</h3>
+<div class="highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>System_Op_Valid = System AND (funct3 == 000)
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>Is_Ecall  = System_Op_Valid AND NOT(Instruction[20])
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>Is_Ebreak = System_Op_Valid AND Instruction[20]
+</span></code></pre></div>
+<h3 id="pipeline-safeguards">Pipeline Safeguards</h3>
+<p>When either exception flag goes high, <code>RegWEn</code>, <code>MemRead</code>, and <code>MemWrite</code> are driven to <code>0</code> to isolate memory structures and halt illegal state modification before a pipeline flush executes.</p>
+<h3 id="nop">NOP</h3>
+<p>We need to set NOP fields in the case of the following instruction types:</p>
+<ul>
+<li>FENCE</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

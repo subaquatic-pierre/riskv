@@ -1,0 +1,2426 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Structural verification and architecture layout for a 5-stage RISC-V processor in Logisim.">
+      
+      
+      
+      
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../program_counter/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Project Roadmap - RiskV Pipeline Processor Project</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="cyan">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#cpu-development-roadmap-phase-2" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="RiskV Pipeline Processor Project" class="md-header__button md-logo" aria-label="RiskV Pipeline Processor Project" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            RiskV Pipeline Processor Project
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Project Roadmap
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="cyan"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="cyan"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Overview
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Project Roadmap
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../program_counter/" class="md-tabs__link">
+          
+  
+  
+  Datapath Elements
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../main_controller/" class="md-tabs__link">
+          
+  
+  
+  Control Logic
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../memory/" class="md-tabs__link">
+          
+  
+  
+  Memory Subsystem
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../encoder_decoder/" class="md-tabs__link">
+          
+  
+  
+  Core Elements & Logic
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../tests/" class="md-tabs__link">
+          
+  
+  
+  Verification & Test
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="RiskV Pipeline Processor Project" class="md-nav__button md-logo" aria-label="RiskV Pipeline Processor Project" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    RiskV Pipeline Processor Project
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Project Roadmap
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Project Roadmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#phase-1-csr-registers-instruction-support" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 1: CSR Registers &amp; Instruction Support
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 1: CSR Registers &amp; Instruction Support">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Objectives
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#execution-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Execution Strategy
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-2-m-extension-multiplierdivider-unit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 2: M-Extension (Multiplier/Divider Unit)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 2: M-Extension (Multiplier/Divider Unit)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-objectives_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Objectives
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#execution-strategy_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Execution Strategy
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-3-two-stage-pipelining" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 3: Two-Stage Pipelining
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 3: Two-Stage Pipelining">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hazard-mitigation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hazard Mitigation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Hazard Mitigation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-structural-hazards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Structural Hazards
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-control-hazards-branchesjumps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Control Hazards (Branches/Jumps)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-4-branch-prediction-static-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 4: Branch Prediction (Static Strategy)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 4: Branch Prediction (Static Strategy)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-objectives_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Objectives
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#execution-strategy_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Execution Strategy
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-5-five-stage-pipelining" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 5: Five-Stage Pipelining
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 5: Five-Stage Pipelining">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hazard-mitigation_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hazard Mitigation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Hazard Mitigation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-data-hazards-read-after-write" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Data Hazards (Read-After-Write)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-control-hazards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Control Hazards
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#execution-unit-phase-3-division-hardware-pipeline-stall-mechanism" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Execution Unit Phase 3: Division Hardware &amp; Pipeline Stall Mechanism
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Execution Unit Phase 3: Division Hardware &amp; Pipeline Stall Mechanism">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerequisites
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#objective" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objective
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-deliverables-implementation-milestones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase Deliverables &amp; Implementation Milestones
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase Deliverables &amp; Implementation Milestones">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-hardware-unsigned-division-core" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Hardware Unsigned Division Core
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-pre-and-post-processing-wrapper-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Pre- and Post-Processing Wrapper Integration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-pipeline-stall-interlock-logic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Pipeline Stall Interlock Logic
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pipeline-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pipeline workflow
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Datapath Elements
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Datapath Elements
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../program_counter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Program Counter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../register_file/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Register File
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../immediate_generator/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Immediate Generator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../universal_shifter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Universal Shifter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../alu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ALU Core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_6" id="__nav_3_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Arithmetic Units
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Arithmetic Units
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../half_adder/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Half Adder
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../full_adder/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Full Adder
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adder_sub/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Adder Subtractor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../multiplier/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multiplier
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../divider/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Divider
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Control Logic
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Control Logic
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../main_controller/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Main Controller
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hazard_controller/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hazard Controller
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Branch Units
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Branch Units
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../branch_comparitor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Branch Comparator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../branch_control/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Branch Control
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../branch_selector/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Branch Selector
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Memory Subsystem
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Memory Subsystem
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../memory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Memory Interconnect
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../memory_load_aligner/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Load Aligner
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../memory_store_aligner/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Store Aligner
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../memory_store_mask_gen/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Store Mask Generator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Core Elements & Logic
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Core Elements & Logic
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../encoder_decoder/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Encoder & Decoder
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mux_demux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multiplexers & Demultiplexers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../truth_tables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Truth Tables Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Verification & Test
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Verification & Test
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing Methodology
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#phase-1-csr-registers-instruction-support" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 1: CSR Registers &amp; Instruction Support
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 1: CSR Registers &amp; Instruction Support">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Objectives
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#execution-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Execution Strategy
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-2-m-extension-multiplierdivider-unit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 2: M-Extension (Multiplier/Divider Unit)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 2: M-Extension (Multiplier/Divider Unit)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-objectives_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Objectives
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#execution-strategy_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Execution Strategy
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-3-two-stage-pipelining" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 3: Two-Stage Pipelining
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 3: Two-Stage Pipelining">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hazard-mitigation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hazard Mitigation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Hazard Mitigation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-structural-hazards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Structural Hazards
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-control-hazards-branchesjumps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Control Hazards (Branches/Jumps)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-4-branch-prediction-static-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 4: Branch Prediction (Static Strategy)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 4: Branch Prediction (Static Strategy)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-objectives_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Objectives
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#execution-strategy_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Execution Strategy
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-5-five-stage-pipelining" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 5: Five-Stage Pipelining
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 5: Five-Stage Pipelining">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hazard-mitigation_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hazard Mitigation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Hazard Mitigation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-data-hazards-read-after-write" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Data Hazards (Read-After-Write)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-control-hazards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Control Hazards
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#execution-unit-phase-3-division-hardware-pipeline-stall-mechanism" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Execution Unit Phase 3: Division Hardware &amp; Pipeline Stall Mechanism
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Execution Unit Phase 3: Division Hardware &amp; Pipeline Stall Mechanism">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerequisites
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#objective" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objective
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-deliverables-implementation-milestones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase Deliverables &amp; Implementation Milestones
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase Deliverables &amp; Implementation Milestones">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-hardware-unsigned-division-core" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Hardware Unsigned Division Core
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-pre-and-post-processing-wrapper-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Pre- and Post-Processing Wrapper Integration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-pipeline-stall-interlock-logic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Pipeline Stall Interlock Logic
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pipeline-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pipeline workflow
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="cpu-development-roadmap-phase-2">CPU Development Roadmap: Phase 2</h1>
+<h2 id="phase-1-csr-registers-instruction-support">Phase 1: CSR Registers &amp; Instruction Support</h2>
+<p>Add support for Control and Status Registers (CSRs) to handle system states, performance counters, and basic exception tracking.</p>
+<h3 id="key-objectives">Key Objectives</h3>
+<ul>
+<li>Implement the core CSR address space and internal register file storage.</li>
+<li>Add execution support for the atomic CSR instruction set:</li>
+<li><code>csrrw</code> / <code>csrrwi</code> (Atomic Read/Write Register)</li>
+<li><code>csrrs</code> / <code>csrrsi</code> (Atomic Read &amp; Set Bits)</li>
+<li><code>csrrc</code> / <code>csrrci</code> (Atomic Read &amp; Clear Bits)</li>
+<li>Support system instructions: <code>ecall</code> (Environment Call) and <code>ebreak</code> (Breakpoint).</li>
+</ul>
+<h3 id="execution-strategy">Execution Strategy</h3>
+<ul>
+<li><strong>Decode Modification:</strong> Upgrade the decode unit to parse the 12-bit CSR address encoded in the immediate field ($[31:20]$).</li>
+<li><strong>Execution Integration:</strong> Route the CSR read data back into the main multiplexer for write-back into the standard integer register file ($x0$-$x31$).</li>
+</ul>
+<hr />
+<h2 id="phase-2-m-extension-multiplierdivider-unit">Phase 2: M-Extension (Multiplier/Divider Unit)</h2>
+<p>Upgrade the execution pipeline from basic integer operations to hardware-accelerated math operations.</p>
+<h3 id="key-objectives_1">Key Objectives</h3>
+<ul>
+<li>Integrate a hardware Multiplier and Divider unit into the Execution stage.</li>
+<li>Support the standard RV32M instruction set:</li>
+<li><code>mul</code>, <code>mulh</code>, <code>mulhu</code>, <code>mulhsu</code> (32-bit multiplication returning lower or upper halves).</li>
+<li><code>div</code>, <code>divu</code>, <code>rem</code>, <code>remu</code> (Signed/Unsigned division and remainder).</li>
+</ul>
+<h3 id="execution-strategy_1">Execution Strategy</h3>
+<ul>
+<li><strong>ALU Extension:</strong> Place the Multiplier/Divider block parallel to the primary ALU.</li>
+<li><strong>Cycle Budgeting:</strong> Determine whether to use an iterative multi-cycle design to preserve maximum clock frequency, or a large single-cycle combinational array.</li>
+</ul>
+<hr />
+<h2 id="phase-3-two-stage-pipelining">Phase 3: Two-Stage Pipelining</h2>
+<p>Break the processor into two overlapping stages: <strong>Fetch (IF)</strong> and <strong>Execute (ID/EX/MEM/WB)</strong>. The Program Counter fetches the next instruction while the current one is being processed.</p>
+<div class="highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Cycle 1: [ Fetch Inst 1 ]
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>Cycle 2: [ Fetch Inst 2 ] -&gt; [ Execute Inst 1 ]
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>Cycle 3: [ Fetch Inst 3 ] -&gt; [ Execute Inst 2 ]
+</span></code></pre></div>
+<h3 id="hazard-mitigation">Hazard Mitigation</h3>
+<h4 id="1-structural-hazards">1. Structural Hazards</h4>
+<ul>
+<li><strong>The Hazard:</strong> Simultaneous memory access. If your architecture uses a unified single-port memory structure for instructions and data, the Execute stage will block the Fetch stage during <code>lw</code> or <code>sw</code> operations.</li>
+<li><strong>Overcoming It:</strong> Transition to a dual-port memory architecture or separate instruction and data networks (Harvard Architecture structure: <code>IMem</code> and <code>DMem</code>).</li>
+</ul>
+<h4 id="2-control-hazards-branchesjumps">2. Control Hazards (Branches/Jumps)</h4>
+<ul>
+<li><strong>The Hazard:</strong> When a conditional branch (<code>beq</code>, <code>bne</code>, etc.) or jump (<code>jal</code>, <code>jalr</code>) changes the Program Counter, the instruction currently being fetched right behind it is invalid.</li>
+<li><strong>Overcoming It:</strong> * <strong>Pipeline Flushing:</strong> If a branch evaluates to *taken* in the Execute stage, drop the incorrectly fetched instruction in the pipeline register by forcing it to a <code>NOP</code> (<code>0x00000013</code>).</li>
+<li><strong>Hardware Stall:</strong> Introduce a 1-cycle penalty bubble to let the PC resolve to the correct target address.</li>
+</ul>
+<hr />
+<h2 id="phase-4-branch-prediction-static-strategy">Phase 4: Branch Prediction (Static Strategy)</h2>
+<p>Before jumping directly to heavy pipelining, introduce a dedicated architecture layer to predict branch behavior at the Fetch stage to reduce branch-induced stall cycles.</p>
+<h3 id="key-objectives_2">Key Objectives</h3>
+<ul>
+<li>Implement a <strong>Static Branch Predictor</strong> based on direction parameters (BTFNT: <em>Backward Taken, Forward Not Taken</em>).</li>
+<li><strong>Backward Branches (Loops):</strong> If the sign bit of the branch target offset is negative (pointing to a lower memory address), guess <strong>Taken</strong>.</li>
+<li><strong>Forward Branches (If/Else):</strong> If the sign bit of the branch target offset is positive (pointing to a higher memory address), guess <strong>Not Taken</strong>.</li>
+<li>Build a baseline branch evaluation pipeline to compare prediction bits against actual ALU outcomes.</li>
+</ul>
+<h3 id="execution-strategy_2">Execution Strategy</h3>
+<ul>
+<li><strong>Pre-decode Block:</strong> Add minimal combinational logic in the Fetch stage to intercept the raw instruction bytes, check if the opcode matches a branch, and extract the sign bit of the immediate offset.</li>
+<li><strong>Target Speculation:</strong> If predicted taken, the PC latches <code>PC + immediate</code> immediately on the next edge instead of <code>PC + 4</code>.</li>
+</ul>
+<hr />
+<h2 id="phase-5-five-stage-pipelining">Phase 5: Five-Stage Pipelining</h2>
+<p>Deconstruct execution completely into the classic RISC paradigm: <strong>Fetch (IF)</strong> $\rightarrow$ <strong>Decode (ID)</strong> $\rightarrow$ <strong>Execute (EX)</strong> $\rightarrow$ <strong>Memory (MEM)</strong> $\rightarrow$ <strong>Write-Back (WB)</strong>.</p>
+<h3 id="hazard-mitigation_1">Hazard Mitigation</h3>
+<h4 id="1-data-hazards-read-after-write">1. Data Hazards (Read-After-Write)</h4>
+<ul>
+<li><strong>The Hazard:</strong> An instruction tries to read a register value before a previous instruction has finished writing its results back to the register file.
+  <div class="highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>addi x5, x0, 10   # Writes to x5 in WB stage (Cycle 5)
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>add  x6, x5, x5   # Reads x5 in ID stage (Cycle 3) -&gt; Stale Value!
+</span></code></pre></div></li>
+<li><strong>Overcoming It:</strong></li>
+<li><strong>Register File Bypassing / Forwarding:</strong> Build a <strong>Forwarding Unit</strong> that detects if the source registers in the execution stage match the destination registers currently moving through the <code>EX/MEM</code> or <code>MEM/WB</code> pipeline registers. Route the computing data lines back directly to the ALU inputs, skipping the register file write lag entirely.</li>
+<li><strong>Load-Use Stalls:</strong> If an instruction directly following a <code>lw</code> instruction depends on that loaded data, forwarding is physically impossible because the data hasn't been read from memory yet. Detect this condition in hardware and insert a 1-cycle <strong>Pipeline Stall (Bubble)</strong>, freezing the IF and ID stages for one clock tick.</li>
+</ul>
+<h4 id="2-control-hazards">2. Control Hazards</h4>
+<ul>
+<li><strong>The Hazard:</strong> With a 5-stage deep pipeline, a branch decision made late in the pipeline means multiple instructions currently trailing behind it are invalid if the prediction fails.</li>
+<li><strong>Overcoming It:</strong></li>
+<li><strong>Dynamic Misprediction Auditing:</strong> Integrate the branch predictor from Phase 4. If the execution stage determines that the predictor guessed wrong (e.g., predicted Taken, but branch actually evaluated to Not Taken), trigger a recovery routine.</li>
+<li><strong>Flushing Infrastructure:</strong> Expand the flush logic to dynamically clear multiple pipeline staging registers (<code>IF/ID</code>, <code>ID/EX</code>) simultaneously, turning bad speculative instructions into safe <code>NOP</code>s while correcting the PC back to the proper execution stream.</li>
+<li><strong>Early Branch Resolution:</strong> Move branch target evaluation and comparison logic earlier into the Decode (ID) stage to minimize the misprediction penalty down from three cycles to a single cycle.</li>
+</ul>
+<h2 id="execution-unit-phase-3-division-hardware-pipeline-stall-mechanism">Execution Unit Phase 3: Division Hardware &amp; Pipeline Stall Mechanism</h2>
+<h3 id="prerequisites">Prerequisites</h3>
+<ul>
+<li>Complete implementation of Control and Status Registers (CSRs).</li>
+<li>Migration from single-cycle architecture to the 2-stage and 5-stage pipelined processor variations.</li>
+</ul>
+<h3 id="objective">Objective</h3>
+<p>Integrate support for the RISC-V M-Extension signed and unsigned division/remainder instructions (<code>div</code>, <code>divu</code>, <code>rem</code>, <code>remu</code>). This phase transitions the CPU execution unit from a strictly uniform, single-cycle latency block to a multi-cycle execution block utilizing dynamic pipeline interlocks.</p>
+<hr />
+<h3 id="phase-deliverables-implementation-milestones">Phase Deliverables &amp; Implementation Milestones</h3>
+<h4 id="1-hardware-unsigned-division-core">1. Hardware Unsigned Division Core</h4>
+<ul>
+<li><strong>Design Strategy:</strong> Implement a synthesizable, sequential 32-cycle shift-and-subtract (restoring or non-restoring) division algorithm using basic logic gates, multiplexers, and shift registers to guarantee full FPGA portability and overcome simulation-only component constraints.</li>
+<li><strong>Interface Specification:</strong></li>
+<li>Inputs: <code>clk</code>, <code>rst</code>, <code>start</code>, <code>dataA_pos</code> (32-bit absolute dividend), <code>dataB_pos</code> (32-bit absolute divisor).</li>
+<li>Outputs: <code>ready</code> (done flag), <code>unsigned_quotient</code> (32-bit), <code>unsigned_remainder</code> (32-bit).</li>
+</ul>
+<h4 id="2-pre-and-post-processing-wrapper-integration">2. Pre- and Post-Processing Wrapper Integration</h4>
+<ul>
+<li><strong>Pre-Correction Array:</strong> Connect dual 32-bit XOR-and-Carry-In structures to conditionally negate negative inputs (<code>dataA</code>, <code>dataB</code>) into absolute positive magnitudes before starting the core.</li>
+<li><strong>Post-Correction Array:</strong> Connect dual 32-bit XOR-and-Carry-In structures to the core outputs:</li>
+<li><strong>Quotient:</strong> Conditionally negate based on the input sign exclusive-or mask: <code>signA ^ signB</code>.</li>
+<li><strong>Remainder:</strong> Conditionally negate to strictly match the sign of the original dividend: <code>signA</code>.</li>
+</ul>
+<h4 id="3-pipeline-stall-interlock-logic">3. Pipeline Stall Interlock Logic</h4>
+<ul>
+<li><strong>Hazard Detection Unit Update:</strong> Modify the pipeline control logic to intercept <code>div/rem</code> opcodes decoded in the pipeline.</li>
+<li><strong>Stall Controller Implementation:</strong> When a division operation initiates, the internal <code>ready</code> flag drops low, triggering a hardware stall across the pipeline:</li>
+<li>Force a write-disable to the Program Counter (PC) register to freeze the fetching mechanism.</li>
+<li>Force a write-disable to the early-stage pipeline registers (IF/ID, ID/EX) to preserve current instruction states.</li>
+<li>Inject execution-stage bubbles (NOPs) downstream into the memory and writeback stages to keep the remaining pipeline clean.</li>
+<li><strong>Clearance Hook:</strong> On the 32nd cycle, assert the <code>ready</code> signal high to release the pipeline freezes, enable the destination register file write-strobe, and allow normal single-cycle step operations to resume.</li>
+</ul>
+<h3 id="pipeline-workflow">Pipeline workflow</h3>
+<p>no, stop, we will go slowly, it is important that you understand the stages first, tell me what you know. this is what happens currently in each stage</p>
+<p>IF: PC unit PC to Instruction MEM -&gt; IF/ID regsiter with PC and INStruction</p>
+<p>ID: Main controller / Signals, IMM Gen, Register FIle -&gt; ID/EX Register with all values</p>
+<p>EX: ALU , Branch controller -&gt; EX/MEM register data</p>
+<p>MEM: Memory write -&gt; MEM/WB resgier data</p>
+<p>WB: gets data from all the pipeline, including RegWriteEn</p>
+<p>It is the last stage i dont really understand</p>
+<p>Now that you know. lets walk through a simple addi instruction with no hazards</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
