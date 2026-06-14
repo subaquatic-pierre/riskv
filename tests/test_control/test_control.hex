@@ -24,6 +24,7 @@ v2.0 raw
 00000000     # [0x0058] .word 0x00000000        # Explicit uninitialized instruction emulation (add x0, x0, x0)
 00000000     # [0x005c] .word 0x00000000        # Explicit uninitialized instruction emulation (add x0, x0, x0)
 00100f93     # [0x0060] addi x31, x0, 1         # Write Success Flag to x31
-0000006f     # [0x0064] j success_halt          # Infinite loop confirming success
+00c0006f     # [0x0064] j success_halt
 fff00f93     # [0x0068] addi x31, x0, -1        # Write Failure Flag to x31
-ffdff06f     # [0x006c] j fail_loop             # Infinite loop tracking failure...
+ffdff06f     # [0x006c] j fail_loop             # Infinite loop tracking failure
+0000006f     # [0x0070] j success_halt

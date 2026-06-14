@@ -204,7 +204,7 @@
     <comp lib="0" loc="(1350,930)" name="Pin">
       <a name="appearance" val="classic"/>
       <a name="facing" val="west"/>
-      <a name="label" val="Halt"/>
+      <a name="label" val="halt"/>
       <a name="type" val="output"/>
     </comp>
     <comp lib="0" loc="(1410,580)" name="Probe">
@@ -424,10 +424,10 @@ b7 137 1b7 237 fb7 2537 1597 f00093
     <comp lib="9" loc="(1370,265)" name="Text">
       <a name="text" val="MEM - Memory"/>
     </comp>
-    <comp lib="9" loc="(895,104)" name="Text">
+    <comp lib="9" loc="(895,100)" name="Text">
       <a name="text" val="test_base"/>
     </comp>
-    <comp lib="9" loc="(901,865)" name="Text">
+    <comp lib="9" loc="(900,865)" name="Text">
       <a name="text" val="Last Instruction Addr"/>
     </comp>
     <wire from="(1220,340)" to="(1260,340)"/>

@@ -1,52 +1,34 @@
 import argparse
 import os
-import signal
 import subprocess
-import sys
 from pathlib import Path
-import tempfile
-from typing import IO
+import sys
 
 ROOT_PATH = Path.cwd()
 
 
-class TestRunner:
-    def __init__(self) -> None:
-        pass
-
-
 class TestCase:
-    def __init__(self, path: Path) -> None:
-        self.path = path
-        self.circ_path = Path.joinpath(ROOT_PATH, "logisim", "RiskV.circ")
-        pass
+    def __init__(self, name: str, base_path: Path) -> None:
+        self.name = name
+        self.path = base_path
+        # Dynamic circuit target based on folder schema: tests/test_CASE/test_CASE.circ
+        self.circ_path = self.path / f"{self.name}.circ"
 
     def __repr__(self) -> str:
-        return f"TestCase: {self}"
+        return f"TestCase({self.name})"
 
     def __str__(self) -> str:
-        return Path.__str__(self.path).split("/")[-1]
+        return self.name
 
-    def results(self) -> list[str]:
-        with open(Path.joinpath(self.path, "results.out"), "r") as fd:
-            lines = fd.readlines()
-        return [line.strip() for line in lines]
-
-    def exec_test(self) -> list[str]:
-        output = tempfile.TemporaryFile(mode="r+")
-        try:
-            stdinf = open("/dev/null")
-        except Exception as e:
-            print(
-                "Could not open nul or /dev/null. Program will most likely error now."
-            )
-        # 1. Define the command arguments using the package name you installed
+    def exec_test(self) -> list[int]:
+        """Runs Logisim CLI.
+        Returns parsed integer list representing the Result bus trace milestones.
+        """
+        # Command syntax targeting the explicit test case circuit wrapper
         cmd = [
             "logisim",
-            "logisim/RiskV.circ",
-            # "IMem=tests/test_align.hex",
-            # "-tick",
-            "-t",
+            str(self.circ_path.relative_to(ROOT_PATH)),
+            "-tty",
             "table",
         ]
 
@@ -56,78 +38,112 @@ class TestCase:
                 cwd=ROOT_PATH,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
-                text=True,  # Automatically decodes bytes to strings (\n handled natively)
-                bufsize=1,  # Line-buffered output
+                text=True,
+                bufsize=1,
             )
-            print(f"Process started with PID: {proc.pid}")
-            if not proc.stdout:
-                raise Exception("Unable to get stdout")
 
-            return self.parse_output([line.strip() for line in proc.stdout])
+            if not proc.stdout:
+                raise Exception("Unable to capture stdout stream")
+
+            # Extract output lines
+            raw_lines = [line.strip() for line in proc.stdout if line.strip()]
+            proc.wait()  # Let process exit naturally upon hitting the 'halt' trigger
+
+            return self.parse_output(raw_lines)
 
         except Exception as e:
-            print("Unable to start proc", e)
-        finally:
-            os.kill(proc.pid, signal.SIGTERM)
+            print(f"[{self.name}] Target execution failure: {e}")
+            return []
 
-        return []
-
-    def parse_output(self, output: list[str]) -> list[str]:
-        parsed = []
+    def parse_output(self, output: list[str]) -> list[int]:
+        """Parses the space-delimited raw binary output tokens into base-10 integers."""
+        parsed_values = []
         for line in output:
-            binary = "".join(line.split(" "))
-            number = int(binary, 2)
-            hex = f"{number:08x}"
-            parsed.append(hex)
+            # Drop column delimiter spacing to form a clean binary chunk
+            binary_str = line.replace(" ", "")
+            try:
+                val = int(binary_str, 2)
+                parsed_values.append(val)
+            except ValueError:
+                # Catch trailing headers or anomalies if they slip through
+                continue
+        return parsed_values
 
-        return parsed
-
-    def run(self) -> list[str]:
+    def run(self) -> bool:
+        print(f"--- Running Test: {self.name} ---")
         out = self.exec_test()
-        print("Execution output:")
-        print(out)
-        return self.results()
+
+        if not out:
+            print(f"[{self.name}] FAIL: No valid execution metrics returned.")
+            return False
+
+        # Ground truth: Line 0 is initial state, Line 1 (last item) is final state execution value
+        initial_val = out[0]
+        final_val = out[-1]
+
+        print(f"Execution Log Trace (Raw Integers): {out}")
+        print(f"Initial State State Value: {initial_val}")
+        print(f"Final State Halt Value:    {final_val}")
+
+        if final_val == 1:
+            print(f"[{self.name}] PASS ✅")
+            return True
+        else:
+            print(
+                f"[{self.name}] FAIL ❌ (Expected final Result register = 1, Got: {final_val})"
+            )
+            return False
 
 
 def list_tests() -> dict[str, TestCase]:
-    test_path = Path.joinpath(ROOT_PATH, "tests")
-
-    test_filenames = os.listdir(test_path)
+    test_path = ROOT_PATH / "tests"
     tests: dict[str, TestCase] = {}
 
-    for filename in test_filenames:
-        file_path = Path.joinpath(test_path, filename)
-        if Path.is_dir(file_path):
-            test = TestCase(file_path)
-            tests[filename] = test
+    if not test_path.exists():
+        print(f"Error: Base directory path '{test_path}' does not exist.")
+        return tests
+
+    for filename in os.listdir(test_path):
+        file_path = test_path / filename
+        # Ensure we only track actual subdirectories matching target execution boundaries
+        if file_path.is_dir() and filename.startswith("test_"):
+            tests[filename] = TestCase(filename, file_path)
 
     return tests
 
 
-def main(args):
-    test_arg = args.test[0]
+def main():
     tests = list_tests()
-    test = tests.get(test_arg)
 
-    if not test:
-        print("Invalid test case", test_arg)
-        return
+    parser = argparse.ArgumentParser(
+        description="Automated Logisim Integration Test Suite Runner"
+    )
+    parser.add_argument(
+        "test",
+        choices=list(tests.keys()) + ["all"],
+        help="Select a specific test run profile or execute 'all' configurations sequentially.",
+        nargs="?",
+        default="all",
+    )
 
-    print("Running test ... ", test)
-    results = test.run()
-    print("Test results: ", results)
+    args = parser.parse_args()
 
-    pass
+    if args.test == "all":
+        print(f"Discovered {len(tests)} test instances. Launching batch operations...")
+        passed = 0
+        for name, test in tests.items():
+            if test.run():
+                passed += 1
+            print("-" * 50)
+        print(f"\nSuite Execution Finished: Passed {passed}/{len(tests)} cases.")
+        if passed != len(tests):
+            sys.exit(1)
+    else:
+        test = tests.get(args.test)
+        if test:
+            success = test.run()
+            sys.exit(0 if success else 1)
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Run Logisim tests")
-    tests = list_tests()
-    parser.add_argument(
-        "test",
-        choices=[f"{test}" for test in tests],
-        help="Select test to run",
-        nargs=1,
-    )
-    args = parser.parse_args()
-    main(args)
+    main()

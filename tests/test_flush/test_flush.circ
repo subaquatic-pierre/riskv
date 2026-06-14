@@ -191,7 +191,7 @@
     <comp lib="0" loc="(1360,1030)" name="Pin">
       <a name="appearance" val="classic"/>
       <a name="facing" val="west"/>
-      <a name="label" val="Halt"/>
+      <a name="label" val="halt"/>
       <a name="type" val="output"/>
     </comp>
     <comp lib="0" loc="(1360,980)" name="Pin">
@@ -432,13 +432,13 @@ fff00f93 6f
     <comp lib="9" loc="(1370,265)" name="Text">
       <a name="text" val="MEM - Memory"/>
     </comp>
-    <comp lib="9" loc="(546,792)" name="Text">
+    <comp lib="9" loc="(545,790)" name="Text">
       <a name="text" val="Set last address ---&gt;"/>
     </comp>
-    <comp lib="9" loc="(918,113)" name="Text">
+    <comp lib="9" loc="(915,110)" name="Text">
       <a name="text" val="test_flush"/>
     </comp>
-    <comp lib="9" loc="(927,739)" name="Text">
+    <comp lib="9" loc="(925,735)" name="Text">
       <a name="text" val="Last Instruction Addr"/>
     </comp>
     <wire from="(1220,340)" to="(1260,340)"/>

@@ -65,9 +65,12 @@ branch_pass:
 
     # If execution drops through cleanly without state corruption, test passes.
     addi x31, x0, 1         # Write Success Flag to x31
-success_halt:
-    j success_halt          # Infinite loop confirming success
+    j success_halt 
 
 fail_loop:
     addi x31, x0, -1        # Write Failure Flag to x31
     j fail_loop             # Infinite loop tracking failure
+
+# Infinite loop confirming success
+success_halt:
+    j success_halt 

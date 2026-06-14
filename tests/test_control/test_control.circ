@@ -204,7 +204,7 @@
     <comp lib="0" loc="(1350,930)" name="Pin">
       <a name="appearance" val="classic"/>
       <a name="facing" val="west"/>
-      <a name="label" val="Halt"/>
+      <a name="label" val="halt"/>
       <a name="type" val="output"/>
     </comp>
     <comp lib="0" loc="(1410,580)" name="Probe">
@@ -375,7 +375,7 @@
       <a name="width" val="32"/>
     </comp>
     <comp lib="0" loc="(930,910)" name="Constant">
-      <a name="value" val="0x6c"/>
+      <a name="value" val="0x70"/>
       <a name="width" val="32"/>
     </comp>
     <comp lib="0" loc="(930,930)" name="Constant">
@@ -408,7 +408,7 @@
 93 113 193 213 293 fb7 4000093 2a00113
 20a023 4000093 a183 2219e63 a00213 1400293 1013 26313
 500213 500293 520463 1c0006f 500213 521a63 0 0
-100f93 6f fff00f93 ffdff06f
+100f93 c0006f fff00f93 ffdff06f 6f
 </a>
       <a name="dataWidth" val="32"/>
       <a name="label" val="IMem"/>
@@ -424,7 +424,7 @@
     <comp lib="9" loc="(900,865)" name="Text">
       <a name="text" val="Last Instruction Addr"/>
     </comp>
-    <comp lib="9" loc="(936,74)" name="Text">
+    <comp lib="9" loc="(935,70)" name="Text">
       <a name="text" val="test_control"/>
     </comp>
     <wire from="(1220,340)" to="(1260,340)"/>

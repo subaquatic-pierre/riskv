@@ -204,7 +204,7 @@
     <comp lib="0" loc="(1350,930)" name="Pin">
       <a name="appearance" val="classic"/>
       <a name="facing" val="west"/>
-      <a name="label" val="Halt"/>
+      <a name="label" val="halt"/>
       <a name="type" val="output"/>
     </comp>
     <comp lib="0" loc="(1410,580)" name="Probe">
