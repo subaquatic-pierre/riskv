@@ -1,0 +1,51 @@
+v2.0 raw
+00000fb7     # [0x0000] lui   x31, 0x00000       # Clear diagnostic tracking register x31 to 0
+04000293     # [0x0004] addi  x5, x0, 64         # x5 = Aligned base address 64 (Avoid null pointer space)
+7ff00313     # [0x0008] addi  x6, x0, 2047       # Pre-load raw positive half-word pattern boundary
+00130313     # [0x000c] addi  x6, x6, 1          # x6 = 2048 (0x00000800)
+deadc137     # [0x0010] lui   x2, 0xDEADC        # Setup upper 20 bits for raw test word
+eef10113     # [0x0014] addi  x2, x2, -273       # x2 = 0xDEADBEEF (Byte 3=DE, Byte 2=AD, Byte 1=BE, Byte 0=EF)
+0022a023     # [0x0018] sw    x2, 0(x5)          # [MEM] Slot 0 = 0xDEADBEEF (Initial full word sync)
+00628023     # [0x001c] sb    x6, 0(x5)          # [MEM] Addr 00 Store lower byte (0x00) into Byte 3
+00028503     # [0x0020] lb    x10, 0(x5)         # [RAM] Addr 00 Read Byte 3 (0x00). Expected x10 = 0x00000000
+08051e63     # [0x0024] bne   x10, x0, fault     # Verify hard 0 entry read back matches exactly
+002280a3     # [0x0028] sb    x2, 1(x5)          # [MEM] Addr 01 Store lower byte (0xEF) into Byte 2
+00128583     # [0x002c] lb    x11, 1(x5)         # [RAM] Addr 01 Read Byte 2 (0xEF). Expected x11 = 0xFFFFFFFF (or 0xFF
+fef00f13     # [0x0030] addi  x30, x0, -17       # Match register for signed 0xFFFFFFEF (-17 dec)
+09e59663     # [0x0034] bne   x11, x30, fault
+0012c603     # [0x0038] lbu   x12, 1(x5)         # [RAM] Addr 01 Read Byte 2 Unsigned. Expected x12 = 0x000000EF
+0ef00f13     # [0x003c] addi  x30, x0, 239       # Match register for unsigned 0x000000EF (239 dec)
+09e61063     # [0x0040] bne   x12, x30, fault
+0022a023     # [0x0044] sw    x2, 0(x5)          # Restore memory slot 0 to standard baseline 0xDEADBEEF
+00229023     # [0x0048] sh    x2, 0(x5)          # [MEM] Addr 00 Store lower 16 bits (0xBEEF) to Bytes 3 & 2
+00029683     # [0x004c] lh    x13, 0(x5)         # [RAM] Addr 00 Read upper half-word. Expected x13 = 0xFFFFBEEF
+ffffcf37     # [0x0050] lui   x30, 0xFFFFC       # Build match register 0xFFFFB000
+eeff0f13     # [0x0054] addi  x30, x30, -0x111     # x30 = 0xFFFFBEEF
+07e69463     # [0x0058] bne   x13, x30, fault
+0022a023     # [0x005c] sw    x2, 0(x5)          # Restore memory slot 0 to standard baseline 0xDEADBEEF
+00229123     # [0x0060] sh    x2, 2(x5)          # [MEM] Addr 10 Store lower 16 bits (0xBEEF) to Bytes 1 & 0
+00229703     # [0x0064] lh    x14, 2(x5)         # [RAM] Addr 10 Read lower half-word. Expected x14 = 0xFFFFBEEF
+05e71c63     # [0x0068] bne   x14, x30, fault
+0022d783     # [0x006c] lhu   x15, 2(x5)         # [RAM] Addr 10 Read lower half-word Unsigned. Expected x15 = 0x0000BE
+0000cf37     # [0x0070] lui   x30, 0x0000C       # Build match register 0x0000B000
+eeff0f13     # [0x0074] addi  x30, x30, -0x111     # x30 = 0x0000BEEF
+05e79463     # [0x0078] bne   x15, x30, fault
+0022a023     # [0x007c] sw    x2, 0(x5)          # Restore memory slot 0 to standard baseline 0xDEADBEEF
+002290a3     # [0x0080] sh    x2, 1(x5)          # [MEM] Addr 01 Active mask 0110 (Writes 0xBEEF to Bytes 2 & 1)
+00128803     # [0x0084] lb    x16, 1(x5)         # [RAM] Addr 01 Read Byte 2 (0xBE). Expected x16 = 0xFFFFFFBE
+fbe00f13     # [0x0088] addi  x30, x0, -66       # Match register for signed 0xFFFFFFBE (-66 dec)
+03e81a63     # [0x008c] bne   x16, x30, fault
+00228883     # [0x0090] lb    x17, 2(x5)         # [RAM] Addr 10 Read Byte 1 (0xEF). Expected x17 = 0xFFFFFFEF
+fef00f13     # [0x0094] addi  x30, x0, -17       # Match register for signed 0xFFFFFFEF (-17 dec)
+03e89463     # [0x0098] bne   x17, x30, fault
+00129903     # [0x009c] lh    x18, 1(x5)         # [RAM] Addr 01 Read unaligned half-word. Expected x18 = 0xFFFFBEEF
+ffffcf37     # [0x00a0] lui   x30, 0xFFFFC       # Build match register
+eeff0f13     # [0x00a4] addi  x30, x30, -0x111     # x30 = 0xFFFFBEEF
+01e91c63     # [0x00a8] bne   x18, x30, fault
+0022a023     # [0x00ac] sw    x2, 0(x5)          # Restore memory slot 0 to standard baseline 0xDEADBEEF
+0002aa03     # [0x00b0] lw    x20, 0(x5)         # [RAM] Read full word to audit results. Expected x20 = 0xDEADBEEF
+002a1663     # [0x00b4] bne   x20, x2, fault
+00100f93     # [0x00b8] addi  x31, x0, 1         # Write successful status flag 1 into register x31
+0080006f     # [0x00bc] jal   x0, terminal       # Jump to final halt loop
+fff00f93     # [0x00c0] addi  x31, x0, -1        # Write execution fault flag -1 into register x31
+0000006f     # [0x00c4] jal   x0, terminal       # Infinite loop holding core simulation static...

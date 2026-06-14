@@ -42,8 +42,8 @@ _start:
     sw    x2, 0(x5)          # Restore memory slot 0 to standard baseline 0xDEADBEEF
     sh    x2, 0(x5)          # [MEM] Addr 00 Store lower 16 bits (0xBEEF) to Bytes 3 & 2
     lh    x13, 0(x5)         # [RAM] Addr 00 Read upper half-word. Expected x13 = 0xFFFFBEEF
-    lui   x30, 0xFFFFB       # Build match register 0xFFFFB000
-    addi  x30, x30, -273     # x30 = 0xFFFFBEEF
+    lui   x30, 0xFFFFC       # Build match register 0xFFFFB000
+    addi  x30, x30, -0x111     # x30 = 0xFFFFBEEF
     bne   x13, x30, fault
 
     # --------------------------------------------------------------------------
@@ -55,8 +55,8 @@ _start:
     bne   x14, x30, fault
 
     lhu   x15, 2(x5)         # [RAM] Addr 10 Read lower half-word Unsigned. Expected x15 = 0x0000BEEF
-    lui   x30, 0x0000B       # Build match register 0x0000B000
-    addi  x30, x30, -273     # x30 = 0x0000BEEF
+    lui   x30, 0x0000C       # Build match register 0x0000B000
+    addi  x30, x30, -0x111     # x30 = 0x0000BEEF
     bne   x15, x30, fault
 
     # --------------------------------------------------------------------------
@@ -73,8 +73,8 @@ _start:
     bne   x17, x30, fault
 
     lh    x18, 1(x5)         # [RAM] Addr 01 Read unaligned half-word. Expected x18 = 0xFFFFBEEF
-    lui   x30, 0xFFFFB       # Build match register
-    addi  x30, x30, -273     # x30 = 0xFFFFBEEF
+    lui   x30, 0xFFFFC       # Build match register
+    addi  x30, x30, -0x111     # x30 = 0xFFFFBEEF
     bne   x18, x30, fault
 
     # --------------------------------------------------------------------------

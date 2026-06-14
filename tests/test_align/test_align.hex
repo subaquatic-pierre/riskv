@@ -1,0 +1,83 @@
+v2.0 raw
+00000fb7     # [0x0000] lui   x31, 0x00000       # Clear diagnostic tracking register x31 to 0
+deadc137     # [0x0004] lui   x2, 0xDEADC        # Setup test word pattern
+eef10113     # [0x0008] addi  x2, x2, -273       # x2  = 0xDEADBEEF
+0ff00193     # [0x000c] addi  x3, x0, 255        # x3  = 0x000000FF (Byte boundary check)
+55555237     # [0x0010] lui   x4, 0x55555        # Setup alternative pattern
+55520213     # [0x0014] addi  x4, x4, 1365       # x4  = 0x55555555
+04000293     # [0x0018] addi  x5, x0, 64         # x5  = Aligned base address 64 (Avoid null pointer space)
+00128313     # [0x001c] addi  x6, x5, 1          # x6  = Unaligned address (Offset 01)
+00228393     # [0x0020] addi  x7, x5, 2          # x7  = Unaligned address (Offset 10)
+00328413     # [0x0024] addi  x8, x5, 3          # x8  = Unaligned address (Offset 11)
+08000493     # [0x0028] addi  x9, x0, 128        # x9  = 0x00000080 (MSB of byte is 1)
+07f00c93     # [0x002c] addi  x25, x0, 127       # x25 = 0x0000007F (MSB of byte is 0)
+0022a023     # [0x0030] sw    x2, 0(x5)          # [MEM] Slot 0 = 0xDEADBEEF
+0002a503     # [0x0034] lw    x10, 0(x5)         # x10 = 0xDEADBEEF
+10251463     # [0x0038] bne   x10, x2, fault     # Verify initial full word write/read pipeline flow
+00328023     # [0x003c] sb    x3, 0(x5)          # [MEM] Overwrites DE with FF -> 0xFFADBEEF (Assuming Big-Endian mappi
+00028583     # [0x0040] lb    x11, 0(x5)         # x11 = 0xFFFFFFFF (Signed read of 0xFF)
+fff00f13     # [0x0044] addi  x30, x0, -1        # Expected 0xFFFFFFFF
+0fe59c63     # [0x0048] bne   x11, x30, fault
+0002c603     # [0x004c] lbu   x12, 0(x5)         # x12 = 0x000000FF (Unsigned read of 0xFF)
+0e361863     # [0x0050] bne   x12, x3, fault
+00430023     # [0x0054] sb    x4, 0(x6)          # [MEM] Overwrites AD with 55 -> 0xFF55BEEF
+00030683     # [0x0058] lb    x13, 0(x6)         # x13 = 0x00000055 (Signed read of 0x55 at offset 01)
+05500f13     # [0x005c] addi  x30, x0, 85        # Expected 0x00000055 (85 dec)
+0fe69063     # [0x0060] bne   x13, x30, fault
+00338023     # [0x0064] sb    x3, 0(x7)          # [MEM] Overwrites BE with FF -> 0xFF55FFEF
+00038703     # [0x0068] lb    x14, 0(x7)         # x14 = 0xFFFFFFFF (Signed read of 0xFF at offset 10)
+fff00f13     # [0x006c] addi  x30, x0, -1        # Expected 0xFFFFFFFF
+0de71863     # [0x0070] bne   x14, x30, fault
+00440023     # [0x0074] sb    x4, 0(x8)          # [MEM] Overwrites EF with 55 -> 0xFF55FF55
+00044783     # [0x0078] lbu   x15, 0(x8)         # x15 = 0x00000055 (Unsigned read of 0x55 at offset 11)
+05500f13     # [0x007c] addi  x30, x0, 85        # Expected 0x00000055
+0de79063     # [0x0080] bne   x15, x30, fault
+0002a803     # [0x0084] lw    x16, 0(x5)         # x16 = 0xFF55FF55 (Verify complete altered word structure)
+ff560f37     # [0x0088] lui   x30, 0xFF560       # Build match register
+f55f0f13     # [0x008c] addi  x30, x30, -0xAB     # x30 = 0xFF55FF55
+0be81863     # [0x0090] bne   x16, x30, fault
+0022a023     # [0x0094] sw    x2, 0(x5)          # Reset memory to 0xDEADBEEF
+00429023     # [0x0098] sh    x4, 0(x5)          # [MEM] Overwrites DEAD with 5555 -> 0x5555BEEF
+00029883     # [0x009c] lh    x17, 0(x5)         # x17 = 0x00005555 (Signed read)
+00005f37     # [0x00a0] lui   x30, 0x00005       # Build match register
+555f0f13     # [0x00a4] addi  x30, x30, 0x555     # x30 = 0x00005555
+09e89c63     # [0x00a8] bne   x17, x30, fault
+00239023     # [0x00ac] sh    x2, 0(x7)          # [MEM] Overwrites BEEF with BEEF (no change) -> 0x5555BEEF
+00039903     # [0x00b0] lh    x18, 0(x7)         # x18 = 0xFFFFBEEF (Signed read at offset 10)
+ffffcf37     # [0x00b4] lui   x30, 0xFFFFC       # Build match register
+eeff0f13     # [0x00b8] addi  x30, x30, -0x111     # x30 = 0xFFFFBEEF
+09e91263     # [0x00bc] bne   x18, x30, fault
+0003d983     # [0x00c0] lhu   x19, 0(x7)         # x19 = 0x0000BEEF (Unsigned read at offset 10)
+0000cf37     # [0x00c4] lui   x30, 0x0000C       # Build match register
+eeff0f13     # [0x00c8] addi  x30, x30, -0x111     # x30 = 0x0000BEEF
+07e99a63     # [0x00cc] bne   x19, x30, fault
+0022a023     # [0x00d0] sw    x2, 0(x5)          # Reset memory to 0xDEADBEEF
+00431023     # [0x00d4] sh    x4, 0(x6)          # [MEM] Active mask 0110. Overwrites AD and BE with 5555 -> 0xDE5555EF
+00030a83     # [0x00d8] lb    x21, 0(x6)         # x21 = 0x00000055 (Read Byte 2 via x6)
+05500f13     # [0x00dc] addi  x30, x0, 85        # Expected 0x55
+07ea9063     # [0x00e0] bne   x21, x30, fault
+00038b03     # [0x00e4] lb    x22, 0(x7)         # x22 = 0x00000055 (Read Byte 1 via x7)
+05eb1c63     # [0x00e8] bne   x22, x30, fault
+00031b83     # [0x00ec] lh    x23, 0(x6)         # x23 = 0x00005555 (Read unaligned half-word via x6)
+00005f37     # [0x00f0] lui   x30, 0x00005
+555f0f13     # [0x00f4] addi  x30, x30, 0x555     # x30 = 0x00005555
+05eb9463     # [0x00f8] bne   x23, x30, fault
+0002ac03     # [0x00fc] lw    x24, 0(x5)         # x24 = 0xDE5555EF (Verify final layout structure via aligned x5)
+de555f37     # [0x0100] lui   x30, 0xDE555       # Build match register
+5eff0f13     # [0x0104] addi  x30, x30, 1519     # x30 = 0xDE5555EF
+03ec1c63     # [0x0108] bne   x24, x30, fault
+0022a023     # [0x010c] sw    x2, 0(x5)          # Reset memory to 0xDEADBEEF
+009300a3     # [0x0110] sb    x9, 1(x6)          # [MEM] Store 0x80 into Byte 1 via address x6+1 (offset 10) -> 0xDEAD8
+00038d03     # [0x0114] lb    x26, 0(x7)         # x26 = 0xFFFFFF80 (Signed read verifies negative byte sign extension)
+f8000f13     # [0x0118] addi  x30, x0, -128      # Expected 0xFFFFFF80 (-128 dec)
+03ed1263     # [0x011c] bne   x26, x30, fault
+019300a3     # [0x0120] sb    x25, 1(x6)         # [MEM] Store 0x7F into Byte 1 via address x6+1 (offset 10) -> 0xDEAD7
+00038d83     # [0x0124] lb    x27, 0(x7)         # x27 = 0x0000007F (Signed read verifies positive byte zero extension)
+019d9c63     # [0x0128] bne   x27, x25, fault
+00432023     # [0x012c] sw    x4, 0(x6)          # Execute full sw using unaligned address register x6
+0002ae03     # [0x0130] lw    x28, 0(x5)         # x28 = 0x55555555 (Verifies Word signal overrides mis_align block com
+004e1663     # [0x0134] bne   x28, x4, fault
+00100f93     # [0x0138] addi  x31, x0, 1         # Write successful status flag 1 into register x31
+0080006f     # [0x013c] jal   x0, terminal       # Jump to final halt loop
+fff00f93     # [0x0140] addi  x31, x0, -1        # Write execution fault flag -1 into register x31
+0000006f     # [0x0144] jal   x0, terminal       # Infinite loop holding core simulation static...

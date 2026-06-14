@@ -59,8 +59,8 @@ _start:
     bne   x15, x30, fault
 
     lw    x16, 0(x5)         # x16 = 0xFF55FF55 (Verify complete altered word structure)
-    lui   x30, 0xFF55F       # Build match register
-    addi  x30, x30, -171     # x30 = 0xFF55FF55
+    lui   x30, 0xFF560       # Build match register
+    addi  x30, x30, -0xAB     # x30 = 0xFF55FF55
     bne   x16, x30, fault
 
     # --------------------------------------------------------------------------
@@ -70,18 +70,18 @@ _start:
     sh    x4, 0(x5)          # [MEM] Overwrites DEAD with 5555 -> 0x5555BEEF
     lh    x17, 0(x5)         # x17 = 0x00005555 (Signed read)
     lui   x30, 0x00005       # Build match register
-    addi  x30, x30, 1365     # x30 = 0x00005555
+    addi  x30, x30, 0x555     # x30 = 0x00005555
     bne   x17, x30, fault
 
     sh    x2, 0(x7)          # [MEM] Overwrites BEEF with BEEF (no change) -> 0x5555BEEF
     lh    x18, 0(x7)         # x18 = 0xFFFFBEEF (Signed read at offset 10)
-    lui   x30, 0xFFFFB       # Build match register
-    addi  x30, x30, -273     # x30 = 0xFFFFBEEF
+    lui   x30, 0xFFFFC       # Build match register
+    addi  x30, x30, -0x111     # x30 = 0xFFFFBEEF
     bne   x18, x30, fault
 
     lhu   x19, 0(x7)         # x19 = 0x0000BEEF (Unsigned read at offset 10)
-    lui   x30, 0x0000B       # Build match register
-    addi  x30, x30, -273     # x30 = 0x0000BEEF
+    lui   x30, 0x0000C       # Build match register
+    addi  x30, x30, -0x111     # x30 = 0x0000BEEF
     bne   x19, x30, fault
 
     # --------------------------------------------------------------------------
@@ -98,7 +98,7 @@ _start:
 
     lh    x23, 0(x6)         # x23 = 0x00005555 (Read unaligned half-word via x6)
     lui   x30, 0x00005
-    addi  x30, x30, 1365     # x30 = 0x00005555
+    addi  x30, x30, 0x555     # x30 = 0x00005555
     bne   x23, x30, fault
 
     lw    x24, 0(x5)         # x24 = 0xDE5555EF (Verify final layout structure via aligned x5)

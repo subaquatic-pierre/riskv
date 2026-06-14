@@ -1508,12 +1508,6 @@
     <comp lib="2" loc="(290,670)" name="Demultiplexer">
       <a name="select" val="5"/>
     </comp>
-    <comp lib="3" loc="(2000,580)" name="Comparator">
-      <a name="width" val="5"/>
-    </comp>
-    <comp lib="3" loc="(2020,230)" name="Comparator">
-      <a name="width" val="5"/>
-    </comp>
     <comp lib="5" loc="(1110,160)" name="Register">
       <a name="appearance" val="logisim_evolution"/>
       <a name="width" val="32"/>
@@ -1638,9 +1632,11 @@
       <a name="appearance" val="logisim_evolution"/>
       <a name="width" val="32"/>
     </comp>
-    <comp lib="9" loc="(2188,53)" name="Text">
+    <comp lib="9" loc="(2185,50)" name="Text">
       <a name="text" val="Write-Back to Decode RAW Data Hazard."/>
     </comp>
+    <comp loc="(2010,580)" name="XORComparitor"/>
+    <comp loc="(2030,230)" name="XORComparitor"/>
     <wire from="(1040,100)" to="(1110,100)"/>
     <wire from="(1040,210)" to="(1110,210)"/>
     <wire from="(1040,320)" to="(1110,320)"/>
@@ -1757,11 +1753,11 @@
     <wire from="(1980,680)" to="(2010,680)"/>
     <wire from="(2000,300)" to="(2020,300)"/>
     <wire from="(2000,320)" to="(2020,320)"/>
-    <wire from="(2000,580)" to="(2020,580)"/>
+    <wire from="(2010,580)" to="(2020,580)"/>
     <wire from="(2010,730)" to="(2020,730)"/>
-    <wire from="(2020,230)" to="(2040,230)"/>
     <wire from="(2020,370)" to="(2030,370)"/>
     <wire from="(2020,690)" to="(2020,730)"/>
+    <wire from="(2030,230)" to="(2040,230)"/>
     <wire from="(2030,330)" to="(2030,370)"/>
     <wire from="(2040,670)" to="(2050,670)"/>
     <wire from="(2050,310)" to="(2070,310)"/>
@@ -3524,5 +3520,64 @@ ffdff06f
     <wire from="(830,500)" to="(830,520)"/>
     <wire from="(830,500)" to="(840,500)"/>
     <wire from="(950,590)" to="(990,590)"/>
+  </circuit>
+  <circuit name="XORComparitor">
+    <a name="appearance" val="custom"/>
+    <a name="circuit" val="XORComparitor"/>
+    <a name="circuitnamedboxfixedsize" val="true"/>
+    <a name="simulationFrequency" val="1.0"/>
+    <appear>
+      <rect fill="none" height="36" stroke="#000000" width="49" x="240" y="92"/>
+      <text dominant-baseline="central" font-family="SansSerif" font-size="16" font-weight="bold" text-anchor="middle" x="265" y="108">EQ</text>
+      <circ-anchor facing="east" x="290" y="110"/>
+      <circ-port dir="in" pin="660,470" x="240" y="100"/>
+      <circ-port dir="in" pin="660,550" x="240" y="120"/>
+      <circ-port dir="out" pin="990,510" x="290" y="110"/>
+    </appear>
+    <comp lib="0" loc="(660,470)" name="Pin">
+      <a name="appearance" val="classic"/>
+      <a name="label" val="A"/>
+      <a name="width" val="5"/>
+    </comp>
+    <comp lib="0" loc="(660,550)" name="Pin">
+      <a name="appearance" val="classic"/>
+      <a name="label" val="B"/>
+      <a name="width" val="5"/>
+    </comp>
+    <comp lib="0" loc="(860,510)" name="Splitter">
+      <a name="appear" val="center"/>
+      <a name="fanout" val="5"/>
+      <a name="incoming" val="5"/>
+    </comp>
+    <comp lib="0" loc="(990,510)" name="Pin">
+      <a name="appearance" val="classic"/>
+      <a name="facing" val="west"/>
+      <a name="label" val="EQ"/>
+      <a name="type" val="output"/>
+    </comp>
+    <comp lib="1" loc="(840,510)" name="XOR Gate">
+      <a name="width" val="5"/>
+    </comp>
+    <comp lib="1" loc="(960,510)" name="AND Gate">
+      <a name="inputs" val="5"/>
+      <a name="negate0" val="true"/>
+      <a name="negate1" val="true"/>
+      <a name="negate2" val="true"/>
+      <a name="negate3" val="true"/>
+      <a name="negate4" val="true"/>
+    </comp>
+    <wire from="(660,470)" to="(710,470)"/>
+    <wire from="(660,550)" to="(710,550)"/>
+    <wire from="(710,470)" to="(710,490)"/>
+    <wire from="(710,490)" to="(780,490)"/>
+    <wire from="(710,530)" to="(710,550)"/>
+    <wire from="(710,530)" to="(780,530)"/>
+    <wire from="(840,510)" to="(860,510)"/>
+    <wire from="(880,490)" to="(900,490)"/>
+    <wire from="(880,500)" to="(900,500)"/>
+    <wire from="(880,510)" to="(900,510)"/>
+    <wire from="(880,520)" to="(900,520)"/>
+    <wire from="(880,530)" to="(900,530)"/>
+    <wire from="(960,510)" to="(990,510)"/>
   </circuit>
 </project>
