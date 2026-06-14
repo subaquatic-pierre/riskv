@@ -1,0 +1,42 @@
+name: Deploy Documentation
+
+on:
+  push:
+    tags:
+      - "v*" # Triggers the workflow on any tag push starting with 'v'
+
+permissions:
+  contents: write # Required for gh-pages deployment to push the static site branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Required if using git-revision plugins for page modification dates
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+          cache: "pip" # Automatically caches dependencies to speed up subsequent builds
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          # If mkdocs-material or pymdown-extensions are missing from requirements.txt, ensure they are present:
+          pip install mkdocs mkdocs-material pymdown-extensions
+
+      - name: Prepare Root Documentation Files
+        run: |
+          # Replicate the symlink strategy for root-level visibility files
+          ln -s ../README.md docs/index.md
+          ln -s ../roadmap.md docs/roadmap.md
+
+      - name: Build and Deploy to GitHub Pages
+        run: |
+          # gh-deploy automatically builds the site and pushes it to the gh-pages branch
+          mkdocs gh-deploy --force
