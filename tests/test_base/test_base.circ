@@ -424,8 +424,11 @@ b7 137 1b7 237 fb7 2537 1597 f00093
     <comp lib="9" loc="(1370,265)" name="Text">
       <a name="text" val="MEM - Memory"/>
     </comp>
-    <comp lib="9" loc="(900,865)" name="Text">
-      <a name="text" val="Last Instruction Addr = 0x00cc"/>
+    <comp lib="9" loc="(895,104)" name="Text">
+      <a name="text" val="test_base"/>
+    </comp>
+    <comp lib="9" loc="(901,865)" name="Text">
+      <a name="text" val="Last Instruction Addr"/>
     </comp>
     <wire from="(1220,340)" to="(1260,340)"/>
     <wire from="(1220,370)" to="(1260,370)"/>

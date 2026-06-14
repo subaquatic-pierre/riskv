@@ -429,7 +429,10 @@ fff00f93 6f
       <a name="text" val="MEM - Memory"/>
     </comp>
     <comp lib="9" loc="(900,865)" name="Text">
-      <a name="text" val="Last Instruction Addr = 0x00cc"/>
+      <a name="text" val="Last Instruction Addr"/>
+    </comp>
+    <comp lib="9" loc="(935,70)" name="Text">
+      <a name="text" val="test_align"/>
     </comp>
     <wire from="(1220,340)" to="(1260,340)"/>
     <wire from="(1220,370)" to="(1260,370)"/>

@@ -375,7 +375,7 @@
       <a name="width" val="32"/>
     </comp>
     <comp lib="0" loc="(930,910)" name="Constant">
-      <a name="value" val="0x30"/>
+      <a name="value" val="0x68"/>
       <a name="width" val="32"/>
     </comp>
     <comp lib="0" loc="(930,930)" name="Constant">
@@ -405,8 +405,10 @@
       <a name="addrWidth" val="10"/>
       <a name="appearance" val="classic"/>
       <a name="contents">addr/data: 10 32
-fb7 193 500093 500113 208463 6300193 6300213 418863
-308663 100f93 80006f fff00f93 6f
+93 113 193 213 293 f93 8000093 fff00113
+20a023 a183 2219e63 6400213 c800293 42a333 2031663 f24393
+6b00f13 3e39063 521663 fff00f93 180006f 0 0 100f93
+80006f fff00f93 6f
 </a>
       <a name="dataWidth" val="32"/>
       <a name="label" val="IMem"/>
@@ -420,7 +422,7 @@ fb7 193 500093 500113 208463 6300193 6300213 418863
       <a name="text" val="MEM - Memory"/>
     </comp>
     <comp lib="9" loc="(890,90)" name="Text">
-      <a name="text" val="test_beq"/>
+      <a name="text" val="test_branch"/>
     </comp>
     <comp lib="9" loc="(900,865)" name="Text">
       <a name="text" val="Last Instruction Addr"/>
