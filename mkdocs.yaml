@@ -1,0 +1,72 @@
+site_name: RiskV Pipeline Processor Project
+site_description: Structural verification and architecture layout for a 5-stage RISC-V processor in Logisim.
+
+theme:
+  name: material
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: teal
+      accent: cyan
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: teal
+      accent: cyan
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - content.code.copy
+
+markdown_extensions:
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_style: material
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - admonition
+
+nav:
+  - Overview: index.md
+  - Project Roadmap: roadmap.md
+  - Datapath Elements:
+      - Program Counter: program_counter.md
+      - Register File: register_file.md
+      - Immediate Generator: immediate_generator.md
+      - Universal Shifter: universal_shifter.md
+      - ALU Core: alu.md
+      - Arithmetic Units:
+          - Half Adder: half_adder.md
+          - Full Adder: full_adder.md
+          - Adder Subtractor: adder_sub.md
+          - Multiplier: multiplier.md
+          - Divider: divider.md
+  - Control Logic:
+      - Main Controller: main_controller.md
+      - Hazard Controller: hazard_controller.md
+      - Branch Units:
+          - Branch Comparator: branch_comparitor.md
+          - Branch Control: branch_control.md
+          - Branch Selector: branch_selector.md
+  - Memory Subsystem:
+      - Memory Interconnect: memory.md
+      - Load Aligner: memory_load_aligner.md
+      - Store Aligner: memory_store_aligner.md
+      - Store Mask Generator: memory_store_mask_gen.md
+  - Core Elements & Logic:
+      - Encoder & Decoder: encoder_decoder.md
+      - Multiplexers & Demultiplexers: mux_demux.md
+      - Truth Tables Reference: truth_tables.md
+  - Verification & Test:
+      - Testing Methodology: tests.md

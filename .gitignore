@@ -1,3 +1,5 @@
+.venv
+
 rust/target
 rust/riskv
 
