@@ -30,11 +30,11 @@ jobs:
           # If mkdocs-material or pymdown-extensions are missing from requirements.txt, ensure they are present:
           pip install mkdocs mkdocs-material pymdown-extensions
 
-      - name: Prepare Root Documentation Files
-        run: |
-          # Replicate the symlink strategy for root-level visibility files
-          ln -s ../README.md docs/index.md
-          ln -s ../roadmap.md docs/roadmap.md
+      # - name: Prepare Root Documentation Files
+      #   run: |
+      #     # Replicate the symlink strategy for root-level visibility files
+      #     ln -s ../README.md docs/index.md
+      #     ln -s ../roadmap.md docs/roadmap.md
 
       - name: Build and Deploy to GitHub Pages
         run: |
