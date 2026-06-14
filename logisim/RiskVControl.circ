@@ -157,22 +157,17 @@
       <a name="label" val="OP_32"/>
       <a name="labelfont" val="SansSerif plain 12"/>
     </comp>
-    <comp lib="0" loc="(1550,2430)" name="Tunnel">
+    <comp lib="0" loc="(1550,2440)" name="Tunnel">
       <a name="facing" val="east"/>
       <a name="label" val="JAL"/>
       <a name="labelfont" val="SansSerif plain 12"/>
     </comp>
-    <comp lib="0" loc="(1550,2450)" name="Tunnel">
-      <a name="facing" val="east"/>
-      <a name="label" val="JALR"/>
-      <a name="labelfont" val="SansSerif plain 12"/>
-    </comp>
-    <comp lib="0" loc="(1550,2470)" name="Tunnel">
+    <comp lib="0" loc="(1550,2460)" name="Tunnel">
       <a name="facing" val="east"/>
       <a name="label" val="LUI"/>
       <a name="labelfont" val="SansSerif plain 12"/>
     </comp>
-    <comp lib="0" loc="(1550,2490)" name="Tunnel">
+    <comp lib="0" loc="(1550,2480)" name="Tunnel">
       <a name="facing" val="east"/>
       <a name="label" val="AUIPC"/>
       <a name="labelfont" val="SansSerif plain 12"/>
@@ -886,7 +881,7 @@
       <a name="size" val="30"/>
     </comp>
     <comp lib="1" loc="(1620,2460)" name="OR Gate">
-      <a name="inputs" val="4"/>
+      <a name="inputs" val="3"/>
     </comp>
     <comp lib="1" loc="(1760,1500)" name="OR Gate">
       <a name="size" val="30"/>
@@ -1254,14 +1249,9 @@
     <wire from="(1210,970)" to="(1250,970)"/>
     <wire from="(1230,820)" to="(1230,830)"/>
     <wire from="(1230,830)" to="(1280,830)"/>
-    <wire from="(1550,2430)" to="(1560,2430)"/>
-    <wire from="(1550,2450)" to="(1570,2450)"/>
-    <wire from="(1550,2470)" to="(1570,2470)"/>
-    <wire from="(1550,2490)" to="(1560,2490)"/>
-    <wire from="(1560,2430)" to="(1560,2440)"/>
-    <wire from="(1560,2440)" to="(1570,2440)"/>
-    <wire from="(1560,2480)" to="(1560,2490)"/>
-    <wire from="(1560,2480)" to="(1570,2480)"/>
+    <wire from="(1550,2440)" to="(1570,2440)"/>
+    <wire from="(1550,2460)" to="(1570,2460)"/>
+    <wire from="(1550,2480)" to="(1570,2480)"/>
     <wire from="(1620,2460)" to="(1640,2460)"/>
     <wire from="(1710,1490)" to="(1730,1490)"/>
     <wire from="(1710,1510)" to="(1730,1510)"/>

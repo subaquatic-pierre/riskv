@@ -59,7 +59,7 @@ test_bgeu:
 test_jal:
     jal x29, target_label   # Jump to target_label and link return address in x29
 return_anchor:
-    jalr x0, x29, 12        # Jump to x29 + 8 bytes (skips the immediate fault trap below)
+    jalr x0, x29, 12        # Jump to x29 + 12 bytes (skips the immediate fault trap below)
     jal x0, fault           # Unconditional raw drop-through protection trap
 target_label:
     jal x0, return_anchor   # Safe unconditional jump back to the anchor loop
