@@ -1,4 +1,4 @@
-# ProgramCounter
+# Program Counter
 
 ---
 
@@ -82,7 +82,7 @@ Step-by-step behavior:
 
 ---
 
-## Pipeline Interaction (if applicable)
+## Pipeline Interaction
 
 - Used directly in the **Instruction Fetch (IF)** stage.
 - Outputs control information (`PcPlus4`) down to the ID/EX stages via pipeline registers to compute jump targets or store return link addresses (e.g., for `JAL`/`JALR`).
@@ -132,7 +132,7 @@ Outputs:
 
 ---
 
-## Implementation Notes (Logisim)
+## Implementation Notes
 
 - Built entirely using standard Logisim components from the `Wiring`, `Gates`, `Plexers`, `Arithmetic`, and `Memory` libraries.
 - No third-party or external libraries are required.

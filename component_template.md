@@ -139,16 +139,6 @@ Outputs:
 
 ---
 
-## Source Circuit
-
-```
-RiskVControl.circ
-RiskVMemory.circ
-RiskVCPU.circ
-```
-
----
-
 ## Submodules
 
 ### Sub Module headings

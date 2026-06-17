@@ -58,10 +58,10 @@ nav:
           - Main Control Unit: components/control/main-controller.md
           - Immediate Generator: components/control/immediate-generator.md
           - Hazard Controller: components/control/hazard-controller.md
-          - Forwarding Unit: components/control/forward-controller.md # MAKE
+          - Forwarding Unit: components/control/forward-controller.md
           - Branch Control Unit: components/control/branch-controller.md
-          - Write Back Controller: components/control/write-back-controller.md # MAKE
-          - Program Counter: components/control/program-counter.md # MAKE
+          - Write Back Controller: components/control/writeback-controller.md
+          - Program Counter: components/control/program-counter.md
 
       - Arithmetic:
           - ALU: components/arithmetic/alu.md

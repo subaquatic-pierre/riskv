@@ -1,113 +1,130 @@
-# Hazard and Forwarding Controller Specification
-
-The **HazardController** is a centralized, combinational control unit responsible for maintaining data and control integrity within the 5-stage pipelined RISC-V processor. It dynamically resolves **Data Hazards** (ALU-to-ALU dependencies, Load-Use dependencies) and **Control Hazards** (taken branches/jumps) by managing pipeline register states and routing bypass data.
+# Hazard Controller
 
 ---
 
-## Block Diagram & Interface
+## Overview
 
-```text
-                      +-------------------+
-   IF_ID_rs1 -------->|                   |----> PC_WE
-   IF_ID_rs2 -------->|                   |----> IF_ID_WE
-   ID_EX_rs1 -------->|                   |----> IF_ID_Flush
-   ID_EX_rs2 -------->|  HazardController |----> ID_EX_Flush
-   ID_EX_rdi -------->|                   |----> FWD_A[1:0]
-   EX_MEM_rdi ------->|                   |----> FWD_B[1:0]
-   MEM_WB_rdi ------->|                   |
-   ID_EX_MemRead ---->|                   |
-   EX_MEM_RegWEn ---->|                   |
-   MEM_WB_RegWEn ---->|                   |
-   PCSel ------------>|                   |
-                      +-------------------+
-```
+The `HazardController` acts as the primary pipeline interlock and control protection unit for a pipelined RV32I processor. It dynamically analyzes active instruction source registers against down-pipeline destination states to identify load-use data hazards and branch/jump control hazards, safely stalling or flushing stages to preserve execution integrity.
 
-### Pin Definitions
+- **Purpose in CPU**: Coordinates pipeline state hazards by emitting control-flow overrides (`Stall` and `Flush`) when an instruction's required data isn't yet available for forwarding, or when a branch misprediction/jump changes the execution path.
+- **Role in datapath**: Intersects the boundaries between the Fetch (IF), Decode (ID), and Execution (EX) pipeline registers to orchestrate synchronous pauses or instruction invalidations.
 
-| Signal Name         | Direction | Width | Description                                                                                     |
-| :------------------ | :-------: | :---: | :---------------------------------------------------------------------------------------------- |
-| `IF_ID_rs1` / `rs2` |   Input   |   5   | Source registers of the instruction currently in the Decode stage.                              |
-| `ID_EX_rs1` / `rs2` |   Input   |   5   | Source registers of the instruction currently in the Execute stage.                             |
-| `ID_EX_rdi`         |   Input   |   5   | Destination register of the instruction 1 cycle ahead (EX).                                     |
-| `EX_MEM_rdi`        |   Input   |   5   | Destination register of the instruction 2 cycles ahead (MEM).                                   |
-| `MEM_WB_rdi`        |   Input   |   5   | Destination register of the instruction 3 cycles ahead (WB).                                    |
-| `ID_EX_MemRead`     |   Input   |   1   | Asserted if the instruction in the EX stage is a Load instruction.                              |
-| `EX_MEM_RegWEn`     |   Input   |   1   | Asserted if the instruction in the MEM stage writes to the Register File.                       |
-| `MEM_WB_RegWEn`     |   Input   |   1   | Asserted if the instruction in the WB stage writes to the Register File.                        |
-| `PCSel`             |   Input   |   1   | Asserted if a branch is taken or a jump occurs in the EX stage.                                 |
-| `PC_WE`             |  Output   |   1   | Write Enable for the Program Counter register ($1 = \text{normal}$, $0 = \text{freeze}$).       |
-| `IF_ID_WE`          |  Output   |   1   | Write Enable for the Fetch/Decode pipeline register ($1 = \text{normal}$, $0 = \text{freeze}$). |
-| `IF_ID_Flush`       |  Output   |   1   | Synchronous clear for the Fetch/Decode pipeline register (inserts NOP).                         |
-| `ID_EX_Flush`       |  Output   |   1   | Synchronous clear for the Decode/Execute pipeline register (inserts NOP).                       |
-| `FWD_A` / `FWD_B`   |  Output   |   2   | Selection lines for the 3-way ALU input multiplexers in the EX stage.                           |
+- **Source**: `logisim/RiskVControl.circ`
+  ![](../../images/hazard-controller.png)
 
 ---
 
-## Theory of Operation
+## Interface
 
-The module executes two parallel architectural routines every clock cycle: **Pipeline Interlock Logic** (Stalls/Flushes) and **Data Bypassing Logic** (Forwarding).
+### Inputs
 
-### 1. Data Bypassing (Forwarding)
+| Signal          | Width  | Description                                                                                                                 |
+| --------------- | ------ | --------------------------------------------------------------------------------------------------------------------------- |
+| `ID_EX_MemRead` | 1 bit  | Active high indicator showing if the instruction currently executing in the EX stage is a memory load command (e.g., `lw`). |
+| `ID_EX_rd`      | 5 bits | Destination register address of the instruction currently residing in the Execution (EX) stage.                             |
+| `IF_ID_rs1`     | 5 bits | Source register 1 address decoded from the raw instruction in the Instruction Decode (ID) stage.                            |
+| `IF_ID_rs2`     | 5 bits | Source register 2 address decoded from the raw instruction in the Instruction Decode (ID) stage.                            |
+| `PCSrc`         | 1 bit  | Control signal from the branch/jump execution logic indicating whether a control-flow deviation should be taken.            |
 
-To avoid stalling on ALU-to-ALU instructions, data is intercepted from downstream stages before it is formally committed back to the structural Register File.
+### Outputs
 
-The selection priority is hard-wired to prefer the **EX/MEM** stage over the **MEM/WB** stage. This structural constraint guarantees that if back-to-back instructions write to the same destination register, the ALU always receives the newest chronological value.
-
-#### Mux Encoding
-
-- **`2'b00`**: No hazard. Selects the standard operands out of the `ID_EX` pipeline register.
-- **`2'b01`**: Forward from `EX_MEM`. Intercepts the ALU output from 1 cycle ahead. Structural pipeline rules guarantee that if an instruction reaches the MEM stage with `RegWEn` active without triggering a stall or a flush, it is natively an ALU operation.
-- **`2'b10`**: Forward from `MEM_WB`. Intercepts the final output of the write-back multiplexer from 2 cycles ahead, handling resolved ALU results, loads, and jumps.
-
-### 2. Pipeline Interlocks (Stalls & Flushes)
-
-- **Load-Use Hazard:** Data requested from an external memory load (`lw`) is not physically valid until the instruction exits the MEM stage. If an instruction in Decode depends on an active load in Execute, the controller drops write enables to freeze the PC and ID stages while flushing the EX stage to insert a 1-cycle bubble.
-- **Control Hazard:** If a branch is evaluated as taken or a jump instruction executes (`PCSel = 1`), instructions fetched in the shadow of that jump are invalid. The controller asserts both flushes to clean out the pipeline.
+| Signal  | Width | Description                                                                                                                        |
+| ------- | ----- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `Stall` | 1 bit | Active high interlock signal used to freeze the Program Counter (PC) register and the IF/ID pipeline latch.                        |
+| `Flush` | 1 bit | Active high clear signal used to invalidate stale instructions in the pipeline registers, transforming them into bubbles (`NOP`s). |
 
 ---
 
-## Behavioral Logic Implementation
+## Output Logic (Core Definition)
 
-```text
-// ==========================================
-// 1. FORWARDING LOGIC (INPUT A)
-// ==========================================
-EX_MEM_Hazard_A = EX_MEM_RegWEn AND (EX_MEM_rdi != 0) AND (EX_MEM_rdi == ID_EX_rs1);
-MEM_WB_Hazard_A = MEM_WB_RegWEn AND (MEM_WB_rdi != 0) AND (MEM_WB_rdi == ID_EX_rs1);
+Defines how operational hazards translate into structural control responses across the tracking networks.
 
-FWD_A[0] = EX_MEM_Hazard_A;
-FWD_A[1] = MEM_WB_Hazard_A AND (NOT EX_MEM_Hazard_A); // EX_MEM takes priority
+### Rule-based definition
 
-// ==========================================
-// 2. FORWARDING LOGIC (INPUT B)
-// ==========================================
-EX_MEM_Hazard_B = EX_MEM_RegWEn AND (EX_MEM_rdi != 0) AND (EX_MEM_rdi == ID_EX_rs2);
-MEM_WB_Hazard_B = MEM_WB_RegWEn AND (MEM_WB_rdi != 0) AND (MEM_WB_rdi == ID_EX_rs2);
+#### 1. Load-Use Data Hazard Detection (Stall Logic)
 
-FWD_B[0] = EX_MEM_Hazard_B;
-FWD_B[1] = MEM_WB_Hazard_B AND (NOT EX_MEM_Hazard_B); // EX_MEM takes priority
+A load-use hazard occurs when an instruction in the Instruction Decode (ID) stage requires a source register that is currently being loaded from data memory by a preceding load instruction in the Execution (EX) stage. Because memory read data is not available until the end of the Memory (MEM) stage, forwarding alone cannot resolve this hazard, and a 1-cycle stall must be inserted.
 
-// ==========================================
-// 3. STALL & FLUSH LOGIC
-// ==========================================
-Load_Use_Stall = ID_EX_MemRead AND (ID_EX_rdi != 0) AND ((ID_EX_rdi == IF_ID_rs1) OR (ID_EX_rdi == IF_ID_rs2));
+$$\text{LoadUseHazard} = \text{ID\_EX\_MemRead} \ \& \ ((\text{ID\_EX\_rd} == \text{IF\_ID\_rs1}) \ | \ (\text{ID\_EX\_rd} == \text{IF\_ID\_rs2}))$$
 
-if (Load_Use_Stall) {
-    PC_WE       = 0;  // Freeze Program Counter
-    IF_ID_WE    = 0;  // Freeze Decode Stage
-    IF_ID_Flush = 0;
-    ID_EX_Flush = 1;  // Inject NOP into Execute Stage
-}
-else if (PCSel) {
-    PC_WE       = 1;
-    IF_ID_WE    = 1;
-    IF_ID_Flush = 1;  // Flush instruction currently decoding
-    ID_EX_Flush = 1;  // Flush instruction currently executing
-}
-else {
-    PC_WE       = 1;  // Normal execution flow
-    IF_ID_WE    = 1;
-    IF_ID_Flush = 0;
-    ID_EX_Flush = 0;
-}
-```
+- If $\text{LoadUseHazard} == 1$ and $\text{ID\_EX\_rd} \neq 0$:
+  - `Stall` = `1`
+- Else:
+  - `Stall` = `0`
+
+#### 2. Control Hazard Detection (Flush Logic)
+
+A control hazard occurs when a conditional branch is taken or an unconditional jump executes, altering the sequential execution stream. Instructions that were speculatively fetched behind the branch/jump must be discarded.
+
+- If `PCSrc` = `1`:
+  - `Flush` = `1` (Clears the volatile pipeline stage contents to block illegal instruction execution tracking)
+- Else:
+  - `Flush` = `0`
+
+---
+
+## Internal Design
+
+The module uses purely combinational logic circuits to evaluate condition vectors dynamically within the active clock phase.
+
+- **Structure**: Purely combinational logic framework containing zero sequential elements, flip-flops, or discrete clock paths.
+- **Comparators**: Utilizes 5-bit digital equality comparators to monitor matching intersections between the active target register field (`ID_EX_rd`) and upstream decoded decoding registers (`IF_ID_rs1` / `IF_ID_rs2`).
+- **Logic Gates**: Standard primitive gates (`AND`, `OR`) compile the hazard matches alongside the status state line `ID_EX_MemRead` to evaluate the load-use penalty. The control hazard signal passes through to the `Flush` output channel to instantly neutralize instruction steps.
+
+---
+
+## Pipeline Interaction
+
+- **Pipeline stage involvement**: Centrally targets the control signals driving the **IF (Instruction Fetch)** and **ID (Instruction Decode)** stage registers.
+- **Signal propagation across stages**: Listens to decoded values within the ID stage boundary while simultaneously monitoring memory intent and target registers across the EX stage.
+- **Dependencies**: Intersects with the global clock gating lines. When a `Stall` goes high, it typically commands the Program Counter (PC) and IF/ID pipeline registers to hold their current values, while generating a structural `NOP` in the ID/EX register to clear space for the delayed operation.
+
+---
+
+## Examples
+
+### Example 1: Load-Use Hazard Encountered
+
+Inputs:
+
+- `ID_EX_MemRead` = `1` (Preceding instruction is a load, e.g., `lw x5, 0(x10)`)
+- `ID_EX_rd` = `0x05` (Targeting destination register `x5`)
+- `IF_ID_rs1` = `0x05` (Succeeding instruction requires `x5`, e.g., `add x2, x5, x6`)
+- `PCSrc` = `0`
+
+Outputs:
+
+- `Stall` = `1` (Forces the processor to stall the current fetch/decode state for one cycle)
+- `Flush` = `0`
+
+---
+
+### Example 2: Branch Taken (Control Hazard)
+
+Inputs:
+
+- `ID_EX_MemRead` = `0`
+- `PCSrc` = `1` (Branch comparison evaluates to true; execution path diverts)
+
+Outputs:
+
+- `Stall` = `0`
+- `Flush` = `1` (Signals pipeline latches to discard speculatively fetched instructions on the next clock edge)
+
+---
+
+## Limitations / Assumptions
+
+- Assumes register zero (`x0`) handling is cleanly isolated if the hardware allows it, preventing unnecessary structural stalls when an instruction targets `x0`.
+- Does not manage deeper multi-cycle dependencies beyond immediate execution/decode phase boundaries; assumes separate structural units or standard forwarding handles standard ALU-to-ALU interactions.
+- Relies on clean, hazard-free `PCSrc` calculations from the execution block to avoid erroneous or oscillating flushing loops.
+
+---
+
+## Implementation Notes
+
+- Assembled cleanly using native Logisim `Gates` and `Arithmetic` comparison modules.
+- Built without specialized black-box add-ons, ensuring cross-compatibility with standard Logisim-evolution distributions.
+- Mapped with clean, descriptive localized `Tunnels` to minimize crossing wires and maximize clarity for troubleshooting and design review.
+
+---

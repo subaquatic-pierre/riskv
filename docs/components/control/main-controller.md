@@ -276,7 +276,7 @@ Outputs:
 
 ---
 
-## Implementation Notes (Logisim)
+## Implementation Notes
 
 - Single input pin: `Inst[31:0]`.
 - Instruction fields distributed via a multi-fanout splitter with named tunnel labels.
