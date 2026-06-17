@@ -61,6 +61,7 @@ nav:
           - Forwarding Unit: components/control/forward-controller.md # MAKE
           - Branch Control Unit: components/control/branch-controller.md
           - Write Back Controller: components/control/write-back-controller.md # MAKE
+          - Program Counter: components/control/program-counter.md # MAKE
 
       - Arithmetic:
           - ALU: components/arithmetic/alu.md

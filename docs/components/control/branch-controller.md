@@ -8,10 +8,9 @@ The **Branch Control Unit** is a top-level macro-module that determines whether 
 
 - **Purpose in CPU:** Decides whether a conditional branch or unconditional jump should alter the program counter.
 - **Role in datapath:** Sits in the ID/EX stage boundary; consumes register operands and instruction metadata, produces the `TakeBranch` control signal used by PC steering logic.
-- **Type:** Combinational
 
-📌 Diagram:
-[Insert Logisim screenshot here]
+- **Source**: `logisim/RiskVControl.circ`
+  ![](../../images/branch-controller.png)
 
 ---
 
@@ -141,12 +140,6 @@ Outputs:
 
 ---
 
-## Source Circuit
-
-[Insert source .circ file here]
-
----
-
 ## Submodules
 
 ---
@@ -162,7 +155,7 @@ The **Branch Selector (`BranchSelector`)** determines whether a conditional bran
 - **Type:** Combinational
 
 📌 Diagram:
-[Insert Logisim screenshot here]
+![](../../images/branch-selector.png)
 
 ---
 
@@ -282,12 +275,6 @@ Outputs:
 
 ---
 
-#### Source Circuit
-
-[Insert source .circ file here]
-
----
-
 ### Branch Comparator (`WordLevelComparator`)
 
 #### Overview
@@ -299,7 +286,7 @@ The **Branch Comparator (`WordLevelComparator`)** evaluates relational compariso
 - **Type:** Combinational
 
 📌 Diagram:
-[Insert Logisim screenshot here]
+![](../../images/branch-comparitor.png)
 
 ---
 
@@ -426,7 +413,3 @@ Outputs:
 - Signal widths follow RV32I spec.
 
 ---
-
-#### Source Circuit
-
-[Insert source .circ file here]

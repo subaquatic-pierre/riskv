@@ -1,3 +1,5 @@
+Please generate documentation from the .circ file, use 4 ```` ticks to enclose the markdown code block. do not include cite in the documentation. Do Not include sub components if there are not sub components
+
 # <Component Name>
 
 ---
@@ -8,10 +10,9 @@ Short functional description of the component.
 
 - Purpose in CPU
 - Role in datapath
-- Type: Combinational / Sequential / Hybrid
 
-📌 Diagram:
-[Insert Logisim screenshot here]
+- **Source**: `logisim/RiskVControl.circ`
+  [Insert Logisim screenshot here]
 
 ---
 

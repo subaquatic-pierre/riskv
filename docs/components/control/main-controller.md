@@ -1,219 +1,141 @@
-# MainControlDecoder Architecture Overview
-
-The **MainControlDecoder** reads raw instructions from memory and drives the control signals and buses required to steer data through the processor.
+# Main Control Unit
 
 ---
 
-### Control Signal Canvas Mapping
+## Overview
 
-```text
-+-----------------------------------------------------------------------+
-|                         MAIN CONTROL DECODER                          |
-+-----------------------------------------------------------------------+
-   |                                                                 |
-   |-- [ID_Control]   --> ImmSel[2:0]                                |
-   |                                                                 |
-   |-- [EX_Control]   --> ASel, BSel, ALUSel[3:0], BrSel[4:0]        |
-   |                                                                 |
-   |-- [MEM_Control]  --> MemRead, MemWrite                          |
-   |                                                                 |
-   |-- [WB_Control]   --> RegWEn, WBSel[1:0]                         |
-   |                                                                 |
-   |-- [Trap_Control] --> Is_Ecall, Is_Ebreak                        |
-+-----------------------------------------------------------------------+
+The **Main Control Unit** decodes the 32-bit instruction word and generates all control signals required to drive the datapath for one instruction cycle. It is the central decision-making block of the CPU — every downstream unit (ALU, register file, memory, branch logic, immediate generator) receives its operating mode from signals produced here.
+
+- **Purpose in CPU:** Decode the current instruction and assert the correct combination of control signals for every pipeline stage.
+- **Role in datapath:** Sits in the ID stage; its outputs fan out to the EX, MEM, and WB stages as well as to the branch and immediate generation units.
+
+- **Source**: `logisim/RiskVControl.circ`
+  ![](../../images/main-controller.png)
+
+---
+
+## Interface
+
+### Inputs
+
+| Signal       | Width | Description                                                   |
+| ------------ | ----- | ------------------------------------------------------------- |
+| `Inst[31:0]` | 32    | Full 32-bit instruction word fetched from instruction memory. |
+
+### Outputs
+
+The outputs are grouped by the pipeline stage they control.
+
+#### ID Control
+
+| Signal        | Width | Description                                                                                                                                              |
+| ------------- | ----- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ImmSel[2:0]` | 3     | Immediate format selector sent to the Immediate Generator. `ImmSel[0]` = STORE \| LUI \| AUIPC. `ImmSel[1]` = BRANCH \| LUI \| AUIPC. `ImmSel[2]` = JAL. |
+
+#### EX Control
+
+| Signal        | Width | Description                                                                                                                                                                                                |
+| ------------- | ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ASel`        | 1     | Selects ALU operand A. Asserted for AUIPC, BRANCH, and JAL (uses PC); deasserted for register.                                                                                                             |
+| `BSel`        | 1     | Selects ALU operand B. Asserted for I-type, LOAD, STORE, AUIPC, JAL, JALR (uses immediate); deasserted for register. `BSel = IType OR LOAD OR STORE OR AUIPC OR JAL OR JALR`.                              |
+| `ALUSel[4:0]` | 5     | ALU operation selector sent directly to the ALU Controller. `ALUSel[2:0]` = `funct3[2:0]`. `ALUSel[3]` = `funct7[5]` AND (R-type OR IShift_Right). `ALUSel[4]` = `funct7[0]` AND (R-type OR IShift_Right). |
+| `BrSel[4:0]`  | 5     | Branch selector bus sent to the Branch Control Unit. Encodes `funct3`, `Is_Branch`, and `Is_Jump`.                                                                                                         |
+
+#### MEM Control
+
+| Signal            | Width | Description                                                                                                                                                                   |
+| ----------------- | ----- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `MemRead`         | 1     | Enables Data Memory read operations. Asserted for LOAD only.                                                                                                                  |
+| `MemWrite`        | 1     | Enables Data Memory write operations. Asserted for STORE only.                                                                                                                |
+| `MemByteSel[2:0]` | 3     | Controls which bytes are active during memory read/write. Derived from `funct3`: `MemByteSel[0]` = `funct3[2]`, `MemByteSel[1]` = `funct3[0]`, `MemByteSel[2]` = `funct3[1]`. |
+
+#### WB Control
+
+| Signal       | Width | Description                                                                              |
+| ------------ | ----- | ---------------------------------------------------------------------------------------- |
+| `RegWEn`     | 1     | Master write-enable for the register file. Deasserted for STORE, BRANCH, and NOP/SYSTEM. |
+| `WBSel[1:0]` | 2     | Selects the writeback source (ALU result, memory read data, or PC+4).                    |
+
+#### Trap Control
+
+| Signal      | Width | Description                                                      |
+| ----------- | ----- | ---------------------------------------------------------------- |
+| `Is_Ecall`  | 1     | Asserted when the instruction is an `ecall` system call.         |
+| `Is_Ebreak` | 1     | Breakpoint trap flag. Asserted when the instruction is `ebreak`. |
+
+#### Register Index Passthrough
+
+| Signal         | Width | Description                                                                          |
+| -------------- | ----- | ------------------------------------------------------------------------------------ |
+| `op_code[6:0]` | 7     | Raw opcode field passed through to downstream units.                                 |
+| `rdi[4:0]`     | 5     | Destination register index (`Inst[11:7]`).                                           |
+| `rs1[4:0]`     | 5     | Source register 1 index (`Inst[19:15]`). Zeroed for instructions that have no `rs1`. |
+| `rs2[4:0]`     | 5     | Source register 2 index (`Inst[24:20]`). Zeroed for instructions that have no `rs2`. |
+
+---
+
+## Output Logic (Core Definition)
+
+### Opcode Decode Table
+
+The 7-bit opcode field (`Inst[6:0]`) is decoded by a 5-bit splitter (bits `[6:2]`) feeding a 32-output decoder. Each named tunnel corresponds to one opcode:
+
+| Opcode Name | `op[6:2]` (binary) | Decimal |
+| ----------- | ------------------ | ------- |
+| `LOAD`      | `00000`            | 0       |
+| `MISC_MEM`  | `00011`            | 3       |
+| `OP_IMM`    | `00100`            | 4       |
+| `AUIPC`     | `00101`            | 5       |
+| `STORE`     | `01000`            | 8       |
+| `OP`        | `01100`            | 12      |
+| `LUI`       | `01101`            | 13      |
+| `OP_32`     | `01110`            | 14      |
+| `BRANCH`    | `11000`            | 24      |
+| `JALR`      | `11001`            | 25      |
+| `JAL`       | `11011`            | 27      |
+| `SYSTEM`    | `11100`            | 28      |
+
+### Rule-based definition
+
+- If opcode = `LOAD`:
+  - `MemRead` = 1, `RegWEn` = 1, `BSel` = 1, `ALUSrc` = register + immediate (ADD)
+- If opcode = `STORE`:
+  - `MemWrite` = 1, `RegWEn` = 0, `BSel` = 1
+- If opcode = `OP` (R-type):
+  - `RegWEn` = 1, `ASel` = 0, `BSel` = 0, `ALUSel` driven by `funct3` + `funct7`
+- If opcode = `OP_IMM` (I-type):
+  - `RegWEn` = 1, `ASel` = 0, `BSel` = 1, `ALUSel[2:0]` = `funct3`
+- If opcode = `BRANCH`:
+  - `RegWEn` = 0, `ASel` = 1, `BSel` = 0, `BrSel[3]` (`Is_Branch`) = 1
+- If opcode = `JAL`:
+  - `RegWEn` = 1, `ASel` = 1, `BSel` = 1, `BrSel[4]` (`Is_Jump`) = 1, `ImmSel[2]` = 1
+- If opcode = `JALR`:
+  - `RegWEn` = 1, `ASel` = 0, `BSel` = 1, `BrSel[4]` (`Is_Jump`) = 1
+- If opcode = `LUI`:
+  - `RegWEn` = 1, `ImmSel[0]` = 1, `ImmSel[1]` = 1, `zeroSrcRegs` = 1
+- If opcode = `AUIPC`:
+  - `RegWEn` = 1, `ASel` = 1, `BSel` = 1, `ImmSel[0]` = 1, `ImmSel[1]` = 1
+- If opcode = `SYSTEM`:
+  - `Is_Ecall` or `Is_Ebreak` asserted based on `inst[20]`; all other control signals deasserted (treated as NOP)
+- If NOP (all register fields and `funct7` = zero):
+  - All control signals deasserted
+
+### Boolean expressions
+
 ```
+ASel   = AUIPC OR BRANCH OR JAL
+BSel   = OP_IMM OR LOAD OR STORE OR AUIPC OR JAL OR JALR
+RegWEn = NOT(NOP_SYSTEM) AND NOT(STORE) AND NOT(BRANCH)
+MemRead  = LOAD AND NOT(NOP_SYSTEM)
+MemWrite = STORE AND NOT(NOP_SYSTEM)
 
----
-
-### Master Interface Signal Matrix
-
-| Canvas Group     | Signal / Bus Name | Bit Width | Destination Block   | Functional Description                                                                                                              |
-| :--------------- | :---------------- | :-------: | :------------------ | :---------------------------------------------------------------------------------------------------------------------------------- |
-| **ID_Control**   | `ImmSel[2:0]`     |     3     | Immediate Generator | Selects immediate unpacking and formatting type based on instruction format.                                                        |
-| **EX_Control**   | `ASel`            |     1     | Multiplexer A       | Selects ALU Input A: Register Port 1 (`0`) or Program Counter (`1`).                                                                |
-|                  | `BSel`            |     1     | Multiplexer B       | Selects ALU Input B: Register Port 2 (`0`) or Immediate (`1`).                                                                      |
-|                  | `ALUSel[3:0]`     |     4     | Execution ALU       | Combines `funct3` and `Instruction[30]` to command ALU operations. Gated to `0000` (`ADD`) for non-arithmetic instructions.         |
-|                  | `BrSel[4:0]`      |     5     | Branch Controller   | Composite Bus: `[4:2]` maps `funct3`, `[1]` gates conditional branches (`Is_Branch`), `[0]` forces unconditional jumps (`Is_Jump`). |
-| **MEM_Control**  | `MemRead`         |     1     | Data Memory (RAM)   | Read-enable switch; active only during Load instructions.                                                                           |
-|                  | `MemWrite`        |     1     | Data Memory (RAM)   | Write-enable switch; active only during Store instructions.                                                                         |
-|                  | `MemByteSel[2:0]` |     3     | Word Byte Selector  | Controls size layout and sign-extension configuration for sub-word alignment. Mapped straight from `funct3`.                        |
-| **WB_Control**   | `RegWEn`          |     1     | Register File       | Master register write enable. Active high for instructions writing to register `rd`.                                                |
-|                  | `WBSel[1:0]`      |     2     | Writeback MUX       | Selects writeback source: Data Memory (`00`), ALU Result (`01`), or Sequential PC Address $PC + 4$ (`11`).                          |
-| **Trap_Control** | `Is_Ecall`        |     1     | Exception Unit      | Asserts high on environment call (`ecall`) to invoke system trap.                                                                   |
-|                  | `Is_Ebreak`       |     1     | Debug Unit          | Asserts high on breakpoint (`ebreak`) to halt for debugger.                                                                         |
-
----
-
-### Master Instruction Definitions
-
-| Instruction Type | Opcode (Binary) | Opcode (Hex) | Description / Example                         |
-| :--------------- | :-------------- | :----------- | :-------------------------------------------- |
-| **R_Type**       | `0110011`       | `0x33`       | Register-Register Math (`add`, `sub`, `slt`)  |
-| **I_type**       | `0010011`       | `0x13`       | Register-Immediate Math (`addi`, `slti`)      |
-| **Load**         | `0000011`       | `0x03`       | Load Data from RAM to Register (`lw`)         |
-| **Store**        | `0100011`       | `0x23`       | Store Data from Register to RAM (`sw`)        |
-| **Branch**       | `1100011`       | `0x63`       | Conditional PC Jump (`beq`, `bne`)            |
-| **JAL**          | `1101111`       | `0x6F`       | Jump and Link Unconditional (`jal`)           |
-| **JALR**         | `1100111`       | `0x67`       | Jump and Link Register Indirect (`jalr`)      |
-| **AUIPC**        | `0010111`       | `0x17`       | Add Upper Immediate to PC (`auipc`)           |
-| **LUI**          | `0110111`       | `0x37`       | Load Upper Immediate (`lui`)                  |
-| **System**       | `1110011`       | `0x73`       | Environment Calls / Traps (`ecall`, `ebreak`) |
-
----
-
-### Processor Execution Flow
-
-1. **Fetch (IF):** PC outputs next instruction address to Instruction Memory.
-2. **Decode (ID):** Opcode defines `ImmSel` format. Remaining control signals and bus layouts are resolved concurrently.
-3. **Execute (EX):** `ASel` and `BSel` route inputs to the ALU; `ALUSel` defines operation. `BrSel` assesses branch/jump conditions.
-4. **Memory (MEM):** `MemRead` or `MemWrite` triggers for Loads/Stores. Bypassed for standard arithmetic.
-5. **Writeback (WB):** `WBSel` routes the chosen data block to the Register File, committed via `RegWEn`.
-
----
-
-# ImmSel (Immediate Select) Logic Configuration
-
-### ImmSel Multiplexer Routing Table
-
-| ImmSel[2:0] Value | Selected Immediate Format | Target Instruction Types                            |
-| :---------------: | :------------------------ | :-------------------------------------------------- |
-|    **000 (0)**    | **IType**                 | Standard ALU Immediates, Memory Loads, JALR, System |
-|    **001 (1)**    | **SType**                 | Memory Stores (`sw`, `sb`, `sh`)                    |
-|    **010 (2)**    | **BType**                 | Conditional Branches (`beq`, `bne`, `blt`, `bge`)   |
-|    **011 (3)**    | **UType**                 | Upper Immediates (`lui`, `auipc`)                   |
-|    **100 (4)**    | **JType**                 | Unconditional Long Jumps (`jal`)                    |
-
-### Driver Gate Formulas
-
-```text
-ImmSel[0] = Store OR LUI OR AUIPC
-ImmSel[1] = Branch OR LUI OR AUIPC
+ImmSel[0] = STORE OR LUI OR AUIPC
+ImmSel[1] = BRANCH OR LUI OR AUIPC
 ImmSel[2] = JAL
-```
 
----
-
-# ASel (ALU Input A Select) Logic Configuration
-
-### ASel Multiplexer Routing Table
-
-| ASel Pin Value | Selected ALU Input A Source    | Target Instruction Classes                   |
-| :------------: | :----------------------------- | :------------------------------------------- |
-|     **0**      | **Register File Port 1 (rs1)** | RType, IType, Load, Store, JALR, LUI, System |
-|     **1**      | **Program Counter (PC)**       | AUIPC, Branch, JAL                           |
-
-### Driver Gate Formula
-
-```text
-ASel = AUIPC OR Branch OR JAL
-```
-
----
-
-# BSel (ALU Input B Select) Logic Configuration
-
-### BSel Multiplexer Routing Table
-
-| BSel Pin Value | Selected ALU Input B Source          | Target Instruction Classes                        |
-| :------------: | :----------------------------------- | :------------------------------------------------ |
-|     **0**      | **Register File Port 2 (rs2)**       | RType, System                                     |
-|     **1**      | **Immediate Generator Output (Imm)** | IType, Load, Store, AUIPC, LUI, JAL, JALR, Branch |
-
-### Driver Gate Formula
-
-```text
-BSel = IType OR Load OR Store OR AUIPC OR LUI OR JAL OR JALR OR Branch
-```
-
----
-
-# ALUSel (ALU Operation Select) Logic Configuration
-
-### ALUSel Bus Bit Mapping
-
-The 4-bit `ALUSel[3:0]` bus handles ALU operation routing. It is derived from `funct3` and `Instruction[30]`. Non-arithmetic operations are masked to `0000` (`ADD`). Shift-right immediates (`srli`/`srai`) use an exception gate to preserve the `Instruction[30]` modifier bit from being treated as raw numerical data.
-
-|     Bus Bit     | Gated Source Component Mapping                     | Functional Purpose / Behavior              |
-| :-------------: | :------------------------------------------------- | :----------------------------------------- |
-| **`ALUSel[3]`** | `Instruction[14]` AND (`R_Type` OR `I_Type`)       | High bit of operation code.                |
-| **`ALUSel[2]`** | `Instruction[13]` AND (`R_Type` OR `I_Type`)       | Middle bit of operation code.              |
-| **`ALUSel[1]`** | `Instruction[12]` AND (`R_Type` OR `I_Type`)       | Low bit of operation code.                 |
-| **`ALUSel[0]`** | `Instruction[30]` AND (`R_Type` OR `IShift_Right`) | Modifier bit (`add`/`sub`, `srli`/`srai`). |
-
-### Driver Gate Formulas
-
-```text
-Is_Arithmetic = R_Type OR I_Type
-IShift_Right  = I_Type AND Instruction[14] AND NOT(Instruction[13]) AND Instruction[12]
-ALUSel_Mod_Gate = R_Type OR IShift_Right
-
-ALUSel[3] = Instruction[14] AND Is_Arithmetic
-ALUSel[2] = Instruction[13] AND Is_Arithmetic
-ALUSel[1] = Instruction[12] AND Is_Arithmetic
-ALUSel[0] = Instruction[30] AND ALUSel_Mod_Gate
-```
-
----
-
-# BrSel (Branch Operation Select) Logic Configuration
-
-## BrSel Bus Bit Mapping
-
-The 5-bit `BrSel[4:0]` bus governs program counter updates by managing conditional branch verification and unconditional jump overrides.
-
-|    Bus Bit     | Source Component Mapping         | Functional Purpose / Behavior                                             |
-| :------------: | :------------------------------- | :------------------------------------------------------------------------ |
-| **`BrSel[4]`** | `funct3[2]`                      | High condition select bit (signed/unsigned and equality bounds).          |
-| **`BrSel[3]`** | `funct3[1]`                      | Middle condition select bit.                                              |
-| **`BrSel[2]`** | `funct3[0]`                      | Low condition select bit.                                                 |
-| **`BrSel[1]`** | `MainController (Branch Signal)` | Validation gate. Asserted high (`1`) exclusively for B-Type opcodes.      |
-| **`BrSel[0]`** | `MainController (Jump Signal)`   | Unconditional jump override. Asserted high (`1`) for JAL or JALR opcodes. |
-
-### Driver Gate Formulas
-
-```text
-BrSel[4] = funct3[2]
-BrSel[3] =funct3[1]
-BrSel[2] = funct3[0]
-BrSel[1] = Branch
-BrSel[0] = JAL OR JALR
-```
-
----
-
-# Memory Control Logic Configuration (MemRead, MemWrite & MemByteSel)
-
-### Interface Specification
-
-| Pin / Bus Name   | Bit Width | Destination Component | Functional Description                                                               |
-| :--------------- | :-------: | :-------------------- | :----------------------------------------------------------------------------------- |
-| **`MemRead`**    |     1     | Data Memory           | Master read enable. Asserted for Load instructions.                                  |
-| **`MemWrite`**   |     1     | Data Memory           | Master write enable. Asserted for Store instructions.                                |
-| **`MemByteSel`** |     3     | Word Byte Selector    | Direct routing bus to command sub-word alignment and sign/zero extension processing. |
-
-### Operational Truth Table
-
-| Instruction Type    | MemRead | MemWrite | Subsystem Action                                           |
-| :------------------ | :-----: | :------: | :--------------------------------------------------------- |
-| **Load**            |  **1**  |  **0**   | Reads from address generated by ALU to writeback stage.    |
-| **Store**           |  **0**  |  **1**   | Writes data from `rs2` to target address generated by ALU. |
-| **All Other Types** |  **0**  |  **0**   | Memory array isolated; output bus ignored.                 |
-
-### MemByteSel Routing Mapping
-
-The 3-bit `MemByteSel[2:0]` bus connects directly to the Word Selector alignment multiplexer, mapped via instruction fields:
-
-|       Bus Bit       | Decoded Target Source | Functional Component Destination |
-| :-----------------: | :-------------------- | :------------------------------- |
-| **`MemByteSel[0]`** | `funct3[2]`           | MUX Selection Port Bit 0 (`S0`)  |
-| **`MemByteSel[1]`** | `funct3[0]`           | MUX Selection Port Bit 1 (`S1`)  |
-| **`MemByteSel[2]`** | `funct3[1]`           | MUX Selection Port Bit 2 (`S2`)  |
-
-### Driver Gate Formulas
-
-```text
-MemRead  = Load
-MemWrite = Store
+ALUSel[2:0] = funct3[2:0]
+ALUSel[3]   = funct7[5] AND (OP OR IShift_Right)
+ALUSel[4]   = funct7[0] AND (OP OR IShift_Right)
 
 MemByteSel[0] = funct3[2]
 MemByteSel[1] = funct3[0]
@@ -222,60 +144,146 @@ MemByteSel[2] = funct3[1]
 
 ---
 
-# Writeback Control Logic Configuration (RegWEn & WBSel)
+## Internal Design
 
-### Interface Specification
+The circuit is structured into the following functional zones:
 
-| Pin / Bus Name   | Bit Width | Destination Component | Functional Description                                   |
-| :--------------- | :-------: | :-------------------- | :------------------------------------------------------- |
-| **`RegWEn`**     |     1     | Register File         | Master write enable. High commits data to register `rd`. |
-| **`WBSel[1:0]`** |     2     | Writeback MUX         | Routes selected data source back to the register file.   |
+- **Instruction Splitter:** A 32-bit splitter at the `Inst` input distributes instruction fields to named tunnels: `op_code[6:0]`, `funct3[2:0]`, `funct7[6:0]`, `rdi[4:0]`, `rs1[4:0]`, `rs2[4:0]`, and `inst20` (bit 20, used for SYSTEM decode).
+- **Opcode Decoder:** The upper 5 bits of the opcode (`op_code[6:2]`) feed a 32-output decoder (lib Plexers). Each active decoder output drives a named tunnel corresponding to an instruction type (LOAD, STORE, OP, etc.).
+- **NOP Detection:** Four AND gates with all inputs inverted check that `rs1`, `rs2`, `rdi`, and `funct7` are all zero. Their combined output asserts the `NOP` tunnel.
+- **NOP_SYSTEM:** An OR gate combines `NOP` and `SYSTEM` into a shared suppression signal used to gate `MemRead`, `MemWrite`, and `RegWEn`.
+- **Control Signal Logic:** Each output signal is derived from OR/AND gate networks over the decoded opcode tunnels, as described in the boolean expressions above. Key structures include:
+  - A 7-input OR gate for `WBSel` and `RegWEn`.
+  - A 3-bit AND gate (with NOT on `NOP_SYSTEM`) for `MemByteSel`.
+  - A 5-bit AND gate for `ALUSel` passthrough gating.
+  - A 2-to-1 MUX each for `rs1` and `rs2` zeroing when `zeroSrcRegs` is asserted (LUI, JAL, AUIPC).
+- **Register Index Passthrough:** `rdi`, `rs1`, and `rs2` are passed through directly. For instructions with no source registers (LUI, JAL, AUIPC), the `zeroSrcRegs` signal selects constant `0x0` on the MUX output instead.
+- **SYSTEM Decode:** `inst20` (bit 20 of the instruction word) distinguishes `ecall` (0) from `ebreak` (1) when `SYSTEM` is active. An AND gate with inverted `inst20` drives `Is_Ecall`; an AND gate without inversion drives `Is_Ebreak`.
 
-### Writeback Multiplexer Routing Table
-
-| WBSel[1:0] Value | Selected Writeback Source            | Target Instruction Classes                                |
-| :--------------: | :----------------------------------- | :-------------------------------------------------------- |
-|   **`00` (0)**   | **Data Memory Output (`Mem`)**       | Memory Loads (`lw`, `lb`, `lh`)                           |
-|   **`01` (1)**   | **ALU Result (`ALU`)**               | R-Type, I-Type, `LUI`, `AUIPC`, Non-writing ops (default) |
-|   **`11` (3)**   | **Sequential PC Address ($PC + 4$)** | Unconditional Function Jumps (`JAL`, `JALR`)              |
-
-### Driver Gate Formulas
-
-```text
-RegWEn   = R_Type OR I_Type OR Load OR JAL OR JALR OR AUIPC OR LUI
-WBSel[1] = JAL OR JALR
-WBSel[0] = NOT(Load)
-```
+All logic is purely combinational. No registers or flip-flops are present.
 
 ---
 
-# System Instruction Control Logic (Is_Ecall & Is_Ebreak)
+## Operation
 
-### Operational Matrix
+1. `Inst[31:0]` arrives from Instruction Memory via the IF/ID pipeline register.
+2. The 32-bit splitter distributes instruction fields to named tunnels throughout the circuit.
+3. The 5-bit opcode (`Inst[6:2]`) is decoded by the 32-output decoder; the matching output line goes high.
+4. NOP detection logic checks all register fields and `funct7` for all-zero; asserts `NOP` if true.
+5. `NOP_SYSTEM` is formed by OR-ing `NOP` and `SYSTEM`, gating memory and register write enables.
+6. All control outputs are resolved combinationally through their respective gate networks in the same cycle.
+7. Outputs fan out to the ID/EX pipeline register, the Branch Control Unit, the Immediate Generator, and the register file read ports.
 
-Both instructions share the `SYSTEM` opcode (`1110011`) and a zeroed `funct3` field. They are differentiated by checking instruction bit 20.
+---
 
-| Instruction   | Opcode[6:0] |    funct3    | Instruction[31:20] | Is_Ecall | Is_Ebreak |
-| :------------ | :---------: | :----------: | :----------------: | :------: | :-------: |
-| **`ecall`**   |  `1110011`  |    `000`     |      `0x000`       |  **1**   |   **0**   |
-| **`ebreak`**  |  `1110011`  |    `000`     |      `0x001`       |  **0**   |   **1**   |
-| **CSR/Other** |  `1110011`  | $\neq$ `000` |    CSR Address     |  **0**   |   **0**   |
+## Pipeline Interaction
 
-### Driver Gate Formulas
+- Active in the **ID stage**; all outputs are registered into the **ID/EX pipeline register** at the end of the cycle.
+- `ImmSel` is consumed by the Immediate Generator in the same ID stage cycle.
+- `BrSel` is consumed by the Branch Control Unit in the same ID stage cycle.
+- `ALUSel`, `ASel`, `BSel` propagate to the **EX stage**.
+- `MemRead`, `MemWrite`, `MemByteSel` propagate to the **MEM stage**.
+- `RegWEn`, `WBSel` propagate to the **WB stage**.
+- When a NOP or flush is injected into the pipeline, `NOP_SYSTEM` suppresses all write-enabling outputs, effectively making the instruction a no-op.
 
-```text
-System_Op_Valid = System AND (funct3 == 000)
+---
 
-Is_Ecall  = System_Op_Valid AND NOT(Instruction[20])
-Is_Ebreak = System_Op_Valid AND Instruction[20]
-```
+## Examples
 
-### Pipeline Safeguards
+### Example: ADD (R-type)
 
-When either exception flag goes high, `RegWEn`, `MemRead`, and `MemWrite` are driven to `0` to isolate memory structures and halt illegal state modification before a pipeline flush executes.
+Inputs:
 
-### NOP
+- `Inst` = `0x00208033` (ADD x0, x1, x2)
+- `op[6:2]` = `01100` (OP), `funct3` = `000`, `funct7[5]` = 0
 
-We need to set NOP fields in the case of the following instruction types:
+Outputs:
 
-- FENCE
+- `ALUSel` = `00000`, `ASel` = 0, `BSel` = 0, `RegWEn` = 1, `MemRead` = 0, `MemWrite` = 0
+
+### Example: LW (LOAD)
+
+Inputs:
+
+- `op[6:2]` = `00000`, `funct3` = `010`
+
+Outputs:
+
+- `MemRead` = 1, `BSel` = 1, `RegWEn` = 1, `ImmSel` = `000`, `MemByteSel` = `010` (word)
+
+### Example: SW (STORE)
+
+Inputs:
+
+- `op[6:2]` = `01000`, `funct3` = `010`
+
+Outputs:
+
+- `MemWrite` = 1, `BSel` = 1, `RegWEn` = 0, `MemByteSel` = `010`
+
+### Example: BEQ (BRANCH)
+
+Inputs:
+
+- `op[6:2]` = `11000`, `funct3` = `000`
+
+Outputs:
+
+- `ASel` = 1, `BSel` = 0, `RegWEn` = 0, `BrSel` = `01000` (`Is_Branch`=1, `funct3`=000)
+
+### Example: JAL
+
+Inputs:
+
+- `op[6:2]` = `11011`
+
+Outputs:
+
+- `ASel` = 1, `BSel` = 1, `RegWEn` = 1, `ImmSel` = `100` (JAL), `BrSel[4]` = 1 (`Is_Jump`)
+
+### Example: LUI
+
+Inputs:
+
+- `op[6:2]` = `01101`
+
+Outputs:
+
+- `RegWEn` = 1, `ImmSel` = `011`, `zeroSrcRegs` = 1 (`rs1` = 0, `rs2` = 0)
+
+### Example: NOP
+
+Inputs:
+
+- `Inst` = `0x00000013` (ADDI x0, x0, 0 — canonical NOP)
+- All register fields and `funct7` = zero
+
+Outputs:
+
+- All write enables deasserted (`RegWEn` = 0, `MemRead` = 0, `MemWrite` = 0)
+
+---
+
+## Limitations / Assumptions
+
+- Assumes valid RV32I instruction encoding on `Inst[31:0]`.
+- `OP_32` (64-bit extension opcodes) is decoded but not fully handled — outputs are not defined for this opcode in the current implementation.
+- `MISC_MEM` (FENCE) is decoded but treated as a passthrough with no memory ordering enforcement.
+- No exception handling for illegal or malformed instruction encodings.
+- SYSTEM instruction decode is limited to `ecall`/`ebreak` via `inst20`; no CSR instruction handling.
+- NOP detection relies on all register fields and `funct7` being zero — non-standard NOPs may not be caught.
+- Combinational propagation delay not modeled.
+
+---
+
+## Implementation Notes (Logisim)
+
+- Single input pin: `Inst[31:0]`.
+- Instruction fields distributed via a multi-fanout splitter with named tunnel labels.
+- Opcode decoded using a Logisim Plexers `Decoder` component with a 5-bit select input (`op_code[6:2]`).
+- Named tunnels used extensively to route signals across the circuit without long wire runs.
+- `rs1` and `rs2` zero-suppression implemented with 2-to-1 MUX components controlled by `zeroSrcRegs`.
+- `MemByteSel` formed by a 3-bit AND gate gated with `NOT(NOP_SYSTEM)`.
+- `ALUSel` formed by a 5-bit AND gate combining `funct3`/`funct7` bits with opcode qualifiers.
+- All standard Logisim-evolution components; no external libraries.
+- Signal widths follow RV32I spec.
