@@ -11,24 +11,28 @@
       
       
       
+        <link rel="prev" href="../../control/write-back-controller/">
+      
+      
+        <link rel="next" href="../../memory/register-file/">
       
       
         
       
       
-      <link rel="icon" href="/assets/images/favicon.png">
+      <link rel="icon" href="../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
-        <title>Risk-V</title>
+        <title>ALU - Risk-V</title>
       
     
     
-      <link rel="stylesheet" href="/assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="/assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -47,7 +51,7 @@
       
     
     
-    <script>__md_scope=new URL("/",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -71,6 +75,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#arithmetic-logic-unit-alu-component-documentation" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -83,7 +92,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="/." title="Risk-V" class="md-header__button md-logo" aria-label="Risk-V" data-md-component="logo">
+    <a href="../../.." title="Risk-V" class="md-header__button md-logo" aria-label="Risk-V" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -103,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              
+              ALU
             
           </span>
         </div>
@@ -207,7 +216,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="/." title="Risk-V" class="md-nav__button md-logo" aria-label="Risk-V" data-md-component="logo">
+    <a href="../../.." title="Risk-V" class="md-nav__button md-logo" aria-label="Risk-V" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -225,7 +234,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/." class="md-nav__link">
+      <a href="../../.." class="md-nav__link">
         
   
   
@@ -304,7 +313,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/architecture/" class="md-nav__link">
+      <a href="../../../architecture/" class="md-nav__link">
         
   
   
@@ -332,7 +341,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/architecture/pipeline/" class="md-nav__link">
+      <a href="../../../architecture/pipeline/" class="md-nav__link">
         
   
   
@@ -360,7 +369,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/architecture/hazards/" class="md-nav__link">
+      <a href="../../../architecture/hazards/" class="md-nav__link">
         
   
   
@@ -392,8 +401,10 @@
       
   
   
+    
   
   
+  
     
     
     
@@ -404,11 +415,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
@@ -429,7 +440,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -447,7 +458,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/components/" class="md-nav__link">
+      <a href="../../" class="md-nav__link">
         
   
   
@@ -524,7 +535,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/components/control/main-controller/" class="md-nav__link">
+      <a href="../../control/main-controller/" class="md-nav__link">
         
   
   
@@ -552,7 +563,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/components/control/immediate-generator/" class="md-nav__link">
+      <a href="../../control/immediate-generator/" class="md-nav__link">
         
   
   
@@ -580,7 +591,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/components/control/hazard-controller/" class="md-nav__link">
+      <a href="../../control/hazard-controller/" class="md-nav__link">
         
   
   
@@ -608,7 +619,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/components/control/forward-controller/" class="md-nav__link">
+      <a href="../../control/forward-controller/" class="md-nav__link">
         
   
   
@@ -636,7 +647,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/components/control/branch-controller/" class="md-nav__link">
+      <a href="../../control/branch-controller/" class="md-nav__link">
         
   
   
@@ -664,7 +675,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/components/control/write-back-controller/" class="md-nav__link">
+      <a href="../../control/write-back-controller/" class="md-nav__link">
         
   
   
@@ -697,6 +708,8 @@
                 
   
   
+    
+  
   
   
     
@@ -706,11 +719,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" checked>
         
           
           <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
@@ -731,7 +744,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -746,10 +759,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="/components/arithmetic/alu/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ALU
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -765,6 +805,109 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#interface-specification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interface Specification
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Interface Specification">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#input-signals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Input Signals
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#output-signals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Output Signals
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selection-bus-bit-mapping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Selection Bus Bit Mapping
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alu-operation-mapping-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ALU Operation Mapping Matrix
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hardware-implementation-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hardware Implementation Notes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hardware-implementation-notes_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hardware Implementation Notes
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -834,7 +977,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/components/memory/register-file/" class="md-nav__link">
+      <a href="../../memory/register-file/" class="md-nav__link">
         
   
   
@@ -862,7 +1005,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/components/memory/instruction-memory/" class="md-nav__link">
+      <a href="../../memory/instruction-memory/" class="md-nav__link">
         
   
   
@@ -890,7 +1033,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/components/memory/data-memory/" class="md-nav__link">
+      <a href="../../memory/data-memory/" class="md-nav__link">
         
   
   
@@ -975,7 +1118,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/components/pipeline/if-id/" class="md-nav__link">
+      <a href="../../pipeline/if-id/" class="md-nav__link">
         
   
   
@@ -1003,7 +1146,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/components/pipeline/id-ex/" class="md-nav__link">
+      <a href="../../pipeline/id-ex/" class="md-nav__link">
         
   
   
@@ -1031,7 +1174,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/components/pipeline/ex-mem/" class="md-nav__link">
+      <a href="../../pipeline/ex-mem/" class="md-nav__link">
         
   
   
@@ -1059,7 +1202,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/components/pipeline/mem-wb/" class="md-nav__link">
+      <a href="../../pipeline/mem-wb/" class="md-nav__link">
         
   
   
@@ -1154,7 +1297,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/digital-design/" class="md-nav__link">
+      <a href="../../../digital-design/" class="md-nav__link">
         
   
   
@@ -1182,7 +1325,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/digital-design/truth-tables/" class="md-nav__link">
+      <a href="../../../digital-design/truth-tables/" class="md-nav__link">
         
   
   
@@ -1210,7 +1353,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/digital-design/memory/" class="md-nav__link">
+      <a href="../../../digital-design/memory/" class="md-nav__link">
         
   
   
@@ -1238,7 +1381,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/digital-design/multiplexers/" class="md-nav__link">
+      <a href="../../../digital-design/multiplexers/" class="md-nav__link">
         
   
   
@@ -1266,7 +1409,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/digital-design/encoders/" class="md-nav__link">
+      <a href="../../../digital-design/encoders/" class="md-nav__link">
         
   
   
@@ -1294,7 +1437,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/digital-design/shifter/" class="md-nav__link">
+      <a href="../../../digital-design/shifter/" class="md-nav__link">
         
   
   
@@ -1322,7 +1465,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/digital-design/adders/" class="md-nav__link">
+      <a href="../../../digital-design/adders/" class="md-nav__link">
         
   
   
@@ -1350,7 +1493,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/digital-design/divider/" class="md-nav__link">
+      <a href="../../../digital-design/divider/" class="md-nav__link">
         
   
   
@@ -1437,7 +1580,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/development/building/" class="md-nav__link">
+      <a href="../../../development/building/" class="md-nav__link">
         
   
   
@@ -1465,7 +1608,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/development/running/" class="md-nav__link">
+      <a href="../../../development/running/" class="md-nav__link">
         
   
   
@@ -1493,7 +1636,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/development/testing/" class="md-nav__link">
+      <a href="../../../development/testing/" class="md-nav__link">
         
   
   
@@ -1521,7 +1664,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/development/design-conventions/" class="md-nav__link">
+      <a href="../../../development/design-conventions/" class="md-nav__link">
         
   
   
@@ -1566,6 +1709,99 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#interface-specification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interface Specification
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Interface Specification">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#input-signals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Input Signals
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#output-signals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Output Signals
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selection-bus-bit-mapping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Selection Bus Bit Mapping
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alu-operation-mapping-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ALU Operation Mapping Matrix
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hardware-implementation-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hardware Implementation Notes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hardware-implementation-notes_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hardware Implementation Notes
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -1578,8 +1814,127 @@
               
               <article class="md-content__inner md-typeset">
                 
-  <h1>404 - Not found</h1>
+                  
 
+
+
+<h1 id="arithmetic-logic-unit-alu-component-documentation">Arithmetic Logic Unit (ALU) Component Documentation</h1>
+<p>The <strong>Arithmetic Logic Unit (ALU)</strong> is the primary operational core of the execution stage. It is a purely combinatorial module that accepts two 32-bit data operands and a 4-bit control configuration selection bus. It performs the designated arithmetic or logical operation and immediately exposes the calculated result on its output bus.</p>
+<hr />
+<h3 id="interface-specification">Interface Specification</h3>
+<h4 id="input-signals">Input Signals</h4>
+<ul>
+<li><strong><code>dataA[31:0]</code> (32 bits):</strong> First data operand, routed from the <code>ASel</code> multiplexer (representing either <code>rs1_data</code> or the current <code>PC</code> value).</li>
+<li><strong><code>dataB[31:0]</code> (32 bits):</strong> Second data operand, routed from the <code>BSel</code> multiplexer (representing either <code>rs2_data</code> or the sign-extended immediate value).</li>
+<li><strong><code>ALUSel[3:0]</code> (4 bits):</strong> Execution operation selection bus, wired directly from the <code>EX_Control</code> output group of the Main Control Decoder.</li>
+</ul>
+<h4 id="output-signals">Output Signals</h4>
+<ul>
+<li><strong><code>ALUResult[31:0]</code> (32 bits):</strong> The computed output word of the executed operation, routed directly to the Data Memory address port and the Writeback multiplexer.</li>
+</ul>
+<hr />
+<h3 id="selection-bus-bit-mapping">Selection Bus Bit Mapping</h3>
+<p>The 4-bit <code>ALUSel[3:0]</code> bus is constructed directly from the instruction payload fields inside the control decoder. To align with the layout of your hardware matrix, the instruction modifier bit is mapped directly to the Most Significant Bit (MSB):</p>
+<ul>
+<li><strong><code>ALUSel[3]</code>:</strong> Wired directly to <strong><code>Instruction[30]</code></strong> (the sign/modifier bit from the <code>funct7</code> field).</li>
+<li><strong><code>ALUSel[2:0]</code>:</strong> Wired directly to the instruction's <strong><code>funct3</code></strong> field (<code>Instruction[14:12]</code>).</li>
+</ul>
+<hr />
+<h3 id="alu-operation-mapping-matrix">ALU Operation Mapping Matrix</h3>
+<p>The execution logic decodes <code>ALUSel[3:0]</code> to select the active hardware path. For operations involving shifts or unsigned comparisons, the operands are cast to their corresponding hardware types:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">ALUSel[3:0]</th>
+<th style="text-align: left;">Target Instructions</th>
+<th style="text-align: left;">Internal Core Operation</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong><code>0000</code></strong></td>
+<td style="text-align: left;"><code>ADD</code>, <code>ADDI</code>, Loads/Stores</td>
+<td style="text-align: left;"><code>ALUResult = dataA + dataB</code></td>
+<td style="text-align: left;">Standard 32-bit two's complement addition.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong><code>0001</code></strong></td>
+<td style="text-align: left;"><code>SLL</code>, <code>SLLI</code></td>
+<td style="text-align: left;"><code>ALUResult = dataA &lt;&lt; dataB[4:0]</code></td>
+<td style="text-align: left;">Logical Shift Left (shifts in zeros). Uses bottom 5 bits of B.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong><code>0010</code></strong></td>
+<td style="text-align: left;"><code>SLT</code>, <code>SLTI</code></td>
+<td style="text-align: left;"><code>ALUResult = (signed)dataA &lt; (signed)dataB ? 1 : 0</code></td>
+<td style="text-align: left;">Set Less Than (Signed comparison).</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong><code>0011</code></strong></td>
+<td style="text-align: left;"><code>SLTU</code>, <code>SLTUI</code></td>
+<td style="text-align: left;"><code>ALUResult = dataA &lt; dataB ? 1 : 0</code></td>
+<td style="text-align: left;">Set Less Than Unsigned (Magnitude comparison).</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong><code>0100</code></strong></td>
+<td style="text-align: left;"><code>XOR</code>, <code>XORI</code></td>
+<td style="text-align: left;"><code>ALUResult = dataA ^ dataB</code></td>
+<td style="text-align: left;">Bitwise bit-by-bit exclusive OR.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong><code>0101</code></strong></td>
+<td style="text-align: left;"><code>SRL</code>, <code>SRLI</code></td>
+<td style="text-align: left;"><code>ALUResult = dataA &gt;&gt; dataB[4:0]</code></td>
+<td style="text-align: left;">Logical Shift Right (shifts in zeros). Uses bottom 5 bits of B.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong><code>0110</code></strong></td>
+<td style="text-align: left;"><code>OR</code>, <code>ORI</code></td>
+<td style="text-align: left;"><code>ALUResult = dataA \| dataB</code></td>
+<td style="text-align: left;">Bitwise bit-by-bit logical OR.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong><code>0111</code></strong></td>
+<td style="text-align: left;"><code>AND</code>, <code>ANDI</code></td>
+<td style="text-align: left;"><code>ALUResult = dataA &amp; dataB</code></td>
+<td style="text-align: left;">Bitwise bit-by-bit logical AND.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong><code>1000</code></strong></td>
+<td style="text-align: left;"><code>SUB</code></td>
+<td style="text-align: left;"><code>ALUResult = dataA - dataB</code></td>
+<td style="text-align: left;">Standard 32-bit two's complement subtraction.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong><code>1101</code></strong></td>
+<td style="text-align: left;"><code>SRA</code>, <code>SRAI</code></td>
+<td style="text-align: left;"><code>ALUResult = (signed)dataA &gt;&gt; dataB[4:0]</code></td>
+<td style="text-align: left;">Arithmetic Shift Right (preserves the sign bit <code>dataA[31]</code>).</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="hardware-implementation-notes">Hardware Implementation Notes</h3>
+<h3 id="hardware-implementation-notes_1">Hardware Implementation Notes</h3>
+<ol>
+<li><strong>Shift Magnitude Gating:</strong> For all shift commands (<code>SLL</code>, <code>SRL</code>, <code>SRA</code>), the hardware layout ignores the upper 27 bits of <code>dataB</code>. The shift matrix hooks up exclusively to <code>dataB[4:0]</code> because shifting a 32-bit register by more than 31 bits is architecturally undefined in the base RV32I ISA.</li>
+<li><strong>Logisim Adder Integration:</strong> Addition and subtraction are handled natively by a standard Logisim sub-component. The subtraction modifier flag (<code>ALUSel[0]</code>) connects directly to the arithmetic block's internal operation control terminal to toggle between modes, eliminating the need for manual bit-inversion gates or discrete carry-in manipulation on the canvas.</li>
+<li><strong>Comparison Set-Less-Than Bus Padding:</strong> The Boolean comparators for <code>SLT</code> and <code>SLTU</code> generate a single-bit primitive output flag (<code>0</code> or <code>1</code>). To drive the full 32-bit execution result bus, this token must be routed into a bit-extension network on the canvas. The single-bit value is mapped directly to <code>ALUResult[0]</code>, while bits <code>ALUResult[31:1]</code> are explicitly padded with constant zero blocks to drive the unutilized lines low.</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
               </article>
             </div>
           
@@ -1616,12 +1971,12 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "/", "features": ["navigation.sections", "content.code.copy"], "search": "/assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.sections", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="/assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
-        <script src="/javascripts/mathjax.js"></script>
+        <script src="../../../javascripts/mathjax.js"></script>
       
         <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
       

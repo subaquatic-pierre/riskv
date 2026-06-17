@@ -1,0 +1,3537 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Structural verification and architecture layout for a 5-stage RISC-V processor in Logisim.">
+      
+      
+      
+      
+        <link rel="prev" href="../forward-controller/">
+      
+      
+        <link rel="next" href="../write-back-controller/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Branch Control Unit - Risk-V</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="cyan">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#branch-control-unit" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Risk-V" class="md-header__button md-logo" aria-label="Risk-V" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Risk-V
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Branch Control Unit
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="cyan"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="cyan"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Risk-V" class="md-nav__button md-logo" aria-label="Risk-V" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Risk-V
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/hazards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hazards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CPU Components
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    CPU Components
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Control
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Control
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../main-controller/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Main Control Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../immediate-generator/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Immediate Generator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hazard-controller/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hazard Controller
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../forward-controller/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Forwarding Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Branch Control Unit
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Branch Control Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interface
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Interface">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#inputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inputs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#outputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Outputs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#output-logic-core-definition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Output Logic (Core Definition)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Output Logic (Core Definition)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rule-based-definition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rule-based definition
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#boolean-expression" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Boolean expression
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#internal-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Internal Design
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#operation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pipeline-interaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pipeline Interaction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-beq-operands-equal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: BEQ — operands equal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-bne-operands-equal-branch-not-taken" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: BNE — operands equal (branch not taken)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-jal-unconditional-jump" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: JAL — unconditional jump
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#limitations-assumptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limitations / Assumptions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-notes-logisim" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation Notes (Logisim)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#source-circuit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Source Circuit
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#submodules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Submodules
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Submodules">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#branch-selector" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Branch Selector
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Branch Selector">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#overview_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interface_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interface
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Interface">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#inputs_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inputs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#outputs_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Outputs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#output-logic-core-definition_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Output Logic (Core Definition)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Output Logic (Core Definition)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rule-based-definition_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rule-based definition
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#truth-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Truth table
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#internal-design_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Internal Design
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#operation_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pipeline-interaction_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pipeline Interaction
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#examples_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-blt-rs1-rs2-signed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: BLT — rs1 &lt; rs2 (signed)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-bge-rs1-rs2-branch-not-taken" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: BGE — rs1 &lt; rs2 (branch not taken)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#limitations-assumptions_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limitations / Assumptions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-notes-logisim_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation Notes (Logisim)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#source-circuit_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Source Circuit
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#branch-comparator-wordlevelcomparator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Branch Comparator (WordLevelComparator)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Branch Comparator (WordLevelComparator)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#overview_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interface_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interface
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Interface">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#inputs_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inputs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#outputs_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Outputs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#output-logic-core-definition_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Output Logic (Core Definition)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Output Logic (Core Definition)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rule-based-definition_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rule-based definition
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#boolean-expressions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Boolean expressions
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#internal-design_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Internal Design
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#operation_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pipeline-interaction_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pipeline Interaction
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#examples_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-signed-comparison-a-negative-b-positive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: Signed comparison — A negative, B positive
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-unsigned-comparison-a-b-no-carry-out" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: Unsigned comparison — A &lt; B, no carry-out
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-equality-a-b" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: Equality — A == B
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#limitations-assumptions_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limitations / Assumptions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-notes-logisim_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation Notes (Logisim)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#source-circuit_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Source Circuit
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../write-back-controller/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Write Back Controller
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Arithmetic
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Arithmetic
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../arithmetic/alu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ALU
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Memory
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Memory
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../memory/register-file/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Register File
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../memory/instruction-memory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Instruction Memory
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../memory/data-memory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Memory
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pipeline
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Pipeline
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pipeline/if-id/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IF/ID Register
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pipeline/id-ex/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ID/EX Register
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pipeline/ex-mem/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    EX/MEM Register
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pipeline/mem-wb/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MEM/WB Register
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Digital Design
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Digital Design
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../digital-design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../digital-design/truth-tables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Truth Tables
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../digital-design/memory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Memory
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../digital-design/multiplexers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multiplexers & Demultiplexers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../digital-design/encoders/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Encoders & Decoders
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../digital-design/shifter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Shifter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../digital-design/adders/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Adders
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../digital-design/divider/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Divider
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Development
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../development/building/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Building the Project
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../development/running/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Running in Logisim
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../development/testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../development/design-conventions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Conventions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interface
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Interface">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#inputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inputs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#outputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Outputs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#output-logic-core-definition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Output Logic (Core Definition)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Output Logic (Core Definition)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rule-based-definition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rule-based definition
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#boolean-expression" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Boolean expression
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#internal-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Internal Design
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#operation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pipeline-interaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pipeline Interaction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-beq-operands-equal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: BEQ — operands equal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-bne-operands-equal-branch-not-taken" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: BNE — operands equal (branch not taken)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-jal-unconditional-jump" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: JAL — unconditional jump
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#limitations-assumptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limitations / Assumptions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-notes-logisim" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation Notes (Logisim)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#source-circuit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Source Circuit
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#submodules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Submodules
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Submodules">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#branch-selector" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Branch Selector
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Branch Selector">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#overview_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interface_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interface
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Interface">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#inputs_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inputs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#outputs_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Outputs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#output-logic-core-definition_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Output Logic (Core Definition)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Output Logic (Core Definition)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rule-based-definition_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rule-based definition
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#truth-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Truth table
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#internal-design_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Internal Design
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#operation_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pipeline-interaction_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pipeline Interaction
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#examples_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-blt-rs1-rs2-signed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: BLT — rs1 &lt; rs2 (signed)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-bge-rs1-rs2-branch-not-taken" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: BGE — rs1 &lt; rs2 (branch not taken)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#limitations-assumptions_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limitations / Assumptions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-notes-logisim_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation Notes (Logisim)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#source-circuit_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Source Circuit
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#branch-comparator-wordlevelcomparator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Branch Comparator (WordLevelComparator)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Branch Comparator (WordLevelComparator)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#overview_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interface_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interface
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Interface">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#inputs_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inputs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#outputs_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Outputs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#output-logic-core-definition_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Output Logic (Core Definition)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Output Logic (Core Definition)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rule-based-definition_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rule-based definition
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#boolean-expressions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Boolean expressions
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#internal-design_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Internal Design
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#operation_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pipeline-interaction_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pipeline Interaction
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#examples_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-signed-comparison-a-negative-b-positive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: Signed comparison — A negative, B positive
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-unsigned-comparison-a-b-no-carry-out" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: Unsigned comparison — A &lt; B, no carry-out
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-equality-a-b" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: Equality — A == B
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#limitations-assumptions_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limitations / Assumptions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-notes-logisim_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation Notes (Logisim)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#source-circuit_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Source Circuit
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="branch-control-unit">Branch Control Unit</h1>
+<hr />
+<h2 id="overview">Overview</h2>
+<p>The <strong>Branch Control Unit</strong> is a top-level macro-module that determines whether the program counter should branch or jump. It acts as a structural wrapper around an internal Two's Complement Adder, the <code>WordLevelComparator</code>, and the <code>BranchSelector</code> submodules. It combines arithmetic subtraction with instruction-level verification to produce a single <code>TakeBranch</code> output signal.</p>
+<ul>
+<li><strong>Purpose in CPU:</strong> Decides whether a conditional branch or unconditional jump should alter the program counter.</li>
+<li><strong>Role in datapath:</strong> Sits in the ID/EX stage boundary; consumes register operands and instruction metadata, produces the <code>TakeBranch</code> control signal used by PC steering logic.</li>
+<li><strong>Type:</strong> Combinational</li>
+</ul>
+<p>📌 Diagram:
+[Insert Logisim screenshot here]</p>
+<hr />
+<h2 id="interface">Interface</h2>
+<h3 id="inputs">Inputs</h3>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Width</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>rs1_data[31:0]</code></td>
+<td>32</td>
+<td>Data word read from Register File Port 1 (Operand A).</td>
+</tr>
+<tr>
+<td><code>rs2_data[31:0]</code></td>
+<td>32</td>
+<td>Data word read from Register File Port 2 (Operand B).</td>
+</tr>
+<tr>
+<td><code>BrSel[4:0]</code></td>
+<td>5</td>
+<td>Composite selection bus. <code>BrSel[2:0]</code> = <code>funct3</code> (<code>Instruction[14:12]</code>). <code>BrSel[3]</code> = <code>Is_Branch</code> from Main Controller. <code>BrSel[4]</code> = <code>Is_Jump</code> (asserted for JAL or JALR).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="outputs">Outputs</h3>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Width</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>TakeBranch</code></td>
+<td>1</td>
+<td>Final branch/jump signal. <code>1</code> = valid branch or jump condition met, <code>0</code> = sequential execution continues.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="output-logic-core-definition">Output Logic (Core Definition)</h2>
+<h3 id="rule-based-definition">Rule-based definition</h3>
+<ul>
+<li>If <code>Is_Jump</code> (<code>BrSel[4]</code>) = 1 (JAL or JALR):</li>
+<li><code>TakeBranch</code> = 1 (unconditional, bypasses comparator)</li>
+<li>If <code>Is_Branch</code> (<code>BrSel[3]</code>) = 1 and <code>ConditionMet</code> = 1:</li>
+<li><code>TakeBranch</code> = 1</li>
+<li>Otherwise:</li>
+<li><code>TakeBranch</code> = 0</li>
+</ul>
+<h3 id="boolean-expression">Boolean expression</h3>
+<div class="highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>TakeBranch = (ConditionMet AND Is_Branch) OR Is_Jump
+</span></code></pre></div>
+<hr />
+<h2 id="internal-design">Internal Design</h2>
+<p>The component is structured as four sequential abstraction layers:</p>
+<ol>
+<li><strong>Two's Complement Subtractor</strong> — computes <code>rs1_data - rs2_data</code> via <code>A + NOT(B) + 1</code>, producing a result bus, carry-out, and overflow flag.</li>
+<li><strong><code>WordLevelComparator</code></strong> — interprets the subtraction result, carry-out, and sign bits to derive <code>EQ</code>, <code>LTS</code>, and <code>LTU</code> flags. See <a href="#branch-comparator-wordlevelcomparator">Branch Comparator</a> submodule below.</li>
+<li><strong><code>BranchSelector</code></strong> — uses <code>BrSel[2:0]</code> (<code>funct3</code>) to select the relevant condition flag and outputs <code>ConditionMet</code>. See <a href="#branch-selector">Branch Selector</a> submodule below.</li>
+<li><strong>Gating logic</strong> — ANDs <code>ConditionMet</code> with <code>Is_Branch</code> (<code>BrSel[3]</code>) to prevent false triggers on non-branch instructions; ORs the result with <code>Is_Jump</code> (<code>BrSel[4]</code>) to handle unconditional jumps.</li>
+</ol>
+<p>All logic is gate-level combinational. No registers or clocked elements are present in this module.</p>
+<hr />
+<h2 id="operation">Operation</h2>
+<ol>
+<li><code>rs1_data</code> and <code>rs2_data</code> arrive from the register file.</li>
+<li>The internal subtractor computes <code>rs1_data - rs2_data</code> and emits result, carry-out, and sign bits.</li>
+<li>The <code>WordLevelComparator</code> evaluates those outputs into <code>EQ</code>, <code>LTU</code>, and <code>LTS</code> flags.</li>
+<li>The <code>BranchSelector</code> uses <code>BrSel[2:0]</code> (<code>funct3</code>) to select the correct flag and asserts <code>ConditionMet</code>.</li>
+<li>The gating layer ANDs <code>ConditionMet</code> with <code>Is_Branch</code>; ORs with <code>Is_Jump</code>.</li>
+<li><code>TakeBranch</code> is asserted or de-asserted in the same clock cycle.</li>
+</ol>
+<hr />
+<h2 id="pipeline-interaction">Pipeline Interaction</h2>
+<ul>
+<li>Active during the <strong>ID stage</strong>, using operands forwarded from the register file.</li>
+<li><code>TakeBranch</code> is consumed by the PC steering logic before the next fetch cycle.</li>
+<li>Branches resolved here reduce the branch penalty compared to resolving in EX or MEM.</li>
+<li><code>Is_Branch</code> and <code>Is_Jump</code> originate from the Main Control Unit and are available in the same cycle via the <code>BrSel</code> bus.</li>
+</ul>
+<hr />
+<h2 id="examples">Examples</h2>
+<h3 id="example-beq-operands-equal">Example: BEQ — operands equal</h3>
+<p>Inputs:</p>
+<ul>
+<li><code>rs1_data</code> = <code>0x00000005</code>, <code>rs2_data</code> = <code>0x00000005</code></li>
+<li><code>BrSel</code> = <code>0b01000</code> (<code>Is_Branch</code>=1, <code>Is_Jump</code>=0, <code>funct3</code>=000)</li>
+</ul>
+<p>Outputs:</p>
+<ul>
+<li><code>EQ</code> = 1, <code>ConditionMet</code> = 1, <code>TakeBranch</code> = 1</li>
+</ul>
+<h3 id="example-bne-operands-equal-branch-not-taken">Example: BNE — operands equal (branch not taken)</h3>
+<p>Inputs:</p>
+<ul>
+<li><code>rs1_data</code> = <code>0x00000005</code>, <code>rs2_data</code> = <code>0x00000005</code></li>
+<li><code>BrSel</code> = <code>0b01001</code> (<code>Is_Branch</code>=1, <code>Is_Jump</code>=0, <code>funct3</code>=001)</li>
+</ul>
+<p>Outputs:</p>
+<ul>
+<li><code>EQ</code> = 1, <code>ConditionMet</code> = 0 (BNE requires NOT EQ), <code>TakeBranch</code> = 0</li>
+</ul>
+<h3 id="example-jal-unconditional-jump">Example: JAL — unconditional jump</h3>
+<p>Inputs:</p>
+<ul>
+<li><code>BrSel[4]</code> = 1 (<code>Is_Jump</code>)</li>
+</ul>
+<p>Outputs:</p>
+<ul>
+<li><code>TakeBranch</code> = 1 (comparator result irrelevant)</li>
+</ul>
+<hr />
+<h2 id="limitations-assumptions">Limitations / Assumptions</h2>
+<ul>
+<li>Assumes valid RV32I instruction encoding on <code>BrSel</code>.</li>
+<li>No exception handling for invalid <code>funct3</code> encodings.</li>
+<li><code>funct3</code> values <code>010</code> and <code>011</code> are unused; <code>BranchSelector</code> outputs <code>0</code> for these.</li>
+<li>Combinational propagation delay not modeled.</li>
+<li>JALR and JAL are treated identically by this module (<code>Is_Jump</code> = 1 for both).</li>
+</ul>
+<hr />
+<h2 id="implementation-notes-logisim">Implementation Notes (Logisim)</h2>
+<ul>
+<li>Built using standard Logisim components only.</li>
+<li>Subtraction implemented as <code>A + NOT(B) + 1</code> using a full adder with carry-in tied high.</li>
+<li><code>WordLevelComparator</code> and <code>BranchSelector</code> placed as named subcircuits.</li>
+<li>Gate-level AND/OR used for final <code>TakeBranch</code> gating — no tunnels crossing subcircuit boundaries.</li>
+<li>Signal widths follow RV32I spec (32-bit data, 5-bit <code>BrSel</code> bus, 1-bit control outputs).</li>
+</ul>
+<hr />
+<h2 id="source-circuit">Source Circuit</h2>
+<p>[Insert source .circ file here]</p>
+<hr />
+<h2 id="submodules">Submodules</h2>
+<hr />
+<h3 id="branch-selector">Branch Selector</h3>
+<h4 id="overview_1">Overview</h4>
+<p>The <strong>Branch Selector (<code>BranchSelector</code>)</strong> determines whether a conditional branch instruction should be taken by selecting the correct comparison flag for the current instruction type. It receives pre-computed comparison flags from the <code>WordLevelComparator</code> and uses the <code>funct3</code> field to select among them, outputting a single <code>TakeBranch</code> signal.</p>
+<ul>
+<li><strong>Purpose in CPU:</strong> Filters raw comparison flags down to a single branch-taken decision based on instruction type.</li>
+<li><strong>Role in datapath:</strong> Sits between the <code>WordLevelComparator</code> and the final gating logic inside the Branch Control Unit.</li>
+<li><strong>Type:</strong> Combinational</li>
+</ul>
+<p>📌 Diagram:
+[Insert Logisim screenshot here]</p>
+<hr />
+<h4 id="interface_1">Interface</h4>
+<h5 id="inputs_1">Inputs</h5>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Width</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>EQ</code></td>
+<td>1</td>
+<td>Equality flag from the <code>WordLevelComparator</code>. High if <code>rs1 == rs2</code>.</td>
+</tr>
+<tr>
+<td><code>LTU</code></td>
+<td>1</td>
+<td>Unsigned less-than flag from the <code>WordLevelComparator</code>.</td>
+</tr>
+<tr>
+<td><code>LTS</code></td>
+<td>1</td>
+<td>Signed less-than flag from the <code>WordLevelComparator</code>.</td>
+</tr>
+<tr>
+<td><code>Branch_Op</code></td>
+<td>3</td>
+<td><code>funct3</code> field (<code>Instruction[14:12]</code>) from the instruction bus.</td>
+</tr>
+</tbody>
+</table>
+<h5 id="outputs_1">Outputs</h5>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Width</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>TakeBranch</code></td>
+<td>1</td>
+<td><code>1</code> = branch condition satisfied, <code>0</code> = continue sequential execution.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="output-logic-core-definition_1">Output Logic (Core Definition)</h4>
+<h5 id="rule-based-definition_1">Rule-based definition</h5>
+<ul>
+<li>If <code>Branch_Op</code> = <code>000</code> (BEQ): <code>TakeBranch</code> = <code>EQ</code></li>
+<li>If <code>Branch_Op</code> = <code>001</code> (BNE): <code>TakeBranch</code> = <code>NOT(EQ)</code></li>
+<li>If <code>Branch_Op</code> = <code>010</code>: <code>TakeBranch</code> = 0 (unused)</li>
+<li>If <code>Branch_Op</code> = <code>011</code>: <code>TakeBranch</code> = 0 (unused)</li>
+<li>If <code>Branch_Op</code> = <code>100</code> (BLT): <code>TakeBranch</code> = <code>LTS</code></li>
+<li>If <code>Branch_Op</code> = <code>101</code> (BGE): <code>TakeBranch</code> = <code>NOT(LTS)</code></li>
+<li>If <code>Branch_Op</code> = <code>110</code> (BLTU): <code>TakeBranch</code> = <code>LTU</code></li>
+<li>If <code>Branch_Op</code> = <code>111</code> (BGEU): <code>TakeBranch</code> = <code>NOT(LTU)</code></li>
+</ul>
+<h5 id="truth-table">Truth table</h5>
+<table>
+<thead>
+<tr>
+<th><code>Branch_Op</code></th>
+<th>Instruction</th>
+<th>Condition</th>
+<th>MUX Input Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>000</code></td>
+<td>BEQ</td>
+<td><code>A == B</code></td>
+<td><code>EQ</code></td>
+</tr>
+<tr>
+<td><code>001</code></td>
+<td>BNE</td>
+<td><code>A != B</code></td>
+<td><code>NOT(EQ)</code></td>
+</tr>
+<tr>
+<td><code>010</code></td>
+<td>—</td>
+<td>Unused</td>
+<td>Hardwired <code>0</code></td>
+</tr>
+<tr>
+<td><code>011</code></td>
+<td>—</td>
+<td>Unused</td>
+<td>Hardwired <code>0</code></td>
+</tr>
+<tr>
+<td><code>100</code></td>
+<td>BLT</td>
+<td><code>A &lt; B</code> (signed)</td>
+<td><code>LTS</code></td>
+</tr>
+<tr>
+<td><code>101</code></td>
+<td>BGE</td>
+<td><code>A &gt;= B</code> (signed)</td>
+<td><code>NOT(LTS)</code></td>
+</tr>
+<tr>
+<td><code>110</code></td>
+<td>BLTU</td>
+<td><code>A &lt; B</code> (unsigned)</td>
+<td><code>LTU</code></td>
+</tr>
+<tr>
+<td><code>111</code></td>
+<td>BGEU</td>
+<td><code>A &gt;= B</code> (unsigned)</td>
+<td><code>NOT(LTU)</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="internal-design_1">Internal Design</h4>
+<ul>
+<li>Implemented as an <strong>8-to-1 MUX</strong> controlled by <code>Branch_Op</code>.</li>
+<li><code>EQ</code>, <code>NOT(EQ)</code>, <code>LTS</code>, <code>NOT(LTS)</code>, <code>LTU</code>, <code>NOT(LTU)</code> are pre-computed via NOT gates and wired to the appropriate MUX inputs.</li>
+<li>MUX inputs 2 and 3 are hardwired to ground (<code>0</code>) for unused <code>funct3</code> encodings.</li>
+<li>No registers; purely combinational.</li>
+</ul>
+<hr />
+<h4 id="operation_1">Operation</h4>
+<ol>
+<li><code>EQ</code>, <code>LTU</code>, <code>LTS</code> arrive from the <code>WordLevelComparator</code>.</li>
+<li>NOT gates derive the inverse of each flag.</li>
+<li>All six values (three flags + three inverses) and two ground wires are routed to MUX inputs 0–7.</li>
+<li><code>Branch_Op</code> selects the relevant MUX input.</li>
+<li><code>TakeBranch</code> is output in the same cycle.</li>
+</ol>
+<hr />
+<h4 id="pipeline-interaction_1">Pipeline Interaction</h4>
+<p>N/A — internal submodule of the Branch Control Unit; no direct pipeline register interface.</p>
+<hr />
+<h4 id="examples_1">Examples</h4>
+<h5 id="example-blt-rs1-rs2-signed">Example: BLT — rs1 &lt; rs2 (signed)</h5>
+<p>Inputs:</p>
+<ul>
+<li><code>LTS</code> = 1, <code>EQ</code> = 0, <code>LTU</code> = 0</li>
+<li><code>Branch_Op</code> = <code>100</code></li>
+</ul>
+<p>Outputs:</p>
+<ul>
+<li><code>TakeBranch</code> = 1</li>
+</ul>
+<h5 id="example-bge-rs1-rs2-branch-not-taken">Example: BGE — rs1 &lt; rs2 (branch not taken)</h5>
+<p>Inputs:</p>
+<ul>
+<li><code>LTS</code> = 1</li>
+<li><code>Branch_Op</code> = <code>101</code></li>
+</ul>
+<p>Outputs:</p>
+<ul>
+<li><code>TakeBranch</code> = 0 (<code>NOT(LTS)</code> = 0)</li>
+</ul>
+<hr />
+<h4 id="limitations-assumptions_1">Limitations / Assumptions</h4>
+<ul>
+<li>Assumes <code>Branch_Op</code> encodes a valid RV32I branch <code>funct3</code>.</li>
+<li>Inputs <code>010</code> and <code>011</code> are not defined in RV32I branch instructions; outputs <code>0</code> for these.</li>
+<li>No runtime validation of input signals.</li>
+<li>Combinational delay not modeled.</li>
+</ul>
+<hr />
+<h4 id="implementation-notes-logisim_1">Implementation Notes (Logisim)</h4>
+<ul>
+<li>8-to-1 MUX controlled by the 3-bit <code>Branch_Op</code> input.</li>
+<li>NOT gates on <code>EQ</code>, <code>LTS</code>, <code>LTU</code> for inverse paths.</li>
+<li>Inputs 2 and 3 tied to ground.</li>
+<li>All standard Logisim components; no external libraries.</li>
+</ul>
+<hr />
+<h4 id="source-circuit_1">Source Circuit</h4>
+<p>[Insert source .circ file here]</p>
+<hr />
+<h3 id="branch-comparator-wordlevelcomparator">Branch Comparator (<code>WordLevelComparator</code>)</h3>
+<h4 id="overview_2">Overview</h4>
+<p>The <strong>Branch Comparator (<code>WordLevelComparator</code>)</strong> evaluates relational comparisons between two 32-bit operands by interpreting the outputs of an external Two's Complement subtractor. It derives equality, unsigned less-than, and signed less-than flags without performing any arithmetic itself.</p>
+<ul>
+<li><strong>Purpose in CPU:</strong> Translates raw subtraction artifacts (result bus, carry-out, sign bits) into clean logical comparison flags.</li>
+<li><strong>Role in datapath:</strong> Intermediate layer inside the Branch Control Unit, between the subtractor and the <code>BranchSelector</code>.</li>
+<li><strong>Type:</strong> Combinational</li>
+</ul>
+<p>📌 Diagram:
+[Insert Logisim screenshot here]</p>
+<hr />
+<h4 id="interface_2">Interface</h4>
+<h5 id="inputs_2">Inputs</h5>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Width</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Result_In[31:0]</code></td>
+<td>32</td>
+<td>Result bus output from the subtractor block.</td>
+</tr>
+<tr>
+<td><code>Cout_In</code></td>
+<td>1</td>
+<td>Carry-out bit from the subtractor block.</td>
+</tr>
+<tr>
+<td><code>A_Sign</code></td>
+<td>1</td>
+<td>Sign bit (bit 31) of operand A (<code>rs1_data[31]</code>).</td>
+</tr>
+<tr>
+<td><code>B_Sign</code></td>
+<td>1</td>
+<td>Sign bit (bit 31) of operand B (<code>rs2_data[31]</code>).</td>
+</tr>
+</tbody>
+</table>
+<h5 id="outputs_2">Outputs</h5>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Width</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>EQ</code></td>
+<td>1</td>
+<td>High if <code>A == B</code>.</td>
+</tr>
+<tr>
+<td><code>LTU</code></td>
+<td>1</td>
+<td>High if <code>A &lt; B</code> under unsigned comparison rules.</td>
+</tr>
+<tr>
+<td><code>LTS</code></td>
+<td>1</td>
+<td>High if <code>A &lt; B</code> under signed Two's Complement rules.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="output-logic-core-definition_2">Output Logic (Core Definition)</h4>
+<h5 id="rule-based-definition_2">Rule-based definition</h5>
+<ul>
+<li><strong>EQ:</strong> If all 32 bits of <code>Result_In</code> are <code>0</code> → <code>EQ</code> = 1</li>
+<li><strong>LTU:</strong> If subtraction underflows (carry-out not asserted) → <code>LTU</code> = <code>NOT(Cout_In)</code></li>
+<li><strong>LTS:</strong></li>
+<li>If <code>A_Sign XOR B_Sign</code> = 0 (same sign): overflow impossible → <code>LTS</code> = <code>LTU</code></li>
+<li>If <code>A_Sign XOR B_Sign</code> = 1 (different signs): negative A is always less → <code>LTS</code> = <code>A_Sign</code></li>
+</ul>
+<h5 id="boolean-expressions">Boolean expressions</h5>
+<div class="highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>EQ  = NOR(Result_In[31:0])
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>LTU = NOT(Cout_In)
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>LTS = (A_Sign AND (A_Sign XOR B_Sign)) OR (LTU AND NOT(A_Sign XOR B_Sign))
+</span></code></pre></div>
+<hr />
+<h4 id="internal-design_2">Internal Design</h4>
+<ul>
+<li><strong>EQ</strong> is derived from a 32-input NOR tree over <code>Result_In[31:0]</code>. All bits zero → output high.</li>
+<li><strong>LTU</strong> is a single NOT gate on <code>Cout_In</code>. Unsigned underflow drives carry-out low.</li>
+<li><strong>LTS</strong> uses:</li>
+<li>An XOR gate on <code>A_Sign</code> and <code>B_Sign</code> to detect sign mismatch.</li>
+<li>A 2-to-1 MUX (selector = <code>A_Sign XOR B_Sign</code>):<ul>
+<li>Select <code>0</code> (same sign): routes <code>LTU</code> to output.</li>
+<li>Select <code>1</code> (different sign): routes <code>A_Sign</code> to output.</li>
+</ul>
+</li>
+</ul>
+<p>All logic is gate-level combinational. No registers.</p>
+<hr />
+<h4 id="operation_2">Operation</h4>
+<ol>
+<li><code>Result_In</code>, <code>Cout_In</code>, <code>A_Sign</code>, and <code>B_Sign</code> arrive from the external subtractor.</li>
+<li><code>EQ</code>: <code>Result_In</code> passes through the 32-input NOR tree.</li>
+<li><code>LTU</code>: <code>Cout_In</code> is inverted.</li>
+<li><code>LTS</code>: XOR gate evaluates sign mismatch; MUX selects between <code>LTU</code> and <code>A_Sign</code> accordingly.</li>
+<li>All three flags are output in the same cycle.</li>
+</ol>
+<hr />
+<h4 id="pipeline-interaction_2">Pipeline Interaction</h4>
+<p>N/A — internal submodule of the Branch Control Unit; no direct pipeline register interface.</p>
+<hr />
+<h4 id="examples_2">Examples</h4>
+<h5 id="example-signed-comparison-a-negative-b-positive">Example: Signed comparison — A negative, B positive</h5>
+<p>Inputs:</p>
+<ul>
+<li><code>A_Sign</code> = 1, <code>B_Sign</code> = 0 → <code>A_Sign XOR B_Sign</code> = 1 (different signs)</li>
+</ul>
+<p>Outputs:</p>
+<ul>
+<li><code>LTS</code> = <code>A_Sign</code> = 1 (negative A is always less than positive B)</li>
+</ul>
+<h5 id="example-unsigned-comparison-a-b-no-carry-out">Example: Unsigned comparison — A &lt; B, no carry-out</h5>
+<p>Inputs:</p>
+<ul>
+<li><code>Cout_In</code> = 0</li>
+</ul>
+<p>Outputs:</p>
+<ul>
+<li><code>LTU</code> = <code>NOT(0)</code> = 1</li>
+</ul>
+<h5 id="example-equality-a-b">Example: Equality — A == B</h5>
+<p>Inputs:</p>
+<ul>
+<li><code>Result_In</code> = <code>0x00000000</code></li>
+</ul>
+<p>Outputs:</p>
+<ul>
+<li><code>EQ</code> = 1</li>
+</ul>
+<hr />
+<h4 id="limitations-assumptions_2">Limitations / Assumptions</h4>
+<ul>
+<li>Assumes subtraction is performed externally as <code>A + NOT(B) + 1</code> with correct carry-out semantics.</li>
+<li>Sign bits (<code>A_Sign</code>, <code>B_Sign</code>) must be tapped directly from operand bit 31 before subtraction.</li>
+<li>No exception handling for malformed inputs.</li>
+<li>Combinational delay of the NOR tree not modeled.</li>
+</ul>
+<hr />
+<h4 id="implementation-notes-logisim_2">Implementation Notes (Logisim)</h4>
+<ul>
+<li>32-input NOR tree for <code>EQ</code> built from cascaded 2-input NOR gates in Logisim.</li>
+<li>Single NOT gate for <code>LTU</code>.</li>
+<li>XOR gate + 2-to-1 MUX for <code>LTS</code> path selection.</li>
+<li>All standard Logisim components; no external libraries.</li>
+<li>Signal widths follow RV32I spec.</li>
+</ul>
+<hr />
+<h4 id="source-circuit_2">Source Circuit</h4>
+<p>[Insert source .circ file here]</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.sections", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
