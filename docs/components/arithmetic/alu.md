@@ -1,55 +1,196 @@
-# Arithmetic Logic Unit (ALU) Component Documentation
-
-The **Arithmetic Logic Unit (ALU)** is the primary operational core of the execution stage. It is a purely combinatorial module that accepts two 32-bit data operands and a 4-bit control configuration selection bus. It performs the designated arithmetic or logical operation and immediately exposes the calculated result on its output bus.
+# RiskVALU
 
 ---
 
-### Interface Specification
+## Overview
 
-#### Input Signals
+The `RiskVALU` component serves as the central arithmetic, logical, and mathematical acceleration hub of an RV32I processor equipped with the M-extension (RV32IM). It encapsulates distinct functional submodules to handle basic arithmetic, data source routing, control signal extraction, and hardware multiplication/division.
 
-- **`dataA[31:0]` (32 bits):** First data operand, routed from the `ASel` multiplexer (representing either `rs1_data` or the current `PC` value).
-- **`dataB[31:0]` (32 bits):** Second data operand, routed from the `BSel` multiplexer (representing either `rs2_data` or the sign-extended immediate value).
-- **`ALUSel[3:0]` (4 bits):** Execution operation selection bus, wired directly from the `EX_Control` output group of the Main Control Decoder.
+- **Purpose in CPU**: Performs mathematical calculations, logical masking, barrel shifting, and hardware-accelerated integer multiplication, division, and remainder operations.
+- **Role in datapath**: Located squarely within the Execution (EX) stage, it accepts operands from the system register file or forwarding paths and generates results targeted for the Memory (MEM) or Writeback (WB) pipelines.
 
-#### Output Signals
-
-- **`ALUResult[31:0]` (32 bits):** The computed output word of the executed operation, routed directly to the Data Memory address port and the Writeback multiplexer.
+- **Source**: `logisim/RiskVALU.circ`
+  ![](../../images/alu-control.png)
 
 ---
 
-### Selection Bus Bit Mapping
+## Interface
 
-The 4-bit `ALUSel[3:0]` bus is constructed directly from the instruction payload fields inside the control decoder. To align with the layout of your hardware matrix, the instruction modifier bit is mapped directly to the Most Significant Bit (MSB):
+### Inputs
 
-- **`ALUSel[3]`:** Wired directly to **`Instruction[30]`** (the sign/modifier bit from the `funct7` field).
-- **`ALUSel[2:0]`:** Wired directly to the instruction's **`funct3`** field (`Instruction[14:12]`).
+| Signal   | Width   | Description                                                            |
+| -------- | ------- | ---------------------------------------------------------------------- |
+| `RDataA` | 32 bits | Raw data output from Register 1 (`rs1`).                               |
+| `PC`     | 32 bits | Current program counter address forwarded from the fetch/decode stage. |
+| `RDataB` | 32 bits | Raw data output from Register 2 (`rs2`).                               |
+| `ImmVal` | 32 bits | Decoded and sign-extended immediate scalar block.                      |
+| `ASel`   | 1 bit   | Data routing selection control driving the Operand A multiplexer.      |
+| `BSel`   | 1 bit   | Data routing selection control driving the Operand B multiplexer.      |
+| `ALUSel` | 5 bits  | Master operational selector bus derived from `funct3` and `funct7`.    |
 
----
+### Outputs
 
-### ALU Operation Mapping Matrix
-
-The execution logic decodes `ALUSel[3:0]` to select the active hardware path. For operations involving shifts or unsigned comparisons, the operands are cast to their corresponding hardware types:
-
-| ALUSel[3:0] | Target Instructions         | Internal Core Operation                             | Description                                                     |
-| :---------: | :-------------------------- | :-------------------------------------------------- | :-------------------------------------------------------------- |
-| **`0000`**  | `ADD`, `ADDI`, Loads/Stores | `ALUResult = dataA + dataB`                         | Standard 32-bit two's complement addition.                      |
-| **`0001`**  | `SLL`, `SLLI`               | `ALUResult = dataA << dataB[4:0]`                   | Logical Shift Left (shifts in zeros). Uses bottom 5 bits of B.  |
-| **`0010`**  | `SLT`, `SLTI`               | `ALUResult = (signed)dataA < (signed)dataB ? 1 : 0` | Set Less Than (Signed comparison).                              |
-| **`0011`**  | `SLTU`, `SLTUI`             | `ALUResult = dataA < dataB ? 1 : 0`                 | Set Less Than Unsigned (Magnitude comparison).                  |
-| **`0100`**  | `XOR`, `XORI`               | `ALUResult = dataA ^ dataB`                         | Bitwise bit-by-bit exclusive OR.                                |
-| **`0101`**  | `SRL`, `SRLI`               | `ALUResult = dataA >> dataB[4:0]`                   | Logical Shift Right (shifts in zeros). Uses bottom 5 bits of B. |
-| **`0110`**  | `OR`, `ORI`                 | `ALUResult = dataA \| dataB`                        | Bitwise bit-by-bit logical OR.                                  |
-| **`0111`**  | `AND`, `ANDI`               | `ALUResult = dataA & dataB`                         | Bitwise bit-by-bit logical AND.                                 |
-| **`1000`**  | `SUB`                       | `ALUResult = dataA - dataB`                         | Standard 32-bit two's complement subtraction.                   |
-| **`1101`**  | `SRA`, `SRAI`               | `ALUResult = (signed)dataA >> dataB[4:0]`           | Arithmetic Shift Right (preserves the sign bit `dataA[31]`).    |
+| Signal   | Width   | Description                                          |
+| -------- | ------- | ---------------------------------------------------- |
+| `ALUOut` | 32 bits | Final 32-bit aggregated calculation pipeline result. |
 
 ---
 
-### Hardware Implementation Notes
+## Output Logic (Core Definition)
 
-### Hardware Implementation Notes
+Defines how the top-level outputs are derived based on internal multiplexing logic.
 
-1. **Shift Magnitude Gating:** For all shift commands (`SLL`, `SRL`, `SRA`), the hardware layout ignores the upper 27 bits of `dataB`. The shift matrix hooks up exclusively to `dataB[4:0]` because shifting a 32-bit register by more than 31 bits is architecturally undefined in the base RV32I ISA.
-2. **Logisim Adder Integration:** Addition and subtraction are handled natively by a standard Logisim sub-component. The subtraction modifier flag (`ALUSel[0]`) connects directly to the arithmetic block's internal operation control terminal to toggle between modes, eliminating the need for manual bit-inversion gates or discrete carry-in manipulation on the canvas.
-3. **Comparison Set-Less-Than Bus Padding:** The Boolean comparators for `SLT` and `SLTU` generate a single-bit primitive output flag (`0` or `1`). To drive the full 32-bit execution result bus, this token must be routed into a bit-extension network on the canvas. The single-bit value is mapped directly to `ALUResult[0]`, while bits `ALUResult[31:1]` are explicitly padded with constant zero blocks to drive the unutilized lines low.
+### Rule-based definition
+
+- `dataA` = (`ASel` == 1) ? `PC` : `RDataA`
+- `dataB` = (`BSel` == 1) ? `ImmVal` : `RDataB`
+- If `ALUSel[4]` (isM) == `0` → `ALUOut` = Derived from `ALUBase` using `ALUSel[3:0]`
+- If `ALUSel[4]` (isM) == `1` → `ALUOut` = Derived from `ALUMulDiv` using `ALUSel[2:0]`
+
+---
+
+## Internal Design
+
+The root `RiskVALU` architecture operates as a structural container that routes operands and aggregates results using four specialized internal submodules.
+
+- **Structure**: Purely combinational circuit layout containing zero clocked registers, flip-flops, or internal execution state registers.
+- **Subcircuits used**:
+  - `ALUDataSource`
+  - `ALUControl`
+  - `ALUBase`
+  - `ALUMulDiv`
+- **Decoding / Mux Structure**: Uses an initial pair of 2-to-1 32-bit multiplexers to select input operands, a bit-splitter to slice the control bus, and a final 2-to-1 32-bit multiplexer driven by the `isM` flag to select between the standard or M-extension calculation results.
+
+---
+
+## Operation
+
+Step-by-step behavior:
+
+1. **Inputs arrive**: Data parameters (`RDataA`, `PC`, `RDataB`, `ImmVal`) and control buses (`ASel`, `BSel`, `ALUSel`) land simultaneously at the input boundaries.
+2. **Decoding / selection occurs**: `ALUDataSource` resolves the target operands, while `ALUControl` unpacks the execution selection fields.
+3. **Logic evaluates conditions**: `ALUBase` and `ALUMulDiv` concurrently evaluate the routed operands along parallel hardware paths.
+4. **Outputs are produced**: The final multiplexer switches based on the `isM` mode flag, propagating the selected result onto the `ALUOut` channel within the same combinational cycle window.
+
+---
+
+## Pipeline Interaction
+
+- **Pipeline stage involvement**: Sits completely within the **EX (Execution)** stage tracks.
+- **Signal propagation across stages**: Gathers data straight from the ID/EX pipeline registers, allowing calculations to stabilize inside the clock phase before committing the stable state down to the EX/MEM pipeline buffer boundary.
+- **Dependencies**: Relies heavily on upstream hazard/forwarding blocks to resolve structural data hazard contentions on operands before execution.
+
+---
+
+## Examples
+
+### Example: MUL Instruction (M-Extension)
+
+Inputs:
+
+- `RDataA` = `0x00000003` (3)
+- `RDataB` = `0x00000004` (4)
+- `ASel` = `0`, `BSel` = `0`
+- `ALUSel` = `10000` (`isM` = 1, `selMD` = 000)
+
+Outputs:
+
+- `ALUOut` = `0x0000000C` (12)
+
+---
+
+## Limitations / Assumptions
+
+- Assumes divide-by-zero criteria default cleanly to overflow presets (`0xFFFFFFFF` or native standard definitions) without triggering separate pipeline traps or core hardware halts.
+- Shifter ports inside the core arithmetic modules explicitly discard input lines `dataB[31:5]`, parsing only the lower 5 bits for barrel shift configurations.
+- Purely combinational logic layout; contains no standalone clock lines or internal state memory registers.
+
+---
+
+## Implementation Notes (Logisim)
+
+- Built using standard Logisim components only.
+- Decoder / mux / gate-based implementation with structural subcircuits.
+- No external libraries or third-party logic dependencies.
+- Signal widths map rigorously onto standard 1-bit control, 3-bit/4-bit selection buses, and 32-bit execution data registers.
+
+---
+
+## Submodules
+
+### ALUDataSource
+
+Coordinates raw operand routing configurations.
+
+- **Inputs**: `RDataA` (32-bit), `PC` (32-bit), `RDataB` (32-bit), `Imm` (32-bit), `ASel` (1-bit), `BSel` (1-bit)
+- **Outputs**: `dataA` (32-bit), `dataB` (32-bit)
+
+#### Logic Definition
+
+- If `ASel` == `0` → `dataA` = `RDataA`
+- If `ASel` == `1` → `dataA` = `PC`
+- If `BSel` == `0` → `dataB` = `RDataB`
+- If `BSel` == `1` → `dataB` = `Imm`
+
+---
+
+### ALUControl
+
+Extracts architectural instruction parameters from the unified control selector to govern individual arithmetic slices.
+
+- **Inputs**: `ALUSel` (5 bits)
+- **Outputs**: `selBase` (4 bits), `selMD` (3 bits), `isM` (1 bit)
+
+#### Logic Definition
+
+- `selBase` = `ALUSel[3:0]`
+- `selMD` = `ALUSel[2:0]`
+- `isM` = `ALUSel[4]`
+
+---
+
+### ALUBase
+
+The fundamental calculation engine for standard RV32I arithmetic. It computes all basic integer arithmetic, shifts, and comparative branches simultaneously in parallel combinational tracks.
+
+- **Inputs**: `dataA` (32-bit), `dataB` (32-bit), `sel` (4-bit control selector)
+- **Outputs**: `Out0` (32-bit computed result)
+
+#### Operational Mapping
+
+- `0000`: `dataA + dataB` (Addition)
+- `0001`: `dataA << dataB[4:0]` (Logical Shift Left)
+- `0010`: `(dataA < dataB) ? 1 : 0` (Signed Set Less Than)
+- `0011`: `(dataA <u dataB) ? 1 : 0` (Unsigned Set Less Than)
+- `0100`: `dataA ^ dataB` (Bitwise logical XOR)
+- `0101`: `dataA >> dataB[4:0]` (Logical Shift Right)
+- `0110`: `dataA | dataB` (Bitwise logical OR)
+- `0111`: `dataA & dataB` (Bitwise logical AND)
+- `1000`: `dataA - dataB` (Subtraction)
+- `1101`: `dataA >>> dataB[4:0]` (Arithmetic Shift Right)
+
+---
+
+### ALUMulDiv
+
+The mathematical acceleration submodule that implements structural extensions for the RV32M standard instruction catalog.
+
+- **Inputs**: `dataA` (32-bit), `dataB` (32-bit), `sel` (3-bit functional selector)
+- **Outputs**: `Out0` (32-bit evaluated result)
+
+#### Operational Mapping
+
+- `000`: `mul` (Low-order 32 bits of product)
+- `001`: `mulh` (High-order 32 bits of signed product)
+- `010`: `mulhsu` (High-order 32 bits of product between signed A and unsigned B)
+- `011`: `mulhu` (High-order 32 bits of unsigned product)
+- `100`: `div` (Signed division quotient)
+- `101`: `divu` (Unsigned division quotient)
+- `110`: `rem` (Signed division remainder)
+- `111`: `remu` (Unsigned division remainder)
+
+#### Internal Execution Mechanics
+
+- **Pre-Processing Complement Blocks**: Uses sign-bit inspection to convert negative inputs into positive magnitudes via two's complement inversion circuits before routing to the division/remainder units.
+- **Post-Processing Inversion Matrix**: Applies a conditional post-execution structural two's complement inversion to the calculated division or remainder output if the tracking logic requires a negative result.
+- Uses parallel Logisim hardware multipliers and dividers gathered into an 8-to-1 32-bit multiplexer.

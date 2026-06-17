@@ -68,7 +68,6 @@ nav:
 
       - Memory:
           - Register File: components/memory/register-file.md
-          - Instruction Memory: components/memory/instruction-memory.md # MAKE
           - Data Memory: components/memory/data-memory.md
 
       - Pipeline:
@@ -85,6 +84,7 @@ nav:
       - Encoders & Decoders: digital-design/encoders.md
       - Shifter: digital-design/shifter.md
       - Adders: digital-design/adders.md
+      - Multiplier: digital-design/multiplier.md
       - Divider: digital-design/divider.md
 
   - Development:

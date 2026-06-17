@@ -1,208 +1,208 @@
-# Data Memory
-
-# Component: Store Mask Generator / Byte Enable Decoder
-
-## Description
-
-Generates a 4-bit write-mask/byte-enable signal (`Mask[3:0]`) to selectively activate the appropriate byte lanes within the 32-bit word-addressed RAM unit. This component supports aligned sub-word configurations and handles unaligned mid-word boundary writes while capping boundary-crossing operations to the final lane.
+# DMem
 
 ---
 
-## 1. Inputs & Outputs
+## Overview
+
+The `DMem` component acts as the unified Data Memory interface module for a pipelined RV32I processor. It encapsulates physical synchronous Random Access Memory (RAM) and supplements it with byte-alignment, masking, and sign-extension hardware networks. This allows the processor to natively execute word (`lw`), halfword (`lh`, `lhu`), and byte (`lb`, `lbu`) memory operations seamlessly.
+
+- **Purpose in CPU**: Handles volatile data read and write preservation operations during program execution.
+- **Role in datapath**: Operates inside the Memory (MEM) pipeline stage, reading or writing data payloads based on addresses computed in the upstream Execution (EX) stage.
+
+- **Source**: `logisim/RiskVMemory.circ`
+  ![](../../images/dmem.png)
+
+---
+
+## Interface
 
 ### Inputs
 
-- **`Addr[1:0]`**: The 2 lowest bits of the effective target memory address.
-- **`MemByteSel[2:0]`**: 3-bit control signal bus driven by the Main Control Decoder.
-  - `MemByteSel[1]` = Half-word flag (`funct3[0]`)
-  - `MemByteSel[2]` = Full-word flag (`funct3[1]`)
+| Signal     | Width   | Description                                                                                |
+| ---------- | ------- | ------------------------------------------------------------------------------------------ |
+| `clk`      | 1 bit   | Master system clock signal link for synchronizing write operations.                        |
+| `MemWrite` | 1 bit   | Master write enable flag. When active, data is written into memory on the next clock edge. |
+| `Addr`     | 32 bits | Raw 32-bit execution byte address calculated by the ALU.                                   |
+| `WData`    | 32 bits | Raw 32-bit source data word to be stored in memory.                                        |
+| `Func3`    | 3 bits  | Format specification vector derived directly from the instruction's `funct3` bit field.    |
 
 ### Outputs
 
-- **`Mask[3:0]`**: 4-bit byte-enable output bus routed directly to the RAM selection/mask pins.
-  - `Mask[3]` $\rightarrow$ Controls RAM Byte Lane 3 (Bits `[31:24]`)
-  - `Mask[2]` $\rightarrow$ Controls RAM Byte Lane 2 (Bits `[23:16]`)
-  - `Mask[1]` $\rightarrow$ Controls RAM Byte Lane 1 (Bits `[15:8]`)
-  - `Mask[0]` $\rightarrow$ Controls RAM Byte Lane 0 (Bits `[7:0]`)
+| Signal  | Width   | Description                                                                                        |
+| ------- | ------- | -------------------------------------------------------------------------------------------------- |
+| `RData` | 32 bits | Fully formatted and properly sign- or zero-extended 32-bit data word returned to the CPU datapath. |
 
 ---
 
-## 2. Hardware Operational Truth Table
+## Output Logic (Core Definition)
 
-| Instruction Class    | MemByteSel[2] (Word) | MemByteSel[1] (Half) | Addr[1] | Addr[0] | Mask[3] (Byte 3) | Mask[2] (Byte 2) | Mask[1] (Byte 1) | Mask[0] (Byte 0) | Target Operation / Logic Behavior                 |
-| :------------------- | :------------------: | :------------------: | :-----: | :-----: | :--------------: | :--------------: | :--------------: | :--------------: | :------------------------------------------------ |
-| **Byte (`sb`)**      |          0           |          0           |    0    |    0    |      **1**       |        0         |        0         |        0         | Store Byte at Offset 00                           |
-| **Byte (`sb`)**      |          0           |          0           |    0    |    1    |        0         |      **1**       |        0         |        0         | Store Byte at Offset 01                           |
-| **Byte (`sb`)**      |          0           |          0           |    1    |    0    |        0         |        0         |      **1**       |        0         | Store Byte at Offset 10                           |
-| **Byte (`sb`)**      |          0           |          0           |    1    |    1    |        0         |        0         |        0         |      **1**       | Store Byte at Offset 11                           |
-| **Half-word (`sh`)** |          0           |          1           |    0    |    0    |      **1**       |      **1**       |        0         |        0         | Aligned Upper Half-word                           |
-| **Half-word (`sh`)** |          0           |          1           |    0    |    1    |        0         |      **1**       |      **1**       |        0         | Unaligned Mid Half-word                           |
-| **Half-word (`sh`)** |          0           |          1           |    1    |    0    |        0         |        0         |      **1**       |      **1**       | Aligned Lower Half-word                           |
-| **Half-word (`sh`)** |          0           |          1           |    1    |    1    |        0         |        0         |        0         |      **1**       | Word Boundary Limit (Programmer Error: Drops LSB) |
-| **Full Word (`sw`)** |          1           |          0           |    X    |    X    |      **1**       |      **1**       |      **1**       |      **1**       | Store Full Word (All Lanes)                       |
+The configuration of top-level outputs and storage modifications are governed dynamically by the internal submodules based on address offsets and structural control configurations.
+
+### Rule-based definition (preferred)
+
+- **Memory Addressing**: Standardizes on word-aligned execution by routing `Addr[31:2]` directly to the internal RAM cell address bus.
+- **Data Write Path**: When `MemWrite` == `1`, the byte-enable pins of the RAM cell are modulated by the 4-bit block generated by `MaskGenerator`, while `StoreAligner` shifts `WData` to line up with the target byte offsets.
+- **Data Read Path**: `RData` is continuously evaluated combinationally from the raw RAM output payload by `LoadAligner` using `Addr[1:0]` and `Func3`.
 
 ---
 
-## 3. Gate Implementation Formulas
+## Internal Design
 
-The resulting optimal combinational logic equations to implement this logic gate array:
+The `DMem` module uses a modular architecture that separates write-side formatting, byte-mask generation, physical storage, and read-side extension into dedicated subcircuits.
 
-```text
-Signal Conditioning:
-Is_Word = MemByteSel[2]
-Is_Half = MemByteSel[1]
-Is_Byte = NOT(MemByteSel[2]) AND NOT(MemByteSel[1])
-
-Logic Equations:
-Mask[3] = W OR (~A1 AND (~A0 AND B OR H))
-Mask[2] = W OR (~A1 AND (A0 AND B OR ~A0 AND H))
-Mask[1] = W OR (A1 AND ~A0 AND B) OR (H AND (A1 XOR A0))
-Mask[0] = W OR (A1 AND (A0 AND B OR H))
-```
-
-### Factored Hardware Form (Best for Minimal Gate Count)
-
-If you are wire-budgeting your canvas to use the absolute minimum number of logic gates, you can factor out common terms (like `~A1` and `A1`).
-
-By grouping the sub-word variables, the final hardware gate configurations simplify to:
-
-- `Mask[3] = W OR (~A1 AND (~A0 AND B OR H))`
-- `Mask[2] = W OR (~A1 AND (A0 AND B OR ~A0 AND H))`
-- `Mask[1] = W OR (A1 AND ~A0 AND B) OR (H AND (A1 XOR A0))`
-- `Mask[0] = W OR (A1 AND (A0 AND B OR H))`
-
-### Logisim Implementation Tips
-
-- **Use a 3-input OR gate** at the final output stage of each mask bit, tying the full-word command line (`W`) directly to the top pin of each gate.
-
-# Component: Byte / Word Selector
-
-## Description
-
-Pre-processes 32-bit raw word data read from a word-addressed RAM unit. It handles sub-word alignment by shifting the target byte or half-word into the least significant bit (LSB) positions based on the lower two bits of the calculated ALU address, then performs parallel extension.
-
-### Data Bus to Byte Offset Mapping
-
-Because the word architecture maps address offsets in descending order relative to the 32-bit data bus lanes:
-
-- **Addr[1:0] = 00** $\rightarrow$ Targets Byte 3 (Bits `[31:24]`) $\rightarrow$ Requires 24-bit R-Shift
-- **Addr[1:0] = 01** $\rightarrow$ Targets Byte 2 (Bits `[23:16]`) $\rightarrow$ Requires 16-bit R-Shift
-- **Addr[1:0] = 10** $\rightarrow$ Targets Byte 1 (Bits `[15:8]`) $\rightarrow$ Requires 8-bit R-Shift
-- **Addr[1:0] = 11** $\rightarrow$ Targets Byte 0 (Bits `[7:0]`) $\rightarrow$ Requires 0-bit R-Shift
+- **Structure**: Core storage operates sequentially on the master clock edge, while formatting, steering, and bit-extension submodules operate entirely as combinational networks.
+- **Subcircuits Used**:
+  - `StoreAligner`: Aligns write payloads to specific byte channels.
+  - `MaskGenerator`: Generates byte-enabling vector configurations.
+  - `LoadAligner`: Filters and extends read data.
+- **Top-Level Routing**: The address bus is split; `Addr[31:2]` is wired straight to the core RAM address lines, while `Addr[1:0]` routes downstream to the alignment and mask-generation submodules to configure byte lanes.
 
 ---
 
-## 1. Inputs & Outputs
+## Operation
 
-### Inputs
+Step-by-step behavior:
 
-- **`dataIn[31:0]`**: Raw 32-bit word directly from Logisim RAM output.
-- **`Addr[1:0]`**: The 2 lowest bits of the calculated effective memory address.
-- **`sel[2:0]`**: 3-bit control signal mapped directly from the main controller decoder.
-  - `sel[0]` = `funct3[2]` (Unsigned flag)
-  - `sel[1]` = `funct3[0]` (Half-word flag)
-  - `sel[2]` = `funct3[1]` (Full-word flag)
-
-### Outputs
-
-- **`dataOut[31:0]`**: Fully aligned and sign/zero-extended 32-bit output.
+1. **Parameters Settle**: `Addr`, `WData`, `Func3`, and `MemWrite` land at the input ports.
+2. **Parallel Submodule Evaluation**: `MaskGenerator` creates the write mask, `StoreAligner` repositions the write word, and the RAM block combinationally outputs the 32-bit word located at `Addr[31:2]`.
+3. **Read Alignment**: `LoadAligner` intercepts the raw RAM output, isolating and extending the correct sub-word based on `Addr[1:0]` and `Func3` to deliver a stable value to `RData`.
+4. **Synchronous State Change**: If `MemWrite` is asserted, the masked and shifted write data commits to the RAM cells on the next active clock transition.
 
 ---
 
-## 2. Internal Schematic & Routing Logic
+## Pipeline Interaction (if applicable)
 
-### Stage 1: Shift Amount Calculation
-
-- **Logic**: Inverts `Addr[1:0]` to swap the layout dependency, then shifts the value left by 3 bits (by appending three trailing zeros) to scale the byte offset into a bit-shift offset.
-- **Mapping**:
-  - `00` $\rightarrow$ `5'b11000` (24 bits)
-  - `01` $\rightarrow$ `5'b10000` (16 bits)
-  - `10` $\rightarrow$ `5'b01000` (8 bits)
-  - `11` $\rightarrow$ `5'b00000` (0 bits)
-
-### Stage 2: Pre-Alignment Shift
-
-- **Logic**: A 32-bit logical right shifter uses the calculated 5-bit shift amount to dynamically slide the target segment down to the `[7:0]` (byte) or `[15:0]` (half-word) boundaries.
-
-### Stage 3: Parallel Splitting and Extension
-
-- **Logic**: The aligned data bus forks simultaneously into narrow splitters and extension logic blocks:
-  - Bits `[7:0]` run to a sign extender and a zero extender.
-  - Bits `[15:0]` run to a sign extender and a zero extender.
-
-### Stage 4: Final Selection (8-to-1 Multiplexer)
-
-- **Logic**: An 8-to-1 multiplexer selects the final output configuration. The 3-bit `sel[2:0]` control bus wires directly to the multiplexer selection port, mapping the hardware paths cleanly to the corresponding operations:
-  - `000` $\rightarrow$ Signed Byte (`funct3` = `000`)
-  - `001` $\rightarrow$ Unsigned Byte (`funct3` = `100`)
-  - `010` $\rightarrow$ Signed Half-Word (`funct3` = `001`)
-  - `011` $\rightarrow$ Unsigned Half-Word (`funct3` = `101`)
-  - `100` $\rightarrow$ Raw Full Word (`funct3` = `010`, Bypasses Stage 2 entirely)
-
-# Component: Store Aligner
-
-## Description
-
-Processes 32-bit data payloads from the register file and configuration signals from the controller before memory writes. It aligns sub-word data (`sb`, `sh`) to the correct byte lanes of a 32-bit wide memory bus based on a 2-bit address offset.
-
-It also contains the **Store Mask Generator**. While the aligner shifts the data bits into the correct slots on the 32-bit bus, the mask generator drives the RAM's write enable lines (`WriteMask[3:0]`) so only the targeted byte lanes update in memory.
-
-### Data Bus to Byte Offset Mapping
-
-Because this 32-bit Big-Endian architecture maps address offsets in descending order relative to the data bus lanes, the right-aligned register data must shift upward to its destination segment:
-
-- **AddrOffset[1:0] = 00** $\rightarrow$ Targets Byte 3 (Bits `[31:24]`) $\rightarrow$ Requires 24-bit L-Shift
-- **AddrOffset[1:0] = 01** $\rightarrow$ Targets Byte 2 (Bits `[23:16]`) $\rightarrow$ Requires 16-bit L-Shift
-- **AddrOffset[1:0] = 10** $\rightarrow$ Targets Byte 1 (Bits `[15:8]`) $\rightarrow$ Requires 8-bit L-Shift
-- **AddrOffset[1:0] = 11** $\rightarrow$ Targets Byte 0 (Bits `[7:0]`) $\rightarrow$ Requires 0-bit L-Shift
+- **Pipeline stage involvement**: Operates entirely within the **MEM (Memory Access)** pipeline stage window.
+- **Signal propagation across stages**: Accepts execution addresses directly from the EX/MEM pipeline registers and stabilizes the fully formatted read values (`RData`) before the next clock edge latches them into the MEM/WB writeback registers.
+- **Dependencies**: Interlocks directly with data hazard mitigation architectures. Because memory operations take a full clock cycle to read from storage, any immediate dependent instruction down-line requires the central pipeline controller to introduce a structural stall cycle to preserve data consistency.
 
 ---
 
-## 1. Inputs & Outputs
+## Examples
 
-### Inputs
+### Example: Storing a Byte (e.g., `sb x5, 2(x10)`)
 
-- **`DataFromRegisterFile[31:0]`**: Raw 32-bit data from register file source (`rs2`).
-- **`AddrOffset[1:0]`**: The 2 lowest bits of the calculated effective memory address.
-- **`ByteSel`**: Control lines from the main controller decoder:
-  - `ByteSel[0]` (`indicates unsigned loads, used in LoadAligner`)
-  - `ByteSel[1]` (High for `sh`)
-  - `ByteSel[2]` (High for `sw`)
+Inputs:
 
-### Outputs
+- `Addr` = `0x10000006` (`Addr[1:0]` = `10`)
+- `WData` = `0x11223344` (Low byte to write = `0x44`)
+- `Func3` = `000` (Byte mode)
+- `MemWrite` = `1`
 
-- **`AlignedDataToMemory[31:0]`**: Shifted data connected to the RAM module data input.
-- **`WriteMask[3:0]`**: 4-bit byte write-enable mask connected to the RAM lane enable inputs.
+Submodule Actions:
+
+- `StoreAligner` shifts `0x44` to position 2, generating `0x00440000`.
+- `MaskGenerator` outputs a 4-bit write mask of `0100`.
+- **Result**: On the clock edge, only byte lane 2 of the word address `0x10000004` is updated with `0x44`.
 
 ---
 
-## 2. Internal Schematic & Routing Logic
+## Limitations / Assumptions
 
-### Stage 1: Exception Detection (Misalignment Flag)
+- Assumes memory access constraints match the natural size-alignment protocols dictated by standard RISC-V specifications. Unaligned memory accesses may trigger erroneous wrapping behavior if not isolated externally.
+- Contains no exception tracking, misaligned memory trap hooks, or hardware-level bus parity checks.
+- Purely dependent on stable clock transitions to handle structural operations without corrupting nearby data segments.
 
-- **Logic**: Detects an unaligned half-word operation spanning internal boundaries. This flag goes high only when the offset is `01` during a half-word store instruction while a full word write is low.
-- **Equation**:
-  $$\text{mis\_align} = \text{AddrOffset}[0] \ \text{AND} \ \sim\text{AddrOffset}[1] \ \text{AND} \ \text{Half} \ \text{AND} \ \sim\text{Word}$$
+---
 
-### Stage 2: Shift Amount Calculation (`shamt[4:0]`)
+## Implementation Notes (Logisim)
 
-- **Logic**: Maps the address and control signals into a 5-bit shift distance vector using pure gate logic instead of multiplexers. When the misalignment flag is high, it forces an 8-bit shift, overriding the standard calculation.
-- **Equations**:
-  - `shamt[4]` = $(\sim\text{AddrOffset}[1] \ \text{AND} \ \sim\text{Word}) \ \text{AND} \ \sim\text{mis\_align}$
-  - `shamt[3]` = $(\sim\text{AddrOffset}[0] \ \text{AND} \ \text{Byte} \ \text{AND} \ \sim\text{Word}) \ \text{OR} \ \text{mis\_align}$
-  - `shamt[2:0]` = $3'\text{b000}$ (Permanently grounded; shifts are always multiples of 8 bits)
+- Built cleanly using standard elements from Logisim's native `Memories` (RAM), `Plexers` (Multiplexers), and `Wiring` packages.
+- Configured with a unified local tunnel system to cleanly distribute address byte slices (`Addr[1:0]`) and format controls without visual clutter.
 
-### Stage 3: Spatial Left-Shifting
+---
 
-- **Logic**: A 32-bit logical left barrel shifter takes the raw data from the register file and shifts it up using the calculated 5-bit `shamt[4:0]` vector. Full word operations set the shift amount to zero, passing the register data through unchanged.
+## Submodules
 
-### Stage 4: Write Mask Generation
+### StoreAligner
 
-- **Logic**: Runs the integrated `StoreMaskGenerator` logic in parallel with the data shifter. It maps `AddrOffset[1:0]` and the instruction width signals to drive individual RAM write authorization pins (`WriteMask[3:0]`). This prevents data overwrites in non-targeted byte fields.
-- **Mapping**:
-  - `sw` $\rightarrow$ `4'b1111`
-  - `sb` at `00`/`01`/`10`/`11` $\rightarrow$ `4'b1000` / `4'b0100` / `4'b0010` / `4'b0001`
-  - `sh` at `00`/`01`/`10` $\rightarrow$ `4'b1100` / `4'b0110` / `4'b0011`
+#### Overview
+
+A combinational steering network that shifts lower-order bits from the source register to align them with the target byte coordinates within the 32-bit memory word.
+
+- **Source**: `logisim/RiskVMemory.circ`
+  ![](../../images/store-align.png)
+
+#### Interface
+
+- **Inputs**: `WData` (32 bits), `Addr_LSB` (2 bits, tracking `Addr[1:0]`)
+- **Outputs**: `Aligned_WData` (32 bits)
+
+#### Logic Definition
+
+- If `Addr_LSB` == `00` → `Aligned_WData` = `WData`
+- If `Addr_LSB` == `01` → `Aligned_WData` = `WData[23:0] << 8` (Low byte moved to Byte 1)
+- If `Addr_LSB` == `10` → `Aligned_WData` = `WData[15:0] << 16` (Low half/byte moved to Byte 2)
+- If `Addr_LSB` == `11` → `Aligned_WData` = `WData[7:0] << 24` (Low byte moved to Byte 3)
+
+---
+
+### MaskGenerator
+
+#### Overview
+
+An operational decoding matrix that translates the instruction size code (`Func3`) and address offsets into a 4-bit byte-enable vector used to gate RAM write transactions.
+
+- **Source**: `logisim/RiskVMemory.circ`
+  ![](../../images/strore-mask-gen.png)
+
+#### Interface
+
+- **Inputs**: `Func3` (3 bits), `Addr_LSB` (2 bits, tracking `Addr[1:0]`)
+- **Outputs**: `Write_Mask` (4 bits, mapped directly to RAM byte-enables)
+
+#### Logic Definition
+
+- **Byte Mode (`Func3` == `000`)**:
+  - `Addr_LSB` == `00` → `Write_Mask` = `0001`
+  - `Addr_LSB` == `01` → `Write_Mask` = `0010`
+  - `Addr_LSB` == `10` → `Write_Mask` = `0100`
+  - `Addr_LSB` == `11` → `Write_Mask` = `1000`
+- **Halfword Mode (`Func3` == `001`)**:
+  - `Addr_LSB` == `00` → `Write_Mask` = `0011`
+  - `Addr_LSB` == `10` → `Write_Mask` = `1100`
+- **Word Mode (`Func3` == `010`)**:
+  - `Write_Mask` = `1111`
+- **Default/Other Modes**: `Write_Mask` = `0000`
+
+---
+
+### LoadAligner
+
+#### Overview
+
+An extraction and sign-extension framework that captures sub-word selections from memory and formats them into standardized 32-bit integers.
+
+- **Source**: `logisim/RiskVMemory.circ`
+  ![](../../images/load-align.png)
+
+#### Interface
+
+- **Inputs**: `RAM_DataOut` (32 bits), `Addr_LSB` (2 bits, tracking `Addr[1:0]`), `Func3` (3 bits)
+- **Outputs**: `RData` (32 bits)
+
+#### Logic Definition
+
+Extracts and pads values based on the active memory format configuration:
+
+- **`Func3` == `000` (Byte Load - `lb`)**:
+  - `Addr_LSB` == `00` → `RData` = `{{24{RAM_DataOut[7]}}, RAM_DataOut[7:0]}`
+  - `Addr_LSB` == `01` → `RData` = `{{24{RAM_DataOut[15]}}, RAM_DataOut[15:8]}`
+  - `Addr_LSB` == `10` → `RData` = `{{24{RAM_DataOut[23]}}, RAM_DataOut[23:16]}`
+  - `Addr_LSB` == `11` → `RData` = `{{24{RAM_DataOut[31]}}, RAM_DataOut[31:24]}`
+- **`Func3` == `001` (Halfword Load - `lh`)**:
+  - `Addr_LSB` == `00` → `RData` = `{{16{RAM_DataOut[15]}}, RAM_DataOut[15:0]}`
+  - `Addr_LSB` == `10` → `RData` = `{{16{RAM_DataOut[31]}}, RAM_DataOut[31:16]}`
+- **`Func3` == `010` (Word Load - `lw`)**:
+  - `RData` = `RAM_DataOut`
+- **`Func3` == `100` (Byte Load Unsigned - `lbu`)**:
+  - `Addr_LSB` == `00` → `RData` = `{24'b0, RAM_DataOut[7:0]}`
+  - `Addr_LSB` == `01` → `RData` = `{24'b0, RAM_DataOut[15:8]}`
+  - `Addr_LSB` == `10` → `RData` = `{24'b0, RAM_DataOut[23:16]}`
+  - `Addr_LSB` == `11` → `RData` = `{24'b0, RAM_DataOut[31:24]}`
+- **`Func3` == `101` (Halfword Load Unsigned - `lhu`)**:
+  - `Addr_LSB` == `00` → `RData` = `{16'b0, RAM_DataOut[15:0]}`
+  - `Addr_LSB` == `10` → `RData` = `{16'b0, RAM_DataOut[31:16]}`
 
 ```
 
