@@ -14,7 +14,7 @@
         <link rel="prev" href="../forward-controller/">
       
       
-        <link rel="next" href="../write-back-controller/">
+        <link rel="next" href="../writeback-controller/">
       
       
         
@@ -903,17 +903,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#source-circuit" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Source Circuit
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#submodules" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1114,17 +1103,6 @@
     <span class="md-ellipsis">
       
         Implementation Notes (Logisim)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#source-circuit_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Source Circuit
       
     </span>
   </a>
@@ -1342,17 +1320,6 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#source-circuit_2" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Source Circuit
-      
-    </span>
-  </a>
-  
-</li>
-        
       </ul>
     </nav>
   
@@ -1379,7 +1346,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../write-back-controller/" class="md-nav__link">
+      <a href="../writeback-controller/" class="md-nav__link">
         
   
   
@@ -1387,6 +1354,34 @@
     
   
     Write Back Controller
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../program-counter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Program Counter
   
 
     
@@ -2485,17 +2480,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#source-circuit" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Source Circuit
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#submodules" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2696,17 +2680,6 @@
     <span class="md-ellipsis">
       
         Implementation Notes (Logisim)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#source-circuit_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Source Circuit
       
     </span>
   </a>
@@ -2924,17 +2897,6 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#source-circuit_2" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Source Circuit
-      
-    </span>
-  </a>
-  
-</li>
-        
       </ul>
     </nav>
   
@@ -2968,11 +2930,14 @@
 <p>The <strong>Branch Control Unit</strong> is a top-level macro-module that determines whether the program counter should branch or jump. It acts as a structural wrapper around an internal Two's Complement Adder, the <code>WordLevelComparator</code>, and the <code>BranchSelector</code> submodules. It combines arithmetic subtraction with instruction-level verification to produce a single <code>TakeBranch</code> output signal.</p>
 <ul>
 <li><strong>Purpose in CPU:</strong> Decides whether a conditional branch or unconditional jump should alter the program counter.</li>
-<li><strong>Role in datapath:</strong> Sits in the ID/EX stage boundary; consumes register operands and instruction metadata, produces the <code>TakeBranch</code> control signal used by PC steering logic.</li>
-<li><strong>Type:</strong> Combinational</li>
+<li>
+<p><strong>Role in datapath:</strong> Sits in the ID/EX stage boundary; consumes register operands and instruction metadata, produces the <code>TakeBranch</code> control signal used by PC steering logic.</p>
+</li>
+<li>
+<p><strong>Source</strong>: <code>logisim/RiskVControl.circ</code>
+  <img alt="" src="../../../images/branch-controller.png" /></p>
+</li>
 </ul>
-<p>📌 Diagram:
-[Insert Logisim screenshot here]</p>
 <hr />
 <h2 id="interface">Interface</h2>
 <h3 id="inputs">Inputs</h3>
@@ -3111,9 +3076,6 @@
 <li>Signal widths follow RV32I spec (32-bit data, 5-bit <code>BrSel</code> bus, 1-bit control outputs).</li>
 </ul>
 <hr />
-<h2 id="source-circuit">Source Circuit</h2>
-<p>[Insert source .circ file here]</p>
-<hr />
 <h2 id="submodules">Submodules</h2>
 <hr />
 <h3 id="branch-selector">Branch Selector</h3>
@@ -3125,7 +3087,7 @@
 <li><strong>Type:</strong> Combinational</li>
 </ul>
 <p>📌 Diagram:
-[Insert Logisim screenshot here]</p>
+<img alt="" src="../../../images/branch-selector.png" /></p>
 <hr />
 <h4 id="interface_1">Interface</h4>
 <h5 id="inputs_1">Inputs</h5>
@@ -3310,9 +3272,6 @@
 <li>All standard Logisim components; no external libraries.</li>
 </ul>
 <hr />
-<h4 id="source-circuit_1">Source Circuit</h4>
-<p>[Insert source .circ file here]</p>
-<hr />
 <h3 id="branch-comparator-wordlevelcomparator">Branch Comparator (<code>WordLevelComparator</code>)</h3>
 <h4 id="overview_2">Overview</h4>
 <p>The <strong>Branch Comparator (<code>WordLevelComparator</code>)</strong> evaluates relational comparisons between two 32-bit operands by interpreting the outputs of an external Two's Complement subtractor. It derives equality, unsigned less-than, and signed less-than flags without performing any arithmetic itself.</p>
@@ -3322,7 +3281,7 @@
 <li><strong>Type:</strong> Combinational</li>
 </ul>
 <p>📌 Diagram:
-[Insert Logisim screenshot here]</p>
+<img alt="" src="../../../images/branch-comparitor.png" /></p>
 <hr />
 <h4 id="interface_2">Interface</h4>
 <h5 id="inputs_2">Inputs</h5>
@@ -3472,8 +3431,6 @@
 <li>Signal widths follow RV32I spec.</li>
 </ul>
 <hr />
-<h4 id="source-circuit_2">Source Circuit</h4>
-<p>[Insert source .circ file here]</p>
 
 
 

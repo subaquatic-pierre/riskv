@@ -14,7 +14,7 @@
         <link rel="prev" href="../branch-controller/">
       
       
-        <link rel="next" href="../../arithmetic/alu/">
+        <link rel="next" href="../program-counter/">
       
       
         
@@ -76,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#write-back-controller" class="md-skip">
+        <a href="#writebackcontroller" class="md-skip">
           Skip to content
         </a>
       
@@ -686,6 +686,24 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Write Back Controller
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -703,6 +721,225 @@
 
       </a>
       
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interface
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Interface">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#inputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inputs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#outputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Outputs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#output-logic-core-definition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Output Logic (Core Definition)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Output Logic (Core Definition)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rule-based-definition-preferred" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rule-based definition (preferred)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optional-truth-table-only-when-necessary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Optional: Truth table (only when necessary)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#internal-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Internal Design
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#operation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pipeline-interaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pipeline Interaction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-memory-load-return-eg-lw-x10-0x5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: Memory Load Return (e.g., lw x10, 0(x5))
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#limitations-assumptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limitations / Assumptions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation Notes
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../program-counter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Program Counter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -1592,6 +1829,186 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interface
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Interface">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#inputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inputs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#outputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Outputs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#output-logic-core-definition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Output Logic (Core Definition)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Output Logic (Core Definition)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rule-based-definition-preferred" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rule-based definition (preferred)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optional-truth-table-only-when-necessary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Optional: Truth table (only when necessary)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#internal-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Internal Design
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#operation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pipeline-interaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pipeline Interaction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-memory-load-return-eg-lw-x10-0x5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: Memory Load Return (e.g., lw x10, 0(x5))
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#limitations-assumptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limitations / Assumptions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation Notes
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -1607,7 +2024,166 @@
 
 
 
-<h1 id="write-back-controller">Write Back Controller</h1>
+<h1 id="writebackcontroller">WriteBackController</h1>
+<hr />
+<h2 id="overview">Overview</h2>
+<p>The <code>WriteBackController</code> component handles structural routing at the final destination boundary of a pipelined RV32I processor. It functions as a data-path routing multiplexer that determines which computed result or memory payload gets committed back to the processor's Core Register File during the Writeback (WB) phase.</p>
+<ul>
+<li><strong>Purpose in CPU</strong>: Consolidates separate asynchronous execution channels into a single synchronized register commitment path, preventing structural bus contentions.</li>
+<li>
+<p><strong>Role in datapath</strong>: Positioned at the terminal boundary of the Memory/Writeback (MEM/WB) pipeline interface, collecting data payloads from the execution and storage units to feed back into the destination register write input channel (<code>rd</code>).</p>
+</li>
+<li>
+<p><strong>Source</strong>: <code>logisim/RiskVControl.circ</code>
+  <img alt="" src="../../../images/writeback-controller.png" /></p>
+</li>
+</ul>
+<hr />
+<h2 id="interface">Interface</h2>
+<h3 id="inputs">Inputs</h3>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Width</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ALUOut</code></td>
+<td>32 bits</td>
+<td>Mathematical or logical data output forwarded from the computation unit (ALU).</td>
+</tr>
+<tr>
+<td><code>MemOut</code></td>
+<td>32 bits</td>
+<td>Data payload read out from Random Access Data Memory (RAM) during a load operation.</td>
+</tr>
+<tr>
+<td><code>PCPlus4</code></td>
+<td>32 bits</td>
+<td>Incremented program counter sequence value tracking the sequential instruction pathway (<code>PC + 4</code>).</td>
+</tr>
+<tr>
+<td><code>WBSel</code></td>
+<td>2 bits</td>
+<td>Structural multi-bit routing control line dictating which data stream maps to the destination register.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="outputs">Outputs</h3>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Width</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>WB_Data</code></td>
+<td>32 bits</td>
+<td>Standardized 32-bit payload routed directly to the master write data channel of the central Register File.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="output-logic-core-definition">Output Logic (Core Definition)</h2>
+<p>Defines how data outputs are structurally isolated and routed based on the status configuration of the tracking network lines.</p>
+<h3 id="rule-based-definition-preferred">Rule-based definition (preferred)</h3>
+<ul>
+<li>If <code>WBSel</code> = <code>00</code> → <code>WB_Data</code> = <code>ALUOut</code> (Routes standard computational or address generation results)</li>
+<li>If <code>WBSel</code> = <code>01</code> → <code>WB_Data</code> = <code>MemOut</code> (Routes memory data payloads retrieved via load commands)</li>
+<li>If <code>WBSel</code> = <code>11</code> → <code>WB_Data</code> = <code>PCPlus4</code> (Routes link addresses for jump-and-link operations)</li>
+</ul>
+<hr />
+<h3 id="optional-truth-table-only-when-necessary">Optional: Truth table (only when necessary)</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;"><code>WBSel</code> Selector</th>
+<th>Output <code>WB_Data</code> Value</th>
+<th>Operational Intent</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><code>00</code></td>
+<td><code>ALUOut</code></td>
+<td>Register Writeback from computation (R-type, I-type arithmetic)</td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>01</code></td>
+<td><code>MemOut</code></td>
+<td>Register Writeback from storage tracking (<code>lw</code>)</td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>10</code></td>
+<td><em>Unused / Default</em></td>
+<td>Reserved path</td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>11</code></td>
+<td><code>PCPlus4</code></td>
+<td>Return address execution recording (<code>jal</code>, <code>jalr</code>)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="internal-design">Internal Design</h2>
+<p>The <code>WriteBackController</code> features a clean, low-latency combinational topology engineered to settle routing channels instantly within the final phase window.</p>
+<ul>
+<li><strong>Structure</strong>: Purely combinational circuit layout containing zero clocked registers, flip-flops, or discrete state latches.</li>
+<li><strong>Multiplexer Layout</strong>: Employs a single multi-bit 4-to-1 Multiplexer (<code>Multiplexer</code> component derived from the <code>Plexers</code> library group configured for a data tracking bit-width of 32 and a selection width of 2).</li>
+<li><strong>Routing Infrastructure</strong>: Directs physical terminal interfaces onto internal connection tracks via named wire labels (<code>Tunnels</code>). The multiplexer extracts selection configurations via the 2-bit routing tunnel <code>WBSel</code> hooked directly into its control pin.</li>
+</ul>
+<hr />
+<h2 id="operation">Operation</h2>
+<p>Step-by-step behavior:</p>
+<ol>
+<li><strong>Inputs arrive</strong>: Data arrays from the ALU calculation unit (<code>ALUOut</code>), memory data bus (<code>MemOut</code>), and sequence link path (<code>PCPlus4</code>) appear at the multiplexer inputs.</li>
+<li><strong>Decoding / selection occurs</strong>: The central control block applies a stable 2-bit state parameter directly to the <code>WBSel</code> multiplexer select lines.</li>
+<li><strong>Logic evaluates conditions</strong>: The combinational plexer gates establish a direct structural link between the selected input channel and the output terminal.</li>
+<li><strong>Outputs are produced</strong>: The target data stream settles on the <code>WB_Data</code> channel, making it immediately available for latching into the Register File on the next active clock edge.</li>
+</ol>
+<hr />
+<h2 id="pipeline-interaction">Pipeline Interaction</h2>
+<ul>
+<li><strong>Pipeline stage involvement</strong>: Centered strictly within the <strong>WB (Writeback)</strong> stage environment.</li>
+<li><strong>Signal propagation across stages</strong>: Monitors signals latched across the MEM/WB pipeline registers to convert them into a stable return stream.</li>
+<li><strong>Dependencies</strong>: Operates downstream of the main control distribution architecture; relies on the system controller to decode the active instruction type and maintain stable <code>WBSel</code> values across the execution window.</li>
+</ul>
+<hr />
+<h2 id="examples">Examples</h2>
+<h3 id="example-memory-load-return-eg-lw-x10-0x5">Example: Memory Load Return (e.g., <code>lw x10, 0(x5)</code>)</h3>
+<p>Inputs:</p>
+<ul>
+<li><code>ALUOut</code> = <code>0x200000A0</code> (Computed data storage address)</li>
+<li><code>MemOut</code> = <code>0xABCDEF12</code> (Actual value read from RAM at that address)</li>
+<li><code>PCPlus4</code> = <code>0x00000044</code></li>
+<li><code>WBSel</code> = <code>01</code></li>
+</ul>
+<p>Outputs:</p>
+<ul>
+<li><code>WB_Data</code> = <code>0xABCDEF12</code> (Routes the data read from memory back to register <code>x10</code>)</li>
+</ul>
+<hr />
+<h2 id="limitations-assumptions">Limitations / Assumptions</h2>
+<ul>
+<li>Assumes that data sign-extension or byte-alignment handling for memory operations has already been computed by processing blocks upstream.</li>
+<li>Purely combinational logic structure; does not include built-in timing elements or data holding latches.</li>
+<li>Relies entirely on the external control system to avoid configuring the module into unmapped or invalid states (e.g., state <code>10</code>).</li>
+</ul>
+<hr />
+<h2 id="implementation-notes">Implementation Notes</h2>
+<ul>
+<li>Built using native Logisim <code>Plexers</code> and <code>Wiring</code> components.</li>
+<li>Configured strictly using standard multi-bit bus lines matching standard RV32I design specifications.</li>
+<li>Implements organized local tunnel networks to avoid overlapping signal lines and trace clutter.</li>
+</ul>
+<hr />
 
 
 

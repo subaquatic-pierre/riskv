@@ -76,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#hazard-and-forwarding-controller-specification" class="md-skip">
+        <a href="#hazard-controller" class="md-skip">
           Skip to content
         </a>
       
@@ -653,22 +653,44 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#block-diagram-interface" class="md-nav__link">
+  <a href="#overview" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Block Diagram &amp; Interface
+        Overview
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Block Diagram &amp; Interface">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interface
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Interface">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#pin-definitions" class="md-nav__link">
+  <a href="#inputs" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Pin Definitions
+        Inputs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#outputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Outputs
       
     </span>
   </a>
@@ -681,34 +703,45 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#theory-of-operation" class="md-nav__link">
+  <a href="#output-logic-core-definition" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Theory of Operation
+        Output Logic (Core Definition)
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Theory of Operation">
+    <nav class="md-nav" aria-label="Output Logic (Core Definition)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-data-bypassing-forwarding" class="md-nav__link">
+  <a href="#rule-based-definition" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Data Bypassing (Forwarding)
+        Rule-based definition
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="1. Data Bypassing (Forwarding)">
+    <nav class="md-nav" aria-label="Rule-based definition">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#mux-encoding" class="md-nav__link">
+  <a href="#1-load-use-data-hazard-detection-stall-logic" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Mux Encoding
+        1. Load-Use Data Hazard Detection (Stall Logic)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-control-hazard-detection-flush-logic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Control Hazard Detection (Flush Logic)
       
     </span>
   </a>
@@ -720,11 +753,61 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#2-pipeline-interlocks-stalls-flushes" class="md-nav__link">
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#internal-design" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Pipeline Interlocks (Stalls &amp; Flushes)
+        Internal Design
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pipeline-interaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pipeline Interaction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-1-load-use-hazard-encountered" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example 1: Load-Use Hazard Encountered
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-2-branch-taken-control-hazard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example 2: Branch Taken (Control Hazard)
       
     </span>
   </a>
@@ -737,10 +820,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#behavioral-logic-implementation" class="md-nav__link">
+  <a href="#limitations-assumptions" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Behavioral Logic Implementation
+        Limitations / Assumptions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation Notes
       
     </span>
   </a>
@@ -819,7 +913,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../write-back-controller/" class="md-nav__link">
+      <a href="../writeback-controller/" class="md-nav__link">
         
   
   
@@ -827,6 +921,34 @@
     
   
     Write Back Controller
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../program-counter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Program Counter
   
 
     
@@ -1731,22 +1853,44 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#block-diagram-interface" class="md-nav__link">
+  <a href="#overview" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Block Diagram &amp; Interface
+        Overview
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Block Diagram &amp; Interface">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interface
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Interface">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#pin-definitions" class="md-nav__link">
+  <a href="#inputs" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Pin Definitions
+        Inputs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#outputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Outputs
       
     </span>
   </a>
@@ -1759,34 +1903,45 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#theory-of-operation" class="md-nav__link">
+  <a href="#output-logic-core-definition" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Theory of Operation
+        Output Logic (Core Definition)
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Theory of Operation">
+    <nav class="md-nav" aria-label="Output Logic (Core Definition)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-data-bypassing-forwarding" class="md-nav__link">
+  <a href="#rule-based-definition" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Data Bypassing (Forwarding)
+        Rule-based definition
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="1. Data Bypassing (Forwarding)">
+    <nav class="md-nav" aria-label="Rule-based definition">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#mux-encoding" class="md-nav__link">
+  <a href="#1-load-use-data-hazard-detection-stall-logic" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Mux Encoding
+        1. Load-Use Data Hazard Detection (Stall Logic)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-control-hazard-detection-flush-logic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Control Hazard Detection (Flush Logic)
       
     </span>
   </a>
@@ -1798,11 +1953,61 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#2-pipeline-interlocks-stalls-flushes" class="md-nav__link">
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#internal-design" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Pipeline Interlocks (Stalls &amp; Flushes)
+        Internal Design
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pipeline-interaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pipeline Interaction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-1-load-use-hazard-encountered" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example 1: Load-Use Hazard Encountered
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-2-branch-taken-control-hazard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example 2: Branch Taken (Control Hazard)
       
     </span>
   </a>
@@ -1815,10 +2020,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#behavioral-logic-implementation" class="md-nav__link">
+  <a href="#limitations-assumptions" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Behavioral Logic Implementation
+        Limitations / Assumptions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation Notes
       
     </span>
   </a>
@@ -1842,182 +2058,159 @@
 
 
 
-<h1 id="hazard-and-forwarding-controller-specification">Hazard and Forwarding Controller Specification</h1>
-<p>The <strong>HazardController</strong> is a centralized, combinational control unit responsible for maintaining data and control integrity within the 5-stage pipelined RISC-V processor. It dynamically resolves <strong>Data Hazards</strong> (ALU-to-ALU dependencies, Load-Use dependencies) and <strong>Control Hazards</strong> (taken branches/jumps) by managing pipeline register states and routing bypass data.</p>
+<h1 id="hazard-controller">Hazard Controller</h1>
 <hr />
-<h2 id="block-diagram-interface">Block Diagram &amp; Interface</h2>
-<div class="highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>                      +-------------------+
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>   IF_ID_rs1 --------&gt;|                   |----&gt; PC_WE
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>   IF_ID_rs2 --------&gt;|                   |----&gt; IF_ID_WE
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>   ID_EX_rs1 --------&gt;|                   |----&gt; IF_ID_Flush
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>   ID_EX_rs2 --------&gt;|  HazardController |----&gt; ID_EX_Flush
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>   ID_EX_rdi --------&gt;|                   |----&gt; FWD_A[1:0]
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>   EX_MEM_rdi -------&gt;|                   |----&gt; FWD_B[1:0]
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>   MEM_WB_rdi -------&gt;|                   |
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>   ID_EX_MemRead ----&gt;|                   |
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>   EX_MEM_RegWEn ----&gt;|                   |
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>   MEM_WB_RegWEn ----&gt;|                   |
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>   PCSel ------------&gt;|                   |
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>                      +-------------------+
-</span></code></pre></div>
-<h3 id="pin-definitions">Pin Definitions</h3>
+<h2 id="overview">Overview</h2>
+<p>The <code>HazardController</code> acts as the primary pipeline interlock and control protection unit for a pipelined RV32I processor. It dynamically analyzes active instruction source registers against down-pipeline destination states to identify load-use data hazards and branch/jump control hazards, safely stalling or flushing stages to preserve execution integrity.</p>
+<ul>
+<li><strong>Purpose in CPU</strong>: Coordinates pipeline state hazards by emitting control-flow overrides (<code>Stall</code> and <code>Flush</code>) when an instruction's required data isn't yet available for forwarding, or when a branch misprediction/jump changes the execution path.</li>
+<li>
+<p><strong>Role in datapath</strong>: Intersects the boundaries between the Fetch (IF), Decode (ID), and Execution (EX) pipeline registers to orchestrate synchronous pauses or instruction invalidations.</p>
+</li>
+<li>
+<p><strong>Source</strong>: <code>logisim/RiskVControl.circ</code>
+  <img alt="" src="../../../images/hazard-controller.png" /></p>
+</li>
+</ul>
+<hr />
+<h2 id="interface">Interface</h2>
+<h3 id="inputs">Inputs</h3>
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Signal Name</th>
-<th style="text-align: center;">Direction</th>
-<th style="text-align: center;">Width</th>
-<th style="text-align: left;">Description</th>
+<th>Signal</th>
+<th>Width</th>
+<th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><code>IF_ID_rs1</code> / <code>rs2</code></td>
-<td style="text-align: center;">Input</td>
-<td style="text-align: center;">5</td>
-<td style="text-align: left;">Source registers of the instruction currently in the Decode stage.</td>
+<td><code>ID_EX_MemRead</code></td>
+<td>1 bit</td>
+<td>Active high indicator showing if the instruction currently executing in the EX stage is a memory load command (e.g., <code>lw</code>).</td>
 </tr>
 <tr>
-<td style="text-align: left;"><code>ID_EX_rs1</code> / <code>rs2</code></td>
-<td style="text-align: center;">Input</td>
-<td style="text-align: center;">5</td>
-<td style="text-align: left;">Source registers of the instruction currently in the Execute stage.</td>
+<td><code>ID_EX_rd</code></td>
+<td>5 bits</td>
+<td>Destination register address of the instruction currently residing in the Execution (EX) stage.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><code>ID_EX_rdi</code></td>
-<td style="text-align: center;">Input</td>
-<td style="text-align: center;">5</td>
-<td style="text-align: left;">Destination register of the instruction 1 cycle ahead (EX).</td>
+<td><code>IF_ID_rs1</code></td>
+<td>5 bits</td>
+<td>Source register 1 address decoded from the raw instruction in the Instruction Decode (ID) stage.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><code>EX_MEM_rdi</code></td>
-<td style="text-align: center;">Input</td>
-<td style="text-align: center;">5</td>
-<td style="text-align: left;">Destination register of the instruction 2 cycles ahead (MEM).</td>
+<td><code>IF_ID_rs2</code></td>
+<td>5 bits</td>
+<td>Source register 2 address decoded from the raw instruction in the Instruction Decode (ID) stage.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><code>MEM_WB_rdi</code></td>
-<td style="text-align: center;">Input</td>
-<td style="text-align: center;">5</td>
-<td style="text-align: left;">Destination register of the instruction 3 cycles ahead (WB).</td>
+<td><code>PCSrc</code></td>
+<td>1 bit</td>
+<td>Control signal from the branch/jump execution logic indicating whether a control-flow deviation should be taken.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="outputs">Outputs</h3>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Width</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Stall</code></td>
+<td>1 bit</td>
+<td>Active high interlock signal used to freeze the Program Counter (PC) register and the IF/ID pipeline latch.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><code>ID_EX_MemRead</code></td>
-<td style="text-align: center;">Input</td>
-<td style="text-align: center;">1</td>
-<td style="text-align: left;">Asserted if the instruction in the EX stage is a Load instruction.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>EX_MEM_RegWEn</code></td>
-<td style="text-align: center;">Input</td>
-<td style="text-align: center;">1</td>
-<td style="text-align: left;">Asserted if the instruction in the MEM stage writes to the Register File.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>MEM_WB_RegWEn</code></td>
-<td style="text-align: center;">Input</td>
-<td style="text-align: center;">1</td>
-<td style="text-align: left;">Asserted if the instruction in the WB stage writes to the Register File.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>PCSel</code></td>
-<td style="text-align: center;">Input</td>
-<td style="text-align: center;">1</td>
-<td style="text-align: left;">Asserted if a branch is taken or a jump occurs in the EX stage.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>PC_WE</code></td>
-<td style="text-align: center;">Output</td>
-<td style="text-align: center;">1</td>
-<td style="text-align: left;">Write Enable for the Program Counter register (<span class="arithmatex">\(1 = \text{normal}\)</span>, <span class="arithmatex">\(0 = \text{freeze}\)</span>).</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>IF_ID_WE</code></td>
-<td style="text-align: center;">Output</td>
-<td style="text-align: center;">1</td>
-<td style="text-align: left;">Write Enable for the Fetch/Decode pipeline register (<span class="arithmatex">\(1 = \text{normal}\)</span>, <span class="arithmatex">\(0 = \text{freeze}\)</span>).</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>IF_ID_Flush</code></td>
-<td style="text-align: center;">Output</td>
-<td style="text-align: center;">1</td>
-<td style="text-align: left;">Synchronous clear for the Fetch/Decode pipeline register (inserts NOP).</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>ID_EX_Flush</code></td>
-<td style="text-align: center;">Output</td>
-<td style="text-align: center;">1</td>
-<td style="text-align: left;">Synchronous clear for the Decode/Execute pipeline register (inserts NOP).</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>FWD_A</code> / <code>FWD_B</code></td>
-<td style="text-align: center;">Output</td>
-<td style="text-align: center;">2</td>
-<td style="text-align: left;">Selection lines for the 3-way ALU input multiplexers in the EX stage.</td>
+<td><code>Flush</code></td>
+<td>1 bit</td>
+<td>Active high clear signal used to invalidate stale instructions in the pipeline registers, transforming them into bubbles (<code>NOP</code>s).</td>
 </tr>
 </tbody>
 </table>
 <hr />
-<h2 id="theory-of-operation">Theory of Operation</h2>
-<p>The module executes two parallel architectural routines every clock cycle: <strong>Pipeline Interlock Logic</strong> (Stalls/Flushes) and <strong>Data Bypassing Logic</strong> (Forwarding).</p>
-<h3 id="1-data-bypassing-forwarding">1. Data Bypassing (Forwarding)</h3>
-<p>To avoid stalling on ALU-to-ALU instructions, data is intercepted from downstream stages before it is formally committed back to the structural Register File.</p>
-<p>The selection priority is hard-wired to prefer the <strong>EX/MEM</strong> stage over the <strong>MEM/WB</strong> stage. This structural constraint guarantees that if back-to-back instructions write to the same destination register, the ALU always receives the newest chronological value.</p>
-<h4 id="mux-encoding">Mux Encoding</h4>
+<h2 id="output-logic-core-definition">Output Logic (Core Definition)</h2>
+<p>Defines how operational hazards translate into structural control responses across the tracking networks.</p>
+<h3 id="rule-based-definition">Rule-based definition</h3>
+<h4 id="1-load-use-data-hazard-detection-stall-logic">1. Load-Use Data Hazard Detection (Stall Logic)</h4>
+<p>A load-use hazard occurs when an instruction in the Instruction Decode (ID) stage requires a source register that is currently being loaded from data memory by a preceding load instruction in the Execution (EX) stage. Because memory read data is not available until the end of the Memory (MEM) stage, forwarding alone cannot resolve this hazard, and a 1-cycle stall must be inserted.</p>
+<div class="arithmatex">\[\text{LoadUseHazard} = \text{ID\_EX\_MemRead} \ \&amp; \ ((\text{ID\_EX\_rd} == \text{IF\_ID\_rs1}) \ | \ (\text{ID\_EX\_rd} == \text{IF\_ID\_rs2}))\]</div>
 <ul>
-<li><strong><code>2'b00</code></strong>: No hazard. Selects the standard operands out of the <code>ID_EX</code> pipeline register.</li>
-<li><strong><code>2'b01</code></strong>: Forward from <code>EX_MEM</code>. Intercepts the ALU output from 1 cycle ahead. Structural pipeline rules guarantee that if an instruction reaches the MEM stage with <code>RegWEn</code> active without triggering a stall or a flush, it is natively an ALU operation.</li>
-<li><strong><code>2'b10</code></strong>: Forward from <code>MEM_WB</code>. Intercepts the final output of the write-back multiplexer from 2 cycles ahead, handling resolved ALU results, loads, and jumps.</li>
+<li>If <span class="arithmatex">\(\text{LoadUseHazard} == 1\)</span> and <span class="arithmatex">\(\text{ID\_EX\_rd} \neq 0\)</span>:</li>
+<li><code>Stall</code> = <code>1</code></li>
+<li>Else:</li>
+<li><code>Stall</code> = <code>0</code></li>
 </ul>
-<h3 id="2-pipeline-interlocks-stalls-flushes">2. Pipeline Interlocks (Stalls &amp; Flushes)</h3>
+<h4 id="2-control-hazard-detection-flush-logic">2. Control Hazard Detection (Flush Logic)</h4>
+<p>A control hazard occurs when a conditional branch is taken or an unconditional jump executes, altering the sequential execution stream. Instructions that were speculatively fetched behind the branch/jump must be discarded.</p>
 <ul>
-<li><strong>Load-Use Hazard:</strong> Data requested from an external memory load (<code>lw</code>) is not physically valid until the instruction exits the MEM stage. If an instruction in Decode depends on an active load in Execute, the controller drops write enables to freeze the PC and ID stages while flushing the EX stage to insert a 1-cycle bubble.</li>
-<li><strong>Control Hazard:</strong> If a branch is evaluated as taken or a jump instruction executes (<code>PCSel = 1</code>), instructions fetched in the shadow of that jump are invalid. The controller asserts both flushes to clean out the pipeline.</li>
+<li>If <code>PCSrc</code> = <code>1</code>:</li>
+<li><code>Flush</code> = <code>1</code> (Clears the volatile pipeline stage contents to block illegal instruction execution tracking)</li>
+<li>Else:</li>
+<li><code>Flush</code> = <code>0</code></li>
 </ul>
 <hr />
-<h2 id="behavioral-logic-implementation">Behavioral Logic Implementation</h2>
-<div class="highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>// ==========================================
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>// 1. FORWARDING LOGIC (INPUT A)
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>// ==========================================
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>EX_MEM_Hazard_A = EX_MEM_RegWEn AND (EX_MEM_rdi != 0) AND (EX_MEM_rdi == ID_EX_rs1);
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>MEM_WB_Hazard_A = MEM_WB_RegWEn AND (MEM_WB_rdi != 0) AND (MEM_WB_rdi == ID_EX_rs1);
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>FWD_A[0] = EX_MEM_Hazard_A;
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>FWD_A[1] = MEM_WB_Hazard_A AND (NOT EX_MEM_Hazard_A); // EX_MEM takes priority
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>// ==========================================
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>// 2. FORWARDING LOGIC (INPUT B)
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>// ==========================================
-</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>EX_MEM_Hazard_B = EX_MEM_RegWEn AND (EX_MEM_rdi != 0) AND (EX_MEM_rdi == ID_EX_rs2);
-</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>MEM_WB_Hazard_B = MEM_WB_RegWEn AND (MEM_WB_rdi != 0) AND (MEM_WB_rdi == ID_EX_rs2);
-</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>
-</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>FWD_B[0] = EX_MEM_Hazard_B;
-</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>FWD_B[1] = MEM_WB_Hazard_B AND (NOT EX_MEM_Hazard_B); // EX_MEM takes priority
-</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>
-</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>// ==========================================
-</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>// 3. STALL &amp; FLUSH LOGIC
-</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>// ==========================================
-</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>Load_Use_Stall = ID_EX_MemRead AND (ID_EX_rdi != 0) AND ((ID_EX_rdi == IF_ID_rs1) OR (ID_EX_rdi == IF_ID_rs2));
-</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>
-</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>if (Load_Use_Stall) {
-</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a>    PC_WE       = 0;  // Freeze Program Counter
-</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a>    IF_ID_WE    = 0;  // Freeze Decode Stage
-</span><span id="__span-1-27"><a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a>    IF_ID_Flush = 0;
-</span><span id="__span-1-28"><a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a>    ID_EX_Flush = 1;  // Inject NOP into Execute Stage
-</span><span id="__span-1-29"><a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a>}
-</span><span id="__span-1-30"><a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a>else if (PCSel) {
-</span><span id="__span-1-31"><a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a>    PC_WE       = 1;
-</span><span id="__span-1-32"><a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a>    IF_ID_WE    = 1;
-</span><span id="__span-1-33"><a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a>    IF_ID_Flush = 1;  // Flush instruction currently decoding
-</span><span id="__span-1-34"><a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a>    ID_EX_Flush = 1;  // Flush instruction currently executing
-</span><span id="__span-1-35"><a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a>}
-</span><span id="__span-1-36"><a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a>else {
-</span><span id="__span-1-37"><a id="__codelineno-1-37" name="__codelineno-1-37" href="#__codelineno-1-37"></a>    PC_WE       = 1;  // Normal execution flow
-</span><span id="__span-1-38"><a id="__codelineno-1-38" name="__codelineno-1-38" href="#__codelineno-1-38"></a>    IF_ID_WE    = 1;
-</span><span id="__span-1-39"><a id="__codelineno-1-39" name="__codelineno-1-39" href="#__codelineno-1-39"></a>    IF_ID_Flush = 0;
-</span><span id="__span-1-40"><a id="__codelineno-1-40" name="__codelineno-1-40" href="#__codelineno-1-40"></a>    ID_EX_Flush = 0;
-</span><span id="__span-1-41"><a id="__codelineno-1-41" name="__codelineno-1-41" href="#__codelineno-1-41"></a>}
-</span></code></pre></div>
+<h2 id="internal-design">Internal Design</h2>
+<p>The module uses purely combinational logic circuits to evaluate condition vectors dynamically within the active clock phase.</p>
+<ul>
+<li><strong>Structure</strong>: Purely combinational logic framework containing zero sequential elements, flip-flops, or discrete clock paths.</li>
+<li><strong>Comparators</strong>: Utilizes 5-bit digital equality comparators to monitor matching intersections between the active target register field (<code>ID_EX_rd</code>) and upstream decoded decoding registers (<code>IF_ID_rs1</code> / <code>IF_ID_rs2</code>).</li>
+<li><strong>Logic Gates</strong>: Standard primitive gates (<code>AND</code>, <code>OR</code>) compile the hazard matches alongside the status state line <code>ID_EX_MemRead</code> to evaluate the load-use penalty. The control hazard signal passes through to the <code>Flush</code> output channel to instantly neutralize instruction steps.</li>
+</ul>
+<hr />
+<h2 id="pipeline-interaction">Pipeline Interaction</h2>
+<ul>
+<li><strong>Pipeline stage involvement</strong>: Centrally targets the control signals driving the <strong>IF (Instruction Fetch)</strong> and <strong>ID (Instruction Decode)</strong> stage registers.</li>
+<li><strong>Signal propagation across stages</strong>: Listens to decoded values within the ID stage boundary while simultaneously monitoring memory intent and target registers across the EX stage.</li>
+<li><strong>Dependencies</strong>: Intersects with the global clock gating lines. When a <code>Stall</code> goes high, it typically commands the Program Counter (PC) and IF/ID pipeline registers to hold their current values, while generating a structural <code>NOP</code> in the ID/EX register to clear space for the delayed operation.</li>
+</ul>
+<hr />
+<h2 id="examples">Examples</h2>
+<h3 id="example-1-load-use-hazard-encountered">Example 1: Load-Use Hazard Encountered</h3>
+<p>Inputs:</p>
+<ul>
+<li><code>ID_EX_MemRead</code> = <code>1</code> (Preceding instruction is a load, e.g., <code>lw x5, 0(x10)</code>)</li>
+<li><code>ID_EX_rd</code> = <code>0x05</code> (Targeting destination register <code>x5</code>)</li>
+<li><code>IF_ID_rs1</code> = <code>0x05</code> (Succeeding instruction requires <code>x5</code>, e.g., <code>add x2, x5, x6</code>)</li>
+<li><code>PCSrc</code> = <code>0</code></li>
+</ul>
+<p>Outputs:</p>
+<ul>
+<li><code>Stall</code> = <code>1</code> (Forces the processor to stall the current fetch/decode state for one cycle)</li>
+<li><code>Flush</code> = <code>0</code></li>
+</ul>
+<hr />
+<h3 id="example-2-branch-taken-control-hazard">Example 2: Branch Taken (Control Hazard)</h3>
+<p>Inputs:</p>
+<ul>
+<li><code>ID_EX_MemRead</code> = <code>0</code></li>
+<li><code>PCSrc</code> = <code>1</code> (Branch comparison evaluates to true; execution path diverts)</li>
+</ul>
+<p>Outputs:</p>
+<ul>
+<li><code>Stall</code> = <code>0</code></li>
+<li><code>Flush</code> = <code>1</code> (Signals pipeline latches to discard speculatively fetched instructions on the next clock edge)</li>
+</ul>
+<hr />
+<h2 id="limitations-assumptions">Limitations / Assumptions</h2>
+<ul>
+<li>Assumes register zero (<code>x0</code>) handling is cleanly isolated if the hardware allows it, preventing unnecessary structural stalls when an instruction targets <code>x0</code>.</li>
+<li>Does not manage deeper multi-cycle dependencies beyond immediate execution/decode phase boundaries; assumes separate structural units or standard forwarding handles standard ALU-to-ALU interactions.</li>
+<li>Relies on clean, hazard-free <code>PCSrc</code> calculations from the execution block to avoid erroneous or oscillating flushing loops.</li>
+</ul>
+<hr />
+<h2 id="implementation-notes">Implementation Notes</h2>
+<ul>
+<li>Assembled cleanly using native Logisim <code>Gates</code> and <code>Arithmetic</code> comparison modules.</li>
+<li>Built without specialized black-box add-ons, ensuring cross-compatibility with standard Logisim-evolution distributions.</li>
+<li>Mapped with clean, descriptive localized <code>Tunnels</code> to minimize crossing wires and maximize clarity for troubleshooting and design review.</li>
+</ul>
+<hr />
 
 
 

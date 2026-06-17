@@ -76,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#forward-controller" class="md-skip">
+        <a href="#forward-control" class="md-skip">
           Skip to content
         </a>
       
@@ -630,6 +630,24 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Forwarding Unit
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -646,6 +664,197 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interface
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Interface">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#inputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inputs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#outputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Outputs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#output-logic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Output Logic
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Output Logic">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rule-based-definition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rule-based definition
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#truth-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Truth table
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#internal-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Internal Design
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#operation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pipeline-interaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pipeline Interaction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-forwarding-from-memory-stage-data-hazard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: Forwarding from Memory Stage (Data Hazard)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#limitations-assumptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limitations / Assumptions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation Notes
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -687,7 +896,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../write-back-controller/" class="md-nav__link">
+      <a href="../writeback-controller/" class="md-nav__link">
         
   
   
@@ -695,6 +904,34 @@
     
   
     Write Back Controller
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../program-counter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Program Counter
   
 
     
@@ -1592,6 +1829,186 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interface
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Interface">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#inputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inputs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#outputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Outputs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#output-logic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Output Logic
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Output Logic">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rule-based-definition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rule-based definition
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#truth-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Truth table
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#internal-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Internal Design
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#operation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pipeline-interaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pipeline Interaction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-forwarding-from-memory-stage-data-hazard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: Forwarding from Memory Stage (Data Hazard)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#limitations-assumptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limitations / Assumptions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation Notes
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -1607,7 +2024,181 @@
 
 
 
-<h1 id="forward-controller">Forward Controller</h1>
+<h1 id="forward-control">Forward Control</h1>
+<hr />
+<h2 id="overview">Overview</h2>
+<p>The <code>ForwardControl</code> component acts as the execution-stage data hazard multiplexing unit for a pipelined RV32I processor. It routes the correct operand data to the Arithmetic Logic Unit (ALU) by selecting between the freshly read register file values or forwarded results from subsequent pipeline stages.</p>
+<ul>
+<li><strong>Purpose in CPU</strong>: Resolves RAW (Read-After-Write) data hazards dynamically without forcing structural pipeline stalls when data is available ahead of the Writeback stage.</li>
+<li>
+<p><strong>Role in datapath</strong>: Sits right before the ALU in the Execution (EX) stage, intercepting standard register read channels to feed the most up-to-date information directly into the execution data paths.</p>
+</li>
+<li>
+<p><strong>Source</strong>: <code>logisim/RiskVControl.circ</code>
+  <img alt="" src="../../../images/forward-controller.png" /></p>
+</li>
+</ul>
+<hr />
+<h2 id="interface">Interface</h2>
+<h3 id="inputs">Inputs</h3>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Width</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ID_EX_RDataA</code></td>
+<td>32 bits</td>
+<td>Baseline register data value read for source register 1 (<code>rs1</code>) from the ID stage.</td>
+</tr>
+<tr>
+<td><code>ID_EX_RDataB</code></td>
+<td>32 bits</td>
+<td>Baseline register data value read for source register 2 (<code>rs2</code>) from the ID stage.</td>
+</tr>
+<tr>
+<td><code>EX_MEM_ALUOut</code></td>
+<td>32 bits</td>
+<td>Execution result calculated by the ALU, forwarded from the Memory stage pipeline buffer.</td>
+</tr>
+<tr>
+<td><code>WB_RegData</code></td>
+<td>32 bits</td>
+<td>Writeback-bound data payload derived from either memory operations or ALU calculations.</td>
+</tr>
+<tr>
+<td><code>FWD_A</code></td>
+<td>2 bits</td>
+<td>Selection control signal determining data derivation pathway for Operand A.</td>
+</tr>
+<tr>
+<td><code>FWD_B</code></td>
+<td>2 bits</td>
+<td>Selection control signal determining data derivation pathway for Operand B.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="outputs">Outputs</h3>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Width</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>RDataA</code></td>
+<td>32 bits</td>
+<td>Final forwarded data value bound for the ALU Operand A input interface.</td>
+</tr>
+<tr>
+<td><code>RDataB</code></td>
+<td>32 bits</td>
+<td>Final forwarded data value bound for the ALU Operand B input interface.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="output-logic">Output Logic</h2>
+<p>Defines how outputs are derived from inputs based on the configuration of multiplexers within the module.</p>
+<h3 id="rule-based-definition">Rule-based definition</h3>
+<ul>
+<li>If <code>FWD_A</code> = <code>00</code> → <code>RDataA</code> = <code>ID_EX_RDataA</code> (No forwarding needed)</li>
+<li>If <code>FWD_A</code> = <code>01</code> → <code>RDataA</code> = <code>EX_MEM_ALUOut</code> (Forward from Memory stage)</li>
+<li>If <code>FWD_A</code> = <code>10</code> → <code>RDataA</code> = <code>WB_RegData</code> (Forward from Writeback stage)</li>
+</ul>
+<hr />
+<ul>
+<li>If <code>FWD_B</code> = <code>00</code> → <code>RDataB</code> = <code>ID_EX_RDataB</code> (No forwarding needed)</li>
+<li>If <code>FWD_B</code> = <code>01</code> → <code>RDataB</code> = <code>EX_MEM_ALUOut</code> (Forward from Memory stage)</li>
+<li>If <code>FWD_B</code> = <code>10</code> → <code>RDataB</code> = <code>WB_RegData</code> (Forward from Writeback stage)</li>
+</ul>
+<hr />
+<h3 id="truth-table">Truth table</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;"><code>FWD_A</code> Selection</th>
+<th>Output <code>RDataA</code> Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><code>00</code></td>
+<td><code>ID_EX_RDataA</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>01</code></td>
+<td><code>EX_MEM_ALUOut</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>10</code></td>
+<td><code>WB_RegData</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>11</code></td>
+<td>Open / Unused Output Array</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="internal-design">Internal Design</h2>
+<p>The <code>ForwardControl</code> module relies purely on a twin combinational multiplexer layout designed to minimize signal settlement times within the critical execution track.</p>
+<ul>
+<li><strong>Structure</strong>: Purely combinational logic design. It operates entirely without integrated clock tracks, edge triggers, or internal state mechanisms.</li>
+<li><strong>Multiplexer Structure</strong>: Employs two independent 32-bit width 4-to-1 Multiplexers (<code>Multiplexer</code> blocks configured with a <code>select</code> attribute width of 2).</li>
+<li><strong>Routing Infrastructure</strong>: Signals enter via input pins mapped straight into localized internal connection lines via named wire labels (<code>Tunnels</code>). The multiplexers extract routing instructions dynamically using the 2-bit tracking fields <code>FWD_A</code> and <code>FWD_B</code> passed into their respective selector inputs.</li>
+</ul>
+<hr />
+<h2 id="operation">Operation</h2>
+<ol>
+<li><strong>Inputs arrive</strong>: The baseline execution tracking values (<code>ID_EX_RDataA</code>, <code>ID_EX_RDataB</code>) arrive simultaneously alongside bypass values extracted from down-line memory buffers or writeback networks.</li>
+<li><strong>Decoding / selection occurs</strong>: The structural configuration lines <code>FWD_A</code> and <code>FWD_B</code> drive state parameters straight onto the active selection nodes of the twin 4-to-1 multiplexers.</li>
+<li><strong>Logic evaluates conditions</strong>: The physical multiplexer gates select the appropriate wire routing track based on the select lines.</li>
+<li><strong>Outputs are produced</strong>: Forwarded results are output directly via <code>RDataA</code> and <code>RDataB</code> within the same execution step clock window.</li>
+</ol>
+<hr />
+<h2 id="pipeline-interaction">Pipeline Interaction</h2>
+<ul>
+<li><strong>Pipeline stage involvement</strong>: Sits completely inside the <strong>EX (Execution)</strong> stage environment.</li>
+<li><strong>Signal propagation across stages</strong>: Monitors feedback channels derived from the boundary borders of both the <strong>EX/MEM</strong> register files and <strong>MEM/WB</strong> output latches.</li>
+<li><strong>Dependencies</strong>: Acts as the primary resolution element for register data hazards, overriding stale register reads when an instruction currently in flight aims to write to a register needed by the current instruction.</li>
+</ul>
+<hr />
+<h2 id="examples">Examples</h2>
+<h3 id="example-forwarding-from-memory-stage-data-hazard">Example: Forwarding from Memory Stage (Data Hazard)</h3>
+<p>Inputs:</p>
+<ul>
+<li><code>ID_EX_RDataA</code> = <code>0x0000000A</code></li>
+<li><code>EX_MEM_ALUOut</code> = <code>0x000000FF</code></li>
+<li><code>FWD_A</code> = <code>01</code> (Indicates a hazard match with the previous instruction's destination register)</li>
+</ul>
+<p>Outputs:</p>
+<ul>
+<li><code>RDataA</code> = <code>0x000000FF</code> (ALU receives the freshly generated arithmetic result rather than the stale register value)</li>
+</ul>
+<hr />
+<h2 id="limitations-assumptions">Limitations / Assumptions</h2>
+<ul>
+<li>Assumes hazard detection logic outside this circuit computes and sets the <code>FWD_A</code> and <code>FWD_B</code> selectors correctly.</li>
+<li>Pure combinational logic module; does not possess latch capabilities or internal staging states.</li>
+<li>Assumes the propagation delays across the multi-bit multiplexers fall safely within the timing constraints of the global CPU clock cycle.</li>
+</ul>
+<hr />
+<h2 id="implementation-notes">Implementation Notes</h2>
+<ul>
+<li>Built using standard Logisim components only.</li>
+<li>Relies on default <code>Plexers</code> library elements configured for 32-bit data widths and 2 select bits.</li>
+<li>Structured with clean label tunnels to eliminate explicit layout trace clutter.</li>
+<li>No external libraries or third-party logic dependencies.</li>
+</ul>
+<hr />
 
 
 

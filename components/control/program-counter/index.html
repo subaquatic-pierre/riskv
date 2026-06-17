@@ -11,6 +11,10 @@
       
       
       
+        <link rel="prev" href="../writeback-controller/">
+      
+      
+        <link rel="next" href="../../arithmetic/alu/">
       
       
         
@@ -21,7 +25,7 @@
     
     
       
-        <title>32-Bit Program Counter (PC) Module - Risk-V</title>
+        <title>Program Counter - Risk-V</title>
       
     
     
@@ -72,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#32-bit-program-counter-pc-module" class="md-skip">
+        <a href="#program-counter" class="md-skip">
           Skip to content
         </a>
       
@@ -108,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              32-Bit Program Counter (PC) Module
+              Program Counter
             
           </span>
         </div>
@@ -397,8 +401,10 @@
       
   
   
+    
   
   
+  
     
     
     
@@ -409,11 +415,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
@@ -434,7 +440,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -477,6 +483,8 @@
                 
   
   
+    
+  
   
   
     
@@ -486,11 +494,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" checked>
         
           
           <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
@@ -511,7 +519,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3_2">
             <span class="md-nav__icon md-icon"></span>
             
@@ -669,7 +677,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../write-back-controller/" class="md-nav__link">
+      <a href="../writeback-controller/" class="md-nav__link">
         
   
   
@@ -685,6 +693,264 @@
   
 
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Program Counter
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Program Counter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interface
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Interface">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#inputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inputs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#outputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Outputs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#output-logic-core-definition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Output Logic (Core Definition)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Output Logic (Core Definition)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rule-based-definition-preferred" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rule-based definition (preferred)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optional-boolean-expressions-only-if-useful" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Optional: Boolean expressions (only if useful)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#internal-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Internal Design
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#operation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pipeline-interaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pipeline Interaction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-sequential-execution-eg-standard-add-instruction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: Sequential Execution (e.g., standard ADD instruction)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-branch-taken-eg-beq-evaluates-to-true" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: Branch Taken (e.g., BEQ evaluates to true)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#limitations-assumptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limitations / Assumptions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation Notes
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1581,10 +1847,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#functional-overview" class="md-nav__link">
+  <a href="#overview" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Functional Overview
+        Overview
       
     </span>
   </a>
@@ -1592,22 +1858,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#interface-specifications" class="md-nav__link">
+  <a href="#interface" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Interface Specifications
+        Interface
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Interface Specifications">
+    <nav class="md-nav" aria-label="Interface">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#input-signals" class="md-nav__link">
+  <a href="#inputs" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Input Signals
+        Inputs
       
     </span>
   </a>
@@ -1615,10 +1881,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#output-signals" class="md-nav__link">
+  <a href="#outputs" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Output Signals
+        Outputs
       
     </span>
   </a>
@@ -1631,33 +1897,33 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#internal-architectural-design" class="md-nav__link">
+  <a href="#output-logic-core-definition" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Internal Architectural Design
+        Output Logic (Core Definition)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Output Logic (Core Definition)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rule-based-definition-preferred" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rule-based definition (preferred)
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#core-timing-execution-phases" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Core Timing &amp; Execution Phases
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Core Timing &amp; Execution Phases">
-      <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#driver-logic-equations" class="md-nav__link">
+  <a href="#optional-boolean-expressions-only-if-useful" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Driver Logic Equations
+        Optional: Boolean expressions (only if useful)
       
     </span>
   </a>
@@ -1666,6 +1932,100 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#internal-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Internal Design
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#operation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pipeline-interaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pipeline Interaction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-sequential-execution-eg-standard-add-instruction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: Sequential Execution (e.g., standard ADD instruction)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-branch-taken-eg-beq-evaluates-to-true" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: Branch Taken (e.g., BEQ evaluates to true)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#limitations-assumptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limitations / Assumptions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation Notes
+      
+    </span>
+  </a>
   
 </li>
       
@@ -1686,98 +2046,173 @@
 
 
 
-<h1 id="32-bit-program-counter-pc-module">32-Bit Program Counter (PC) Module</h1>
-<h2 id="functional-overview">Functional Overview</h2>
-<p>The <strong>Program Counter (<code>ProgramCounter</code>)</strong> is the central state element driving the instruction fetch path. It holds the 32-bit memory address of the instruction currently being executed by the CPU.</p>
-<p>Every clock cycle, the module updates the address pointer via one of two paths:</p>
+<h1 id="program-counter">Program Counter</h1>
+<hr />
+<h2 id="overview">Overview</h2>
+<p>The <code>ProgramCounter</code> component is responsible for holding and updating the address of the current instruction to be fetched and executed by the processor. It supports sequential instruction execution by incrementing the address by 4, as well as non-sequential execution paths such as branches and jumps.</p>
+<ul>
+<li><strong>Purpose in CPU</strong>: Tracks the instruction address to drive the Instruction Memory.</li>
+<li>
+<p><strong>Role in datapath</strong>: Lies at the core of the Instruction Fetch (IF) stage, determining the next instruction address based on control signals from subsequent stages.</p>
+</li>
+<li>
+<p><strong>Source</strong>: <code>logisim/RiskVControl.circ</code>
+  <img alt="" src="../../../images/program-counter.png" /></p>
+</li>
+</ul>
+<hr />
+<h2 id="interface">Interface</h2>
+<h3 id="inputs">Inputs</h3>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Width</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>TargetAddr</code></td>
+<td>32</td>
+<td>The target address for a branch or jump instruction.</td>
+</tr>
+<tr>
+<td><code>BranchCtl</code></td>
+<td>1</td>
+<td>Control signal that determines whether to take the branch target address (<span class="arithmatex">\(1\)</span>) or continue sequentially (<span class="arithmatex">\(0\)</span>).</td>
+</tr>
+<tr>
+<td><code>PCWEn</code></td>
+<td>1</td>
+<td>Program Counter Write Enable; when asserted (<span class="arithmatex">\(1\)</span>), allows the PC register to update on the rising clock edge.</td>
+</tr>
+<tr>
+<td><code>Clk</code></td>
+<td>1</td>
+<td>System clock signal.</td>
+</tr>
+<tr>
+<td><code>Reset</code></td>
+<td>1</td>
+<td>Clear signal to reset the PC register value to <span class="arithmatex">\(0\)</span>.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="outputs">Outputs</h3>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Width</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PcOut</code></td>
+<td>32</td>
+<td>The current address stored in the Program Counter.</td>
+</tr>
+<tr>
+<td><code>PcPlus4</code></td>
+<td>32</td>
+<td>The sequential next instruction address (<span class="arithmatex">\(\text{PcOut} + 4\)</span>).</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="output-logic-core-definition">Output Logic (Core Definition)</h2>
+<p>Defines how outputs are derived from inputs.</p>
+<h3 id="rule-based-definition-preferred">Rule-based definition (preferred)</h3>
+<ul>
+<li><strong>Combinational Outputs</strong>:</li>
+<li>
+<p><span class="arithmatex">\(\text{PcPlus4} = \text{PcOut} + 4\)</span></p>
+</li>
+<li>
+<p><strong>Sequential Updates (on the rising edge of <code>Clk</code>)</strong>:</p>
+</li>
+<li>If <code>Reset</code> = 1 <span class="arithmatex">\(\rightarrow\)</span> <span class="arithmatex">\(\text{PcOut} = 0\text{x}00000000\)</span></li>
+<li>If <code>Reset</code> = 0 and <code>PCWEn</code> = 1:<ul>
+<li>If <code>BranchCtl</code> = 0 <span class="arithmatex">\(\rightarrow\)</span> <span class="arithmatex">\(\text{PcOut} = \text{PcPlus4}\)</span></li>
+<li>If <code>BranchCtl</code> = 1 <span class="arithmatex">\(\rightarrow\)</span> <span class="arithmatex">\(\text{PcOut} = \text{TargetAddr}\)</span></li>
+</ul>
+</li>
+<li>If <code>Reset</code> = 0 and <code>PCWEn</code> = 0 <span class="arithmatex">\(\rightarrow\)</span> <span class="arithmatex">\(\text{PcOut}\)</span> retains its previous state.</li>
+</ul>
+<hr />
+<h3 id="optional-boolean-expressions-only-if-useful">Optional: Boolean expressions (only if useful)</h3>
+<div class="arithmatex">\[\text{NextPC} = (\text{TargetAddr} \cdot \text{BranchCtl}) + (\text{PcPlus4} \cdot \overline{\text{BranchCtl}})\]</div>
+<hr />
+<h2 id="internal-design">Internal Design</h2>
+<p>The <code>ProgramCounter</code> is implemented using a mix of standard combinational and sequential Logisim blocks:</p>
+<ul>
+<li><strong>Sequential Structure</strong>: Uses a 32-bit Logisim <code>Register</code> to hold the stable state of the current instruction address (<code>PcOut</code>).</li>
+<li><strong>Combinational Structure</strong>:</li>
+<li>A 32-bit 2-to-1 <code>Multiplexer</code> selects between the sequential path (<code>PCPlus4</code>) and the control-flow alteration path (<code>TargetAddr</code>) using the <code>BranchCtl</code> line as the select bit.</li>
+<li>A 32-bit <code>Adder</code> computes the address of the next word-aligned instruction by summing the register's current output (<code>PcOut</code>) with a 32-bit <code>Constant</code> of value <span class="arithmatex">\(0\text{x}4\)</span>.</li>
+<li>Internal routing is clean and modularized via <code>Tunnel</code> components for the <code>PCPlus4</code> feedback loop.</li>
+</ul>
+<hr />
+<h2 id="operation">Operation</h2>
+<p>Step-by-step behavior:</p>
 <ol>
-<li><strong>Sequential Execution (<span class="arithmatex">\(PC + 4\)</span>):</strong> Increments the pointer by 4 bytes to load the next consecutive instruction.</li>
-<li><strong>Control Flow Alteration (Branch/Jump):</strong> Routes to a computed target address when a conditional branch is met or an unconditional jump is executed.</li>
+<li><strong>Inputs arrive</strong>: The current control signals (<code>BranchCtl</code>, <code>PCWEn</code>, <code>Reset</code>) and target address (<code>TargetAddr</code>) stabilize at the inputs.</li>
+<li><strong>Decoding / selection occurs</strong>: The 2-to-1 multiplexer evaluates the state of <code>BranchCtl</code> and routes either <code>PCPlus4</code> or <code>TargetAddr</code> to the input (<span class="arithmatex">\(D\)</span>) port of the register.</li>
+<li><strong>Logic evaluates conditions</strong>: Concurrently, the 32-bit adder sums the active <code>PcOut</code> with <span class="arithmatex">\(4\)</span> to update the <code>PCPlus4</code> tunnel and drive the <code>PcPlus4</code> output pin.</li>
+<li><strong>Outputs are produced (clocked)</strong>: On the rising edge of <code>Clk</code>, the register checks <code>Reset</code> and <code>PCWEn</code>. If <code>PCWEn</code> is asserted and <code>Reset</code> is low, the register updates its stored value to match the multiplexer's output, changing <code>PcOut</code> for the next cycle.</li>
 </ol>
 <hr />
-<h2 id="interface-specifications">Interface Specifications</h2>
-<h3 id="input-signals">Input Signals</h3>
-<table>
-<thead>
-<tr>
-<th style="text-align: left;">Pin Name</th>
-<th style="text-align: center;">Bit Width</th>
-<th style="text-align: center;">Direction</th>
-<th style="text-align: left;">Functional Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;"><code>Target_Addr[31:0]</code></td>
-<td style="text-align: center;">32</td>
-<td style="text-align: center;">Input</td>
-<td style="text-align: left;">Calculated branch or jump destination address from the execution stage.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>TakeBranch</code></td>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">Input</td>
-<td style="text-align: left;">Active-high routing control line from the Branch Controller.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>Clk</code></td>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">Input</td>
-<td style="text-align: left;">Master clock line (Updates on rising-edge trigger).</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>Reset</code></td>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">Input</td>
-<td style="text-align: left;">Active-high asynchronous reset line forcing the PC to <code>0x00000000</code>.</td>
-</tr>
-</tbody>
-</table>
-<h3 id="output-signals">Output Signals</h3>
-<table>
-<thead>
-<tr>
-<th style="text-align: left;">Pin Name</th>
-<th style="text-align: center;">Bit Width</th>
-<th style="text-align: center;">Direction</th>
-<th style="text-align: left;">Functional Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;"><code>PC_Out[31:0]</code></td>
-<td style="text-align: center;">32</td>
-<td style="text-align: center;">Output</td>
-<td style="text-align: left;">Current instruction address exported directly to Instruction Memory.</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2 id="internal-architectural-design">Internal Architectural Design</h2>
-<p>The component utilizes a feedback loop consisting of a 32-bit state register, a hardwired adder, and an input-steering multiplexer:</p>
+<h2 id="pipeline-interaction">Pipeline Interaction</h2>
 <ul>
-<li><strong>State Storage:</strong> A standard 32-bit register with asynchronous clear capability.</li>
-<li><strong>Incrementer Block:</strong> A 32-bit dedicated adder with one port tied to the register output and the other tied to a constant value of <code>4</code>.</li>
-<li><strong>Routing Matrix:</strong> A 32-bit 2-to-1 Multiplexer feeding the register's input (<code>D</code>) channel:</li>
-<li><strong>Channel 0 (<code>TakeBranch = 0</code>):</strong> Connects the sequential <span class="arithmatex">\(PC + 4\)</span> value.</li>
-<li><strong>Channel 1 (<code>TakeBranch = 1</code>):</strong> Connects the incoming <code>Target_Addr</code> value.</li>
+<li>Used directly in the <strong>Instruction Fetch (IF)</strong> stage.</li>
+<li>Outputs control information (<code>PcPlus4</code>) down to the ID/EX stages via pipeline registers to compute jump targets or store return link addresses (e.g., for <code>JAL</code>/<code>JALR</code>).</li>
+<li>Interacts with hazard detection units via the <code>PCWEn</code> line to stall the pipeline by preventing the PC from advancing.</li>
 </ul>
 <hr />
-<h2 id="core-timing-execution-phases">Core Timing &amp; Execution Phases</h2>
+<h2 id="examples">Examples</h2>
+<h3 id="example-sequential-execution-eg-standard-add-instruction">Example: Sequential Execution (e.g., standard ADD instruction)</h3>
+<p>Inputs:</p>
 <ul>
-<li><strong>Setup Phase (Steady State):</strong> The current address remains fixed on <code>PC_Out</code>. The adder computes <span class="arithmatex">\(PC + 4\)</span> while the execution stage computes <code>Target_Addr</code>. The <code>TakeBranch</code> control line settles, routing the selected target to the register input.</li>
-<li><strong>Commit Phase (Clock Rising Edge):</strong> The register captures the value at its input. <code>PC_Out</code> transitions to the new instruction address, updating the execution path.</li>
+<li><code>TargetAddr</code> = <span class="arithmatex">\(0\text{x}00001000\)</span></li>
+<li><code>BranchCtl</code> = 0</li>
+<li><code>PCWEn</code> = 1</li>
+<li>Stored <code>PcOut</code> = <span class="arithmatex">\(0\text{x}00000004\)</span></li>
+</ul>
+<p>Outputs:</p>
+<ul>
+<li><code>PcOut</code> = <span class="arithmatex">\(0\text{x}00000004\)</span> (updates to <span class="arithmatex">\(0\text{x}00000008\)</span> on the next valid clock edge)</li>
+<li><code>PcPlus4</code> = <span class="arithmatex">\(0\text{x}0000000\text{C}\)</span></li>
 </ul>
 <hr />
-<h3 id="driver-logic-equations">Driver Logic Equations</h3>
-<div class="highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Next_PC = TakeBranch ? Target_Addr : (PC_Out + 4)
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>On Rising_Edge(Clk):
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    if Reset == 1:
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>        PC_Out &lt;= 32&#39;h0000_0000
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    else:
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>        PC_Out &lt;= Next_PC
-</span></code></pre></div>
+<h3 id="example-branch-taken-eg-beq-evaluates-to-true">Example: Branch Taken (e.g., BEQ evaluates to true)</h3>
+<p>Inputs:</p>
+<ul>
+<li><code>TargetAddr</code> = <span class="arithmatex">\(0\text{x}00002040\)</span></li>
+<li><code>BranchCtl</code> = 1</li>
+<li><code>PCWEn</code> = 1</li>
+<li>Stored <code>PcOut</code> = <span class="arithmatex">\(0\text{x}000000A0\)</span></li>
+</ul>
+<p>Outputs:</p>
+<ul>
+<li><code>PcOut</code> = <span class="arithmatex">\(0\text{x}000000A0\)</span> (updates to <span class="arithmatex">\(0\text{x}00002040\)</span> on the next valid clock edge)</li>
+<li><code>PcPlus4</code> = <span class="arithmatex">\(0\text{x}000000A4\)</span></li>
+</ul>
+<hr />
+<h2 id="limitations-assumptions">Limitations / Assumptions</h2>
+<ul>
+<li>Assumes instruction memory references are always word-aligned (<span class="arithmatex">\(4\)</span>-byte increments); unaligned or compressed instruction formats (such as the RV32C extension) are not supported.</li>
+<li>Traps, exceptions, or hardware interrupts are unhandled within this component.</li>
+<li>The propagation delay of the internal adder and multiplexer is assumed to be within the allowable cycle-time constraints of the global system clock.</li>
+</ul>
+<hr />
+<h2 id="implementation-notes">Implementation Notes</h2>
+<ul>
+<li>Built entirely using standard Logisim components from the <code>Wiring</code>, <code>Gates</code>, <code>Plexers</code>, <code>Arithmetic</code>, and <code>Memory</code> libraries.</li>
+<li>No third-party or external libraries are required.</li>
+<li>All primary datapath signal buses maintain strict 32-bit compliance with the RV32I base specification.</li>
+</ul>
 
 
 
