@@ -74,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#risk-v-project-overview" class="md-skip">
+        <a href="#overview" class="md-skip">
           Skip to content
         </a>
       
@@ -241,6 +241,24 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="." class="md-nav__link md-nav__link--active">
         
   
@@ -257,6 +275,80 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#welcome-to-risk-v" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Welcome to Risk-V
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architectural-highlights" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architectural Highlights
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#technical-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Technical Features
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#structural-documentation-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structural Documentation Strategy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#repository-path-index" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Repository Path Index
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -1482,62 +1574,6 @@
   
   
     <li class="md-nav__item">
-      <a href="development/building/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Building the Project
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="development/running/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Running in Logisim
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="development/testing/" class="md-nav__link">
         
   
@@ -1546,34 +1582,6 @@
     
   
     Testing
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="development/design-conventions/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Design Conventions
   
 
     
@@ -1614,6 +1622,69 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#welcome-to-risk-v" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Welcome to Risk-V
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architectural-highlights" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architectural Highlights
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#technical-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Technical Features
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#structural-documentation-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structural Documentation Strategy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#repository-path-index" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Repository Path Index
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -1629,7 +1700,48 @@
 
 
 
-<h1 id="risk-v-project-overview">Risk-V Project Overview</h1>
+<h1 id="overview">Overview</h1>
+<hr />
+<h2 id="welcome-to-risk-v">Welcome to Risk-V</h2>
+<p>Risk-V is a comprehensive reference platform dedicated to the structural verification, architectural design, and digital layout of a fully pipelined, 5-stage RISC-V (RV32I) processor implemented natively within Logisim-evolution.</p>
+<p>This technical documentation outlines the exact specifications, interface standards, internal combinational/sequential logic blocks, and pipeline interactions that govern the execution datapath. Every module documented here has been built structurally using standard primitives to maintain clean architectural mapping and strict adherence to the RISC-V ISA spec.</p>
+<hr />
+<h2 id="architectural-highlights">Architectural Highlights</h2>
+<p>The processor core is modeled around a classic 5-stage decoupled execution model designed to execute a subset of the standard RV32I base integer instruction set:</p>
+<ol>
+<li><strong>Instruction Fetch (IF)</strong>: Interfaces with Instruction Memory via a 32-bit Program Counter (PC) path with support for hardware stalls and dynamic branch/jump flushes.</li>
+<li><strong>Instruction Decode (ID)</strong>: Decompresses raw machine code, coordinates register index allocation via a dual-read structural Register File, extracts sign-extended immediates, and evaluates early branch indicators.</li>
+<li><strong>Execution (EX)</strong>: Utilizes a dedicated arithmetic logic unit (ALU) alongside localized operand forwarding networks to execute mathematical, logical, and shift operations at high speed.</li>
+<li><strong>Memory Access (MEM)</strong>: Manages clean data transport boundaries to Data Memory (DMem) supporting byte-, halfword-, and word-aligned reads and writes.</li>
+<li><strong>Write Back (WB)</strong>: Selects, routes, and commits terminal execution or memory results back into the Register File matrix to permanently update state contexts.</li>
+</ol>
+<hr />
+<h2 id="technical-features">Technical Features</h2>
+<ul>
+<li><strong>Structural Hazard Mitigation</strong>: Features a centralized Hazard Controller to handle data hazards (such as load-use interlocks) via structural pipeline stalls and control hazards via synchronous branch flushes.</li>
+<li><strong>Dynamic Forwarding Unit</strong>: Minimizes pipeline stalls by dynamically bypassing ALU outputs and memory read fields back to the Execution stage operand networks.</li>
+<li><strong>Isolated Boundary Interfaces</strong>: Utilizes discrete pipeline stage registers (<code>IF_ID</code>, <code>ID_EX</code>, <code>EX_MEM</code>, <code>MEM_WB</code>) mapped out with dedicated input-side multiplexing and label tunnel routing to avoid wire pollution and race hazards.</li>
+</ul>
+<hr />
+<h2 id="structural-documentation-strategy">Structural Documentation Strategy</h2>
+<p>This documentation follows an implementation-focused, code-and-circuit structural schema designed to expose exactly how logic functions inside the simulated processor:</p>
+<ul>
+<li><strong>Interface Specifications</strong>: Direct pin-for-pin mapping tables detailing widths, directions, and behavioral triggers.</li>
+<li><strong>Core Output Logic</strong>: Explicit rule-based definitions tracking exactly how logic flags and metrics derive output transitions.</li>
+<li><strong>Internal Structural Design</strong>: Detailed explanations of combinational vs. sequential divisions, subcircuits deployed, and routing topologies.</li>
+<li><strong>Real Trace Mapping</strong>: Minimal, concrete instruction trace examples mapping step-by-step transformations across specific data segments.</li>
+</ul>
+<hr />
+<h2 id="repository-path-index">Repository Path Index</h2>
+<p>The source code, simulation assets, and modular circuit templates are organized within the project according to the following layout:</p>
+<div class="highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>├── logisim/
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>│   ├── design/                     # Digital design practice and foundational theory components
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>│   ├── RiskVCPU.circ               # Integrated top-level 5-stage core
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>│   ├── RiskVControl.circ           # Central main controller matrices
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>│   ├── RiskVMemory.circ            # Structural Register File and Memory interfaces
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>│   ├── RiskVPipelineRegs.circ      # Component library for isolation registers
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>│   └── RiskVALU.circ               # Full Arithmetic Logic Unit macro block
+</span></code></pre></div>
 
 
 
