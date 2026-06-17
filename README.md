@@ -1,73 +1,113 @@
-# RISC-V 32-Bit Processor Core
+# Risk-V: 5-Stage Pipelined RISC-V Processor
 
-A 32-bit RISC-V processor implementation modeled after the UC Berkeley CS61C computer architecture curriculum. The execution engine is constructed using Logisim-Evolution to map custom hardware modules, control paths, and arithmetic execution units into a unified processing canvas.
+A structurally verified, cycle-accurate 5-stage pipelined RISC-V (RV32I) processor core implemented entirely from fundamental digital logic primitives in Logisim-evolution.
 
----
-
-## Architecture Blueprint
-
-The microarchitecture uses a single-cycle datapath layout where every committed instruction processes entirely within one clock cycle.
-
-- **Datapath Model:** Single-cycle execution loop.
-- **Instruction Set Architecture:** RV32I Base Integer Instruction Set.
-- **Current Support Matrix:** Includes all fundamental computational, control-flow, and word-level storage operations. Sub-word byte and half-word memory operations are bypass-routed for future expansion.
+This repository contains the complete modular datapath layout, hazard detection networks, dynamic forwarding bypass matrices, automated verification test benches, and a comprehensive documentation suite built via MkDocs.
 
 ---
 
-## Core Component Modules
+## Core Architectural Features
 
-The microarchitecture is split into specialized structural components located across functional circuit domains:
-
-- **Program Counter (`ProgramCounter`):** Dedicated 32-bit execution pointer tracking synchronous sequence increments ($PC + 4$) and handling asynchronous clear lines and runtime branch/jump target interruptions.
-- **Immediate Generator (`ImmGen`):** Combinational wire-splicing matrix that extracts, rearranges, and sign-extends immediate constants from I, S, B, U, and J instruction formats without generating explicit shift gate delay.
-- **Unified Adder/Subtractor (`AdderSub32`):** Linear ripple-carry core using a conditional XOR inverter layer to combine addition, two's complement subtraction, and cascaded multi-word carry processing into one block.
-- **Integrated Barrel Shifter (`UniShifter`):** 5-stage log-scaled right-shifting multiplexer cascade featuring complement-inversion logic to run left shifts natively through right-handed hardware lanes.
-- **Word-Level Comparator (`WordLevelComparator`):** Flag-processing array that samples output buses and overflow bits directly from the subtraction channel to evaluate `EQ`, `LTU`, and `LTS` metrics without extra arithmetic structures.
-- **Multi-Port Register File (`RegisterFile`):** Parallel storage cell matrix supporting two independent combinational read ports and one exclusive, decoder-gated write port simultaneously.
+- **Classic 5-Stage Pipeline**: Decoupled execution model divided into **Instruction Fetch (IF)**, **Instruction Decode (ID)**, **Execution (EX)**, **Memory Access (MEM)**, and **Write Back (WB)** structural zones.
+- **Structural Hazard Mitigation**: A centralized, combinational **Hazard Controller** that dynamically monitors data dependencies to manage **1-cycle pipeline stalls (interlocks)** for load-use conditions and asserts synchronous **flushes (bubbles)** for branch mispredictions.
+- **Dynamic Operand Forwarding**: An independent **Forwarding Unit** that continuously evaluates downstream write commitments (`EX/MEM` and `MEM/WB`) against active execution sources (`rs1` and `rs2`) to provide **zero-latency data bypassing** directly into the ALU inputs.
+- **Boundary Register Checkpoints**: Fully isolated stage boundaries (`IF_ID`, `ID_EX`, `EX_MEM`, `MEM_WB`) engineered using custom input-side intercept multiplexing and structured label tunnels to prevent signal race hazards.
 
 ---
 
-## Assembly Toolchain & ROM Target Creation
+## Repository Structure
 
-To execute tests on the hardware canvas, the environment includes compilation scripts to convert bare-metal RISC-V assembly source code into compatible hex images for Logisim ROM/RAM components.
-
-### Compilation Toolchain Prerequisites
-
-Running assembly files requires the RISC-V GNU Compiler Collection (`riscv-gnu-toolchain`) target configured for 32-bit bare-metal execution.
-
-Install the necessary cross-compilers via your platform packages:
-
-```bash
-# Ubuntu/Debian Target Architecture Tools
-sudo apt-get install gcc-riscv64-unknown-elf binutils-riscv64-unknown-elf
-
-# macOS Target Architecture Tools (via Homebrew)
-brew tap riscv-software-src/riscv
-brew install riscv-gnu-toolchain
+```text
+├── logisim/
+│   ├── design/                     # Digital design practice and foundational components
+│   ├── RiskVCPU.circ               # Integrated top-level 5-stage core datapath
+│   ├── RiskVControl.circ           # Central main controller, branch, and immediate matrices
+│   ├── RiskVMemory.circ            # Structural 32-word Register File & Data Memory blocks
+│   └── RiskVPipelineRegs.circ      # Component library for isolation boundary registers
+├── docs/                           # MkDocs comprehensive architectural documentation source
+├── tests/                          # Hex machine-code execution validation test suites
+├── scripts/                        # Automated testing infrastructure and simulation runners
+├── Makefile                        # Automation shortcuts for documentation, builds, and tests
+├── mkdocs.yaml                     # MkDocs configuration and sidebar navigation layout
+├── requirements.txt                # Python environment specifications for testing
+└── component_template.md           # Structural standard template for modular design
 ```
 
-### Automation Scripts
+---
 
-The toolchain automation framework provides direct compilation and verification routines:
+## Quick Start & Environment Setup
 
-- **`compile_logisim.sh`:** Automated shell script that compiles raw assembly strings (`.s`), processes object files, extracts text sections, and outputs standard Logisim-compatible hexadecimal vectors (`.hex`) ready for direct memory image streaming.
+### 1. Prerequisites
+
+Ensure you have the following packages installed on your local environment (optimized for Debian/Ubuntu systems):
+
+```bash
+sudo apt-get update
+sudo apt-get install python3 python3-pip python3-venv openjdk-17-jre make -y
+```
+
+### 2. Python Virtual Environment Setup
+
+Initialize and activate a localized virtual environment to install the dependencies required by the automated verification test runners:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
 
 ---
 
-## Execution Verification Strategy
+## Automation Shortcuts (`Makefile`)
 
-Hardware functionality is maintained using low-level boundary vectors located inside the verification suite. Test routines target explicit code execution paths:
+The project includes a streamlined `Makefile` to handle common management commands across testing, simulation, and documentation hosting.
 
-- **Arithmetic & Logic:** Tests verifying standard integer calculation, signed register operations, shifts, and immediate boundaries.
-- **Control Paths:** Validates branching parameters (`beq`, `bne`, etc.), jumps, trap boundaries, and upper-immediate alignment vectors (`lui`, `auipc`).
-- **Memory Routing:** Confirms full-word data store and load configurations passing across the standard data bus layout.
+### Testing and Verification
+
+Run the integrated Python test runner suite to validate instructions against individual test cases:
+
+```bash
+make test
+```
+
+_Executes all `.hex` execution payloads found in the `tests/` directory against the top-level Logisim circuit using CLI simulation matrices._
+
+### Documentation Suite
+
+To compile and serve the comprehensive structural documentation project locally:
+
+```bash
+make docs-serve
+```
+
+_Spins up a local server at `http://127.0.0.1:8000/` using the Material theme, featuring interactive component definitions and pipeline traces._
+
+To build a production-ready static site inside the `site/` folder:
+
+```bash
+make docs-build
+```
 
 ---
 
-## Roadmap & Core Expansion
+## Automated Test Harness Architecture
 
-Future engineering iterations target deeper performance scaling, structural decoupling, and production-grade validation environments:
+Verification uses a automated Python-to-Logisim CLI test harness. Each test block inside the `tests/` directory contains:
 
-- [ ] **Sub-Word Memory Integration:** Implement structural masking logic inside the memory access stage to introduce byte and half-word operations (`lb`, `lh`, `sb`, `sh`).
-- [ ] **Pipelined Execution Core:** Transition from a single-cycle implementation to a high-frequency 5-stage pipeline architecture (Fetch, Decode, Execute, Memory, Writeback) complete with hazard resolution and forwarding networks.
-- [ ] **HDL Migration:** Port validated Logisim schematics into fully descriptive digital logic frameworks using Digital or hardware description languages to evaluate synthesis targets.
+1. A raw RISC-V assembly source file (`.s`) compiling down to a standard Logisim-compatible hex text block (`.hex`).
+2. A customized validation harness based on `TestHarnessTemplate.circ` that injects the `.hex` stream into memory.
+3. A python verification script that steps the simulation clock line-by-line, monitoring the terminal Register File states (`BusW`) and verifying execution correctness against architectural baseline models.
+
+---
+
+## Design Principles
+
+This hardware processor adheres to a strict technical philosophy of **Simple > Complex** and **Explicit > Implicit**:
+
+- No multi-cycle hidden abstractions; all pipeline behaviors are visually traced out via physical bus-planes in the schematic.
+- Strictly edge-triggered sequential logic components driven by a centralized, non-skewed global clock lines (`SysClk`).
+- Zero undocumented logic blocks. Every component layout follows the standardized criteria specified inside `component_template.md`.
+
+```
+
+```

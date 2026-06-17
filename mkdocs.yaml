@@ -88,7 +88,7 @@ nav:
       - Divider: digital-design/divider.md
 
   - Development:
-      - Building the Project: development/building.md
-      - Running in Logisim: development/running.md
+      # - Building the Project: development/building.md
+      # - Running in Logisim: development/running.md
       - Testing: development/testing.md
-      - Design Conventions: development/design-conventions.md
+      # - Design Conventions: development/design-conventions.md
