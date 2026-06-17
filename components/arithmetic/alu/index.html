@@ -76,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#arithmetic-logic-unit-alu-component-documentation" class="md-skip">
+        <a href="#riskvalu" class="md-skip">
           Skip to content
         </a>
       
@@ -850,22 +850,33 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#interface-specification" class="md-nav__link">
+  <a href="#overview" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Interface Specification
+        Overview
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Interface Specification">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interface
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Interface">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#input-signals" class="md-nav__link">
+  <a href="#inputs" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Input Signals
+        Inputs
       
     </span>
   </a>
@@ -873,10 +884,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#output-signals" class="md-nav__link">
+  <a href="#outputs" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Output Signals
+        Outputs
       
     </span>
   </a>
@@ -889,10 +900,38 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#selection-bus-bit-mapping" class="md-nav__link">
+  <a href="#output-logic-core-definition" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Selection Bus Bit Mapping
+        Output Logic (Core Definition)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Output Logic (Core Definition)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rule-based-definition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rule-based definition
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#internal-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Internal Design
       
     </span>
   </a>
@@ -900,10 +939,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#alu-operation-mapping-matrix" class="md-nav__link">
+  <a href="#operation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        ALU Operation Mapping Matrix
+        Operation
       
     </span>
   </a>
@@ -911,10 +950,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#hardware-implementation-notes" class="md-nav__link">
+  <a href="#pipeline-interaction" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Hardware Implementation Notes
+        Pipeline Interaction
       
     </span>
   </a>
@@ -922,13 +961,192 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#hardware-implementation-notes_1" class="md-nav__link">
+  <a href="#examples" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Hardware Implementation Notes
+        Examples
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-mul-instruction-m-extension" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: MUL Instruction (M-Extension)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#limitations-assumptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limitations / Assumptions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-notes-logisim" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation Notes (Logisim)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#submodules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Submodules
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Submodules">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#aludatasource" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ALUDataSource
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ALUDataSource">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#logic-definition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Logic Definition
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alucontrol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ALUControl
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ALUControl">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#logic-definition_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Logic Definition
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alubase" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ALUBase
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ALUBase">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#operational-mapping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operational Mapping
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alumuldiv" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ALUMulDiv
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ALUMulDiv">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#operational-mapping_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operational Mapping
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#internal-execution-mechanics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Internal Execution Mechanics
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1013,34 +1231,6 @@
     
   
     Register File
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../memory/instruction-memory/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Instruction Memory
   
 
     
@@ -1521,6 +1711,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../../digital-design/multiplier/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multiplier
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../../digital-design/divider/" class="md-nav__link">
         
   
@@ -1747,22 +1965,33 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#interface-specification" class="md-nav__link">
+  <a href="#overview" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Interface Specification
+        Overview
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Interface Specification">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interface
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Interface">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#input-signals" class="md-nav__link">
+  <a href="#inputs" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Input Signals
+        Inputs
       
     </span>
   </a>
@@ -1770,10 +1999,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#output-signals" class="md-nav__link">
+  <a href="#outputs" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Output Signals
+        Outputs
       
     </span>
   </a>
@@ -1786,10 +2015,38 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#selection-bus-bit-mapping" class="md-nav__link">
+  <a href="#output-logic-core-definition" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Selection Bus Bit Mapping
+        Output Logic (Core Definition)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Output Logic (Core Definition)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rule-based-definition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rule-based definition
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#internal-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Internal Design
       
     </span>
   </a>
@@ -1797,10 +2054,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#alu-operation-mapping-matrix" class="md-nav__link">
+  <a href="#operation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        ALU Operation Mapping Matrix
+        Operation
       
     </span>
   </a>
@@ -1808,10 +2065,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#hardware-implementation-notes" class="md-nav__link">
+  <a href="#pipeline-interaction" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Hardware Implementation Notes
+        Pipeline Interaction
       
     </span>
   </a>
@@ -1819,13 +2076,192 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#hardware-implementation-notes_1" class="md-nav__link">
+  <a href="#examples" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Hardware Implementation Notes
+        Examples
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-mul-instruction-m-extension" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: MUL Instruction (M-Extension)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#limitations-assumptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limitations / Assumptions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-notes-logisim" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation Notes (Logisim)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#submodules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Submodules
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Submodules">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#aludatasource" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ALUDataSource
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ALUDataSource">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#logic-definition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Logic Definition
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alucontrol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ALUControl
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ALUControl">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#logic-definition_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Logic Definition
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alubase" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ALUBase
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ALUBase">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#operational-mapping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operational Mapping
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alumuldiv" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ALUMulDiv
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ALUMulDiv">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#operational-mapping_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operational Mapping
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#internal-execution-mechanics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Internal Execution Mechanics
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1846,110 +2282,225 @@
 
 
 
-<h1 id="arithmetic-logic-unit-alu-component-documentation">Arithmetic Logic Unit (ALU) Component Documentation</h1>
-<p>The <strong>Arithmetic Logic Unit (ALU)</strong> is the primary operational core of the execution stage. It is a purely combinatorial module that accepts two 32-bit data operands and a 4-bit control configuration selection bus. It performs the designated arithmetic or logical operation and immediately exposes the calculated result on its output bus.</p>
+<h1 id="riskvalu">RiskVALU</h1>
 <hr />
-<h3 id="interface-specification">Interface Specification</h3>
-<h4 id="input-signals">Input Signals</h4>
+<h2 id="overview">Overview</h2>
+<p>The <code>RiskVALU</code> component serves as the central arithmetic, logical, and mathematical acceleration hub of an RV32I processor equipped with the M-extension (RV32IM). It encapsulates distinct functional submodules to handle basic arithmetic, data source routing, control signal extraction, and hardware multiplication/division.</p>
 <ul>
-<li><strong><code>dataA[31:0]</code> (32 bits):</strong> First data operand, routed from the <code>ASel</code> multiplexer (representing either <code>rs1_data</code> or the current <code>PC</code> value).</li>
-<li><strong><code>dataB[31:0]</code> (32 bits):</strong> Second data operand, routed from the <code>BSel</code> multiplexer (representing either <code>rs2_data</code> or the sign-extended immediate value).</li>
-<li><strong><code>ALUSel[3:0]</code> (4 bits):</strong> Execution operation selection bus, wired directly from the <code>EX_Control</code> output group of the Main Control Decoder.</li>
-</ul>
-<h4 id="output-signals">Output Signals</h4>
-<ul>
-<li><strong><code>ALUResult[31:0]</code> (32 bits):</strong> The computed output word of the executed operation, routed directly to the Data Memory address port and the Writeback multiplexer.</li>
-</ul>
-<hr />
-<h3 id="selection-bus-bit-mapping">Selection Bus Bit Mapping</h3>
-<p>The 4-bit <code>ALUSel[3:0]</code> bus is constructed directly from the instruction payload fields inside the control decoder. To align with the layout of your hardware matrix, the instruction modifier bit is mapped directly to the Most Significant Bit (MSB):</p>
-<ul>
-<li><strong><code>ALUSel[3]</code>:</strong> Wired directly to <strong><code>Instruction[30]</code></strong> (the sign/modifier bit from the <code>funct7</code> field).</li>
-<li><strong><code>ALUSel[2:0]</code>:</strong> Wired directly to the instruction's <strong><code>funct3</code></strong> field (<code>Instruction[14:12]</code>).</li>
+<li><strong>Purpose in CPU</strong>: Performs mathematical calculations, logical masking, barrel shifting, and hardware-accelerated integer multiplication, division, and remainder operations.</li>
+<li>
+<p><strong>Role in datapath</strong>: Located squarely within the Execution (EX) stage, it accepts operands from the system register file or forwarding paths and generates results targeted for the Memory (MEM) or Writeback (WB) pipelines.</p>
+</li>
+<li>
+<p><strong>Source</strong>: <code>logisim/RiskVALU.circ</code>
+  <img alt="" src="../../../images/alu-control.png" /></p>
+</li>
 </ul>
 <hr />
-<h3 id="alu-operation-mapping-matrix">ALU Operation Mapping Matrix</h3>
-<p>The execution logic decodes <code>ALUSel[3:0]</code> to select the active hardware path. For operations involving shifts or unsigned comparisons, the operands are cast to their corresponding hardware types:</p>
+<h2 id="interface">Interface</h2>
+<h3 id="inputs">Inputs</h3>
 <table>
 <thead>
 <tr>
-<th style="text-align: center;">ALUSel[3:0]</th>
-<th style="text-align: left;">Target Instructions</th>
-<th style="text-align: left;">Internal Core Operation</th>
-<th style="text-align: left;">Description</th>
+<th>Signal</th>
+<th>Width</th>
+<th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: center;"><strong><code>0000</code></strong></td>
-<td style="text-align: left;"><code>ADD</code>, <code>ADDI</code>, Loads/Stores</td>
-<td style="text-align: left;"><code>ALUResult = dataA + dataB</code></td>
-<td style="text-align: left;">Standard 32-bit two's complement addition.</td>
+<td><code>RDataA</code></td>
+<td>32 bits</td>
+<td>Raw data output from Register 1 (<code>rs1</code>).</td>
 </tr>
 <tr>
-<td style="text-align: center;"><strong><code>0001</code></strong></td>
-<td style="text-align: left;"><code>SLL</code>, <code>SLLI</code></td>
-<td style="text-align: left;"><code>ALUResult = dataA &lt;&lt; dataB[4:0]</code></td>
-<td style="text-align: left;">Logical Shift Left (shifts in zeros). Uses bottom 5 bits of B.</td>
+<td><code>PC</code></td>
+<td>32 bits</td>
+<td>Current program counter address forwarded from the fetch/decode stage.</td>
 </tr>
 <tr>
-<td style="text-align: center;"><strong><code>0010</code></strong></td>
-<td style="text-align: left;"><code>SLT</code>, <code>SLTI</code></td>
-<td style="text-align: left;"><code>ALUResult = (signed)dataA &lt; (signed)dataB ? 1 : 0</code></td>
-<td style="text-align: left;">Set Less Than (Signed comparison).</td>
+<td><code>RDataB</code></td>
+<td>32 bits</td>
+<td>Raw data output from Register 2 (<code>rs2</code>).</td>
 </tr>
 <tr>
-<td style="text-align: center;"><strong><code>0011</code></strong></td>
-<td style="text-align: left;"><code>SLTU</code>, <code>SLTUI</code></td>
-<td style="text-align: left;"><code>ALUResult = dataA &lt; dataB ? 1 : 0</code></td>
-<td style="text-align: left;">Set Less Than Unsigned (Magnitude comparison).</td>
+<td><code>ImmVal</code></td>
+<td>32 bits</td>
+<td>Decoded and sign-extended immediate scalar block.</td>
 </tr>
 <tr>
-<td style="text-align: center;"><strong><code>0100</code></strong></td>
-<td style="text-align: left;"><code>XOR</code>, <code>XORI</code></td>
-<td style="text-align: left;"><code>ALUResult = dataA ^ dataB</code></td>
-<td style="text-align: left;">Bitwise bit-by-bit exclusive OR.</td>
+<td><code>ASel</code></td>
+<td>1 bit</td>
+<td>Data routing selection control driving the Operand A multiplexer.</td>
 </tr>
 <tr>
-<td style="text-align: center;"><strong><code>0101</code></strong></td>
-<td style="text-align: left;"><code>SRL</code>, <code>SRLI</code></td>
-<td style="text-align: left;"><code>ALUResult = dataA &gt;&gt; dataB[4:0]</code></td>
-<td style="text-align: left;">Logical Shift Right (shifts in zeros). Uses bottom 5 bits of B.</td>
+<td><code>BSel</code></td>
+<td>1 bit</td>
+<td>Data routing selection control driving the Operand B multiplexer.</td>
 </tr>
 <tr>
-<td style="text-align: center;"><strong><code>0110</code></strong></td>
-<td style="text-align: left;"><code>OR</code>, <code>ORI</code></td>
-<td style="text-align: left;"><code>ALUResult = dataA \| dataB</code></td>
-<td style="text-align: left;">Bitwise bit-by-bit logical OR.</td>
+<td><code>ALUSel</code></td>
+<td>5 bits</td>
+<td>Master operational selector bus derived from <code>funct3</code> and <code>funct7</code>.</td>
 </tr>
+</tbody>
+</table>
+<h3 id="outputs">Outputs</h3>
+<table>
+<thead>
 <tr>
-<td style="text-align: center;"><strong><code>0111</code></strong></td>
-<td style="text-align: left;"><code>AND</code>, <code>ANDI</code></td>
-<td style="text-align: left;"><code>ALUResult = dataA &amp; dataB</code></td>
-<td style="text-align: left;">Bitwise bit-by-bit logical AND.</td>
+<th>Signal</th>
+<th>Width</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
-<td style="text-align: center;"><strong><code>1000</code></strong></td>
-<td style="text-align: left;"><code>SUB</code></td>
-<td style="text-align: left;"><code>ALUResult = dataA - dataB</code></td>
-<td style="text-align: left;">Standard 32-bit two's complement subtraction.</td>
-</tr>
-<tr>
-<td style="text-align: center;"><strong><code>1101</code></strong></td>
-<td style="text-align: left;"><code>SRA</code>, <code>SRAI</code></td>
-<td style="text-align: left;"><code>ALUResult = (signed)dataA &gt;&gt; dataB[4:0]</code></td>
-<td style="text-align: left;">Arithmetic Shift Right (preserves the sign bit <code>dataA[31]</code>).</td>
+<td><code>ALUOut</code></td>
+<td>32 bits</td>
+<td>Final 32-bit aggregated calculation pipeline result.</td>
 </tr>
 </tbody>
 </table>
 <hr />
-<h3 id="hardware-implementation-notes">Hardware Implementation Notes</h3>
-<h3 id="hardware-implementation-notes_1">Hardware Implementation Notes</h3>
+<h2 id="output-logic-core-definition">Output Logic (Core Definition)</h2>
+<p>Defines how the top-level outputs are derived based on internal multiplexing logic.</p>
+<h3 id="rule-based-definition">Rule-based definition</h3>
+<ul>
+<li><code>dataA</code> = (<code>ASel</code> == 1) ? <code>PC</code> : <code>RDataA</code></li>
+<li><code>dataB</code> = (<code>BSel</code> == 1) ? <code>ImmVal</code> : <code>RDataB</code></li>
+<li>If <code>ALUSel[4]</code> (isM) == <code>0</code> → <code>ALUOut</code> = Derived from <code>ALUBase</code> using <code>ALUSel[3:0]</code></li>
+<li>If <code>ALUSel[4]</code> (isM) == <code>1</code> → <code>ALUOut</code> = Derived from <code>ALUMulDiv</code> using <code>ALUSel[2:0]</code></li>
+</ul>
+<hr />
+<h2 id="internal-design">Internal Design</h2>
+<p>The root <code>RiskVALU</code> architecture operates as a structural container that routes operands and aggregates results using four specialized internal submodules.</p>
+<ul>
+<li><strong>Structure</strong>: Purely combinational circuit layout containing zero clocked registers, flip-flops, or internal execution state registers.</li>
+<li><strong>Subcircuits used</strong>:</li>
+<li><code>ALUDataSource</code></li>
+<li><code>ALUControl</code></li>
+<li><code>ALUBase</code></li>
+<li><code>ALUMulDiv</code></li>
+<li><strong>Decoding / Mux Structure</strong>: Uses an initial pair of 2-to-1 32-bit multiplexers to select input operands, a bit-splitter to slice the control bus, and a final 2-to-1 32-bit multiplexer driven by the <code>isM</code> flag to select between the standard or M-extension calculation results.</li>
+</ul>
+<hr />
+<h2 id="operation">Operation</h2>
+<p>Step-by-step behavior:</p>
 <ol>
-<li><strong>Shift Magnitude Gating:</strong> For all shift commands (<code>SLL</code>, <code>SRL</code>, <code>SRA</code>), the hardware layout ignores the upper 27 bits of <code>dataB</code>. The shift matrix hooks up exclusively to <code>dataB[4:0]</code> because shifting a 32-bit register by more than 31 bits is architecturally undefined in the base RV32I ISA.</li>
-<li><strong>Logisim Adder Integration:</strong> Addition and subtraction are handled natively by a standard Logisim sub-component. The subtraction modifier flag (<code>ALUSel[0]</code>) connects directly to the arithmetic block's internal operation control terminal to toggle between modes, eliminating the need for manual bit-inversion gates or discrete carry-in manipulation on the canvas.</li>
-<li><strong>Comparison Set-Less-Than Bus Padding:</strong> The Boolean comparators for <code>SLT</code> and <code>SLTU</code> generate a single-bit primitive output flag (<code>0</code> or <code>1</code>). To drive the full 32-bit execution result bus, this token must be routed into a bit-extension network on the canvas. The single-bit value is mapped directly to <code>ALUResult[0]</code>, while bits <code>ALUResult[31:1]</code> are explicitly padded with constant zero blocks to drive the unutilized lines low.</li>
+<li><strong>Inputs arrive</strong>: Data parameters (<code>RDataA</code>, <code>PC</code>, <code>RDataB</code>, <code>ImmVal</code>) and control buses (<code>ASel</code>, <code>BSel</code>, <code>ALUSel</code>) land simultaneously at the input boundaries.</li>
+<li><strong>Decoding / selection occurs</strong>: <code>ALUDataSource</code> resolves the target operands, while <code>ALUControl</code> unpacks the execution selection fields.</li>
+<li><strong>Logic evaluates conditions</strong>: <code>ALUBase</code> and <code>ALUMulDiv</code> concurrently evaluate the routed operands along parallel hardware paths.</li>
+<li><strong>Outputs are produced</strong>: The final multiplexer switches based on the <code>isM</code> mode flag, propagating the selected result onto the <code>ALUOut</code> channel within the same combinational cycle window.</li>
 </ol>
+<hr />
+<h2 id="pipeline-interaction">Pipeline Interaction</h2>
+<ul>
+<li><strong>Pipeline stage involvement</strong>: Sits completely within the <strong>EX (Execution)</strong> stage tracks.</li>
+<li><strong>Signal propagation across stages</strong>: Gathers data straight from the ID/EX pipeline registers, allowing calculations to stabilize inside the clock phase before committing the stable state down to the EX/MEM pipeline buffer boundary.</li>
+<li><strong>Dependencies</strong>: Relies heavily on upstream hazard/forwarding blocks to resolve structural data hazard contentions on operands before execution.</li>
+</ul>
+<hr />
+<h2 id="examples">Examples</h2>
+<h3 id="example-mul-instruction-m-extension">Example: MUL Instruction (M-Extension)</h3>
+<p>Inputs:</p>
+<ul>
+<li><code>RDataA</code> = <code>0x00000003</code> (3)</li>
+<li><code>RDataB</code> = <code>0x00000004</code> (4)</li>
+<li><code>ASel</code> = <code>0</code>, <code>BSel</code> = <code>0</code></li>
+<li><code>ALUSel</code> = <code>10000</code> (<code>isM</code> = 1, <code>selMD</code> = 000)</li>
+</ul>
+<p>Outputs:</p>
+<ul>
+<li><code>ALUOut</code> = <code>0x0000000C</code> (12)</li>
+</ul>
+<hr />
+<h2 id="limitations-assumptions">Limitations / Assumptions</h2>
+<ul>
+<li>Assumes divide-by-zero criteria default cleanly to overflow presets (<code>0xFFFFFFFF</code> or native standard definitions) without triggering separate pipeline traps or core hardware halts.</li>
+<li>Shifter ports inside the core arithmetic modules explicitly discard input lines <code>dataB[31:5]</code>, parsing only the lower 5 bits for barrel shift configurations.</li>
+<li>Purely combinational logic layout; contains no standalone clock lines or internal state memory registers.</li>
+</ul>
+<hr />
+<h2 id="implementation-notes-logisim">Implementation Notes (Logisim)</h2>
+<ul>
+<li>Built using standard Logisim components only.</li>
+<li>Decoder / mux / gate-based implementation with structural subcircuits.</li>
+<li>No external libraries or third-party logic dependencies.</li>
+<li>Signal widths map rigorously onto standard 1-bit control, 3-bit/4-bit selection buses, and 32-bit execution data registers.</li>
+</ul>
+<hr />
+<h2 id="submodules">Submodules</h2>
+<h3 id="aludatasource">ALUDataSource</h3>
+<p>Coordinates raw operand routing configurations.</p>
+<ul>
+<li><strong>Inputs</strong>: <code>RDataA</code> (32-bit), <code>PC</code> (32-bit), <code>RDataB</code> (32-bit), <code>Imm</code> (32-bit), <code>ASel</code> (1-bit), <code>BSel</code> (1-bit)</li>
+<li><strong>Outputs</strong>: <code>dataA</code> (32-bit), <code>dataB</code> (32-bit)</li>
+</ul>
+<h4 id="logic-definition">Logic Definition</h4>
+<ul>
+<li>If <code>ASel</code> == <code>0</code> → <code>dataA</code> = <code>RDataA</code></li>
+<li>If <code>ASel</code> == <code>1</code> → <code>dataA</code> = <code>PC</code></li>
+<li>If <code>BSel</code> == <code>0</code> → <code>dataB</code> = <code>RDataB</code></li>
+<li>If <code>BSel</code> == <code>1</code> → <code>dataB</code> = <code>Imm</code></li>
+</ul>
+<hr />
+<h3 id="alucontrol">ALUControl</h3>
+<p>Extracts architectural instruction parameters from the unified control selector to govern individual arithmetic slices.</p>
+<ul>
+<li><strong>Inputs</strong>: <code>ALUSel</code> (5 bits)</li>
+<li><strong>Outputs</strong>: <code>selBase</code> (4 bits), <code>selMD</code> (3 bits), <code>isM</code> (1 bit)</li>
+</ul>
+<h4 id="logic-definition_1">Logic Definition</h4>
+<ul>
+<li><code>selBase</code> = <code>ALUSel[3:0]</code></li>
+<li><code>selMD</code> = <code>ALUSel[2:0]</code></li>
+<li><code>isM</code> = <code>ALUSel[4]</code></li>
+</ul>
+<hr />
+<h3 id="alubase">ALUBase</h3>
+<p>The fundamental calculation engine for standard RV32I arithmetic. It computes all basic integer arithmetic, shifts, and comparative branches simultaneously in parallel combinational tracks.</p>
+<ul>
+<li><strong>Inputs</strong>: <code>dataA</code> (32-bit), <code>dataB</code> (32-bit), <code>sel</code> (4-bit control selector)</li>
+<li><strong>Outputs</strong>: <code>Out0</code> (32-bit computed result)</li>
+</ul>
+<h4 id="operational-mapping">Operational Mapping</h4>
+<ul>
+<li><code>0000</code>: <code>dataA + dataB</code> (Addition)</li>
+<li><code>0001</code>: <code>dataA &lt;&lt; dataB[4:0]</code> (Logical Shift Left)</li>
+<li><code>0010</code>: <code>(dataA &lt; dataB) ? 1 : 0</code> (Signed Set Less Than)</li>
+<li><code>0011</code>: <code>(dataA &lt;u dataB) ? 1 : 0</code> (Unsigned Set Less Than)</li>
+<li><code>0100</code>: <code>dataA ^ dataB</code> (Bitwise logical XOR)</li>
+<li><code>0101</code>: <code>dataA &gt;&gt; dataB[4:0]</code> (Logical Shift Right)</li>
+<li><code>0110</code>: <code>dataA | dataB</code> (Bitwise logical OR)</li>
+<li><code>0111</code>: <code>dataA &amp; dataB</code> (Bitwise logical AND)</li>
+<li><code>1000</code>: <code>dataA - dataB</code> (Subtraction)</li>
+<li><code>1101</code>: <code>dataA &gt;&gt;&gt; dataB[4:0]</code> (Arithmetic Shift Right)</li>
+</ul>
+<hr />
+<h3 id="alumuldiv">ALUMulDiv</h3>
+<p>The mathematical acceleration submodule that implements structural extensions for the RV32M standard instruction catalog.</p>
+<ul>
+<li><strong>Inputs</strong>: <code>dataA</code> (32-bit), <code>dataB</code> (32-bit), <code>sel</code> (3-bit functional selector)</li>
+<li><strong>Outputs</strong>: <code>Out0</code> (32-bit evaluated result)</li>
+</ul>
+<h4 id="operational-mapping_1">Operational Mapping</h4>
+<ul>
+<li><code>000</code>: <code>mul</code> (Low-order 32 bits of product)</li>
+<li><code>001</code>: <code>mulh</code> (High-order 32 bits of signed product)</li>
+<li><code>010</code>: <code>mulhsu</code> (High-order 32 bits of product between signed A and unsigned B)</li>
+<li><code>011</code>: <code>mulhu</code> (High-order 32 bits of unsigned product)</li>
+<li><code>100</code>: <code>div</code> (Signed division quotient)</li>
+<li><code>101</code>: <code>divu</code> (Unsigned division quotient)</li>
+<li><code>110</code>: <code>rem</code> (Signed division remainder)</li>
+<li><code>111</code>: <code>remu</code> (Unsigned division remainder)</li>
+</ul>
+<h4 id="internal-execution-mechanics">Internal Execution Mechanics</h4>
+<ul>
+<li><strong>Pre-Processing Complement Blocks</strong>: Uses sign-bit inspection to convert negative inputs into positive magnitudes via two's complement inversion circuits before routing to the division/remainder units.</li>
+<li><strong>Post-Processing Inversion Matrix</strong>: Applies a conditional post-execution structural two's complement inversion to the calculated division or remainder output if the tracking logic requires a negative result.</li>
+<li>Uses parallel Logisim hardware multipliers and dividers gathered into an 8-to-1 32-bit multiplexer.</li>
+</ul>
 
 
 

@@ -11,7 +11,7 @@
       
       
       
-        <link rel="prev" href="../instruction-memory/">
+        <link rel="prev" href="../register-file/">
       
       
         <link rel="next" href="../../pipeline/if-id/">
@@ -76,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#data-memory" class="md-skip">
+        <a href="#dmem" class="md-skip">
           Skip to content
         </a>
       
@@ -900,34 +900,6 @@
                 
   
   
-  
-  
-    <li class="md-nav__item">
-      <a href="../instruction-memory/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Instruction Memory
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
     
   
   
@@ -939,6 +911,24 @@
       
         
       
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Memory
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
         
@@ -956,6 +946,353 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interface
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Interface">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#inputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inputs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#outputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Outputs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#output-logic-core-definition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Output Logic (Core Definition)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Output Logic (Core Definition)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rule-based-definition-preferred" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rule-based definition (preferred)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#internal-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Internal Design
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#operation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pipeline-interaction-if-applicable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pipeline Interaction (if applicable)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-storing-a-byte-eg-sb-x5-2x10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: Storing a Byte (e.g., sb x5, 2(x10))
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#limitations-assumptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limitations / Assumptions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-notes-logisim" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation Notes (Logisim)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#submodules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Submodules
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Submodules">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#storealigner" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        StoreAligner
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="StoreAligner">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#overview_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interface_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interface
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logic-definition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Logic Definition
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#maskgenerator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MaskGenerator
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="MaskGenerator">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#overview_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interface_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interface
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logic-definition_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Logic Definition
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#loadaligner" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LoadAligner
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="LoadAligner">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#overview_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interface_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interface
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logic-definition_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Logic Definition
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -1401,6 +1738,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../../digital-design/multiplier/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multiplier
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../../digital-design/divider/" class="md-nav__link">
         
   
@@ -1620,6 +1985,342 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interface
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Interface">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#inputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inputs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#outputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Outputs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#output-logic-core-definition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Output Logic (Core Definition)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Output Logic (Core Definition)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rule-based-definition-preferred" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rule-based definition (preferred)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#internal-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Internal Design
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#operation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pipeline-interaction-if-applicable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pipeline Interaction (if applicable)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-storing-a-byte-eg-sb-x5-2x10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: Storing a Byte (e.g., sb x5, 2(x10))
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#limitations-assumptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limitations / Assumptions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-notes-logisim" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation Notes (Logisim)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#submodules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Submodules
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Submodules">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#storealigner" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        StoreAligner
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="StoreAligner">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#overview_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interface_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interface
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logic-definition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Logic Definition
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#maskgenerator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MaskGenerator
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="MaskGenerator">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#overview_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interface_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interface
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logic-definition_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Logic Definition
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#loadaligner" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LoadAligner
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="LoadAligner">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#overview_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interface_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interface
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logic-definition_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Logic Definition
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -1635,295 +2336,225 @@
 
 
 
-<h1 id="data-memory">Data Memory</h1>
-<h1 id="component-store-mask-generator-byte-enable-decoder">Component: Store Mask Generator / Byte Enable Decoder</h1>
-<h2 id="description">Description</h2>
-<p>Generates a 4-bit write-mask/byte-enable signal (<code>Mask[3:0]</code>) to selectively activate the appropriate byte lanes within the 32-bit word-addressed RAM unit. This component supports aligned sub-word configurations and handles unaligned mid-word boundary writes while capping boundary-crossing operations to the final lane.</p>
+<h1 id="dmem">DMem</h1>
 <hr />
-<h2 id="1-inputs-outputs">1. Inputs &amp; Outputs</h2>
+<h2 id="overview">Overview</h2>
+<p>The <code>DMem</code> component acts as the unified Data Memory interface module for a pipelined RV32I processor. It encapsulates physical synchronous Random Access Memory (RAM) and supplements it with byte-alignment, masking, and sign-extension hardware networks. This allows the processor to natively execute word (<code>lw</code>), halfword (<code>lh</code>, <code>lhu</code>), and byte (<code>lb</code>, <code>lbu</code>) memory operations seamlessly.</p>
+<ul>
+<li><strong>Purpose in CPU</strong>: Handles volatile data read and write preservation operations during program execution.</li>
+<li>
+<p><strong>Role in datapath</strong>: Operates inside the Memory (MEM) pipeline stage, reading or writing data payloads based on addresses computed in the upstream Execution (EX) stage.</p>
+</li>
+<li>
+<p><strong>Source</strong>: <code>logisim/RiskVMemory.circ</code>
+  <img alt="" src="../../../images/dmem.png" /></p>
+</li>
+</ul>
+<hr />
+<h2 id="interface">Interface</h2>
 <h3 id="inputs">Inputs</h3>
-<ul>
-<li><strong><code>Addr[1:0]</code></strong>: The 2 lowest bits of the effective target memory address.</li>
-<li><strong><code>MemByteSel[2:0]</code></strong>: 3-bit control signal bus driven by the Main Control Decoder.</li>
-<li><code>MemByteSel[1]</code> = Half-word flag (<code>funct3[0]</code>)</li>
-<li><code>MemByteSel[2]</code> = Full-word flag (<code>funct3[1]</code>)</li>
-</ul>
-<h3 id="outputs">Outputs</h3>
-<ul>
-<li><strong><code>Mask[3:0]</code></strong>: 4-bit byte-enable output bus routed directly to the RAM selection/mask pins.</li>
-<li><code>Mask[3]</code> <span class="arithmatex">\(\rightarrow\)</span> Controls RAM Byte Lane 3 (Bits <code>[31:24]</code>)</li>
-<li><code>Mask[2]</code> <span class="arithmatex">\(\rightarrow\)</span> Controls RAM Byte Lane 2 (Bits <code>[23:16]</code>)</li>
-<li><code>Mask[1]</code> <span class="arithmatex">\(\rightarrow\)</span> Controls RAM Byte Lane 1 (Bits <code>[15:8]</code>)</li>
-<li><code>Mask[0]</code> <span class="arithmatex">\(\rightarrow\)</span> Controls RAM Byte Lane 0 (Bits <code>[7:0]</code>)</li>
-</ul>
-<hr />
-<h2 id="2-hardware-operational-truth-table">2. Hardware Operational Truth Table</h2>
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Instruction Class</th>
-<th style="text-align: center;">MemByteSel[2] (Word)</th>
-<th style="text-align: center;">MemByteSel[1] (Half)</th>
-<th style="text-align: center;">Addr[1]</th>
-<th style="text-align: center;">Addr[0]</th>
-<th style="text-align: center;">Mask[3] (Byte 3)</th>
-<th style="text-align: center;">Mask[2] (Byte 2)</th>
-<th style="text-align: center;">Mask[1] (Byte 1)</th>
-<th style="text-align: center;">Mask[0] (Byte 0)</th>
-<th style="text-align: left;">Target Operation / Logic Behavior</th>
+<th>Signal</th>
+<th>Width</th>
+<th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><strong>Byte (<code>sb</code>)</strong></td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;"><strong>1</strong></td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: left;">Store Byte at Offset 00</td>
+<td><code>clk</code></td>
+<td>1 bit</td>
+<td>Master system clock signal link for synchronizing write operations.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Byte (<code>sb</code>)</strong></td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;"><strong>1</strong></td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: left;">Store Byte at Offset 01</td>
+<td><code>MemWrite</code></td>
+<td>1 bit</td>
+<td>Master write enable flag. When active, data is written into memory on the next clock edge.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Byte (<code>sb</code>)</strong></td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;"><strong>1</strong></td>
-<td style="text-align: center;">0</td>
-<td style="text-align: left;">Store Byte at Offset 10</td>
+<td><code>Addr</code></td>
+<td>32 bits</td>
+<td>Raw 32-bit execution byte address calculated by the ALU.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Byte (<code>sb</code>)</strong></td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;"><strong>1</strong></td>
-<td style="text-align: left;">Store Byte at Offset 11</td>
+<td><code>WData</code></td>
+<td>32 bits</td>
+<td>Raw 32-bit source data word to be stored in memory.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Half-word (<code>sh</code>)</strong></td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;"><strong>1</strong></td>
-<td style="text-align: center;"><strong>1</strong></td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: left;">Aligned Upper Half-word</td>
+<td><code>Func3</code></td>
+<td>3 bits</td>
+<td>Format specification vector derived directly from the instruction's <code>funct3</code> bit field.</td>
 </tr>
+</tbody>
+</table>
+<h3 id="outputs">Outputs</h3>
+<table>
+<thead>
 <tr>
-<td style="text-align: left;"><strong>Half-word (<code>sh</code>)</strong></td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;"><strong>1</strong></td>
-<td style="text-align: center;"><strong>1</strong></td>
-<td style="text-align: center;">0</td>
-<td style="text-align: left;">Unaligned Mid Half-word</td>
+<th>Signal</th>
+<th>Width</th>
+<th>Description</th>
 </tr>
+</thead>
+<tbody>
 <tr>
-<td style="text-align: left;"><strong>Half-word (<code>sh</code>)</strong></td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;"><strong>1</strong></td>
-<td style="text-align: center;"><strong>1</strong></td>
-<td style="text-align: left;">Aligned Lower Half-word</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Half-word (<code>sh</code>)</strong></td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;"><strong>1</strong></td>
-<td style="text-align: left;">Word Boundary Limit (Programmer Error: Drops LSB)</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>Full Word (<code>sw</code>)</strong></td>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">X</td>
-<td style="text-align: center;">X</td>
-<td style="text-align: center;"><strong>1</strong></td>
-<td style="text-align: center;"><strong>1</strong></td>
-<td style="text-align: center;"><strong>1</strong></td>
-<td style="text-align: center;"><strong>1</strong></td>
-<td style="text-align: left;">Store Full Word (All Lanes)</td>
+<td><code>RData</code></td>
+<td>32 bits</td>
+<td>Fully formatted and properly sign- or zero-extended 32-bit data word returned to the CPU datapath.</td>
 </tr>
 </tbody>
 </table>
 <hr />
-<h2 id="3-gate-implementation-formulas">3. Gate Implementation Formulas</h2>
-<p>The resulting optimal combinational logic equations to implement this logic gate array:</p>
-<div class="highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Signal Conditioning:
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>Is_Word = MemByteSel[2]
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>Is_Half = MemByteSel[1]
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>Is_Byte = NOT(MemByteSel[2]) AND NOT(MemByteSel[1])
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>Logic Equations:
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>Mask[3] = W OR (~A1 AND (~A0 AND B OR H))
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>Mask[2] = W OR (~A1 AND (A0 AND B OR ~A0 AND H))
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>Mask[1] = W OR (A1 AND ~A0 AND B) OR (H AND (A1 XOR A0))
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>Mask[0] = W OR (A1 AND (A0 AND B OR H))
-</span></code></pre></div>
-<h3 id="factored-hardware-form-best-for-minimal-gate-count">Factored Hardware Form (Best for Minimal Gate Count)</h3>
-<p>If you are wire-budgeting your canvas to use the absolute minimum number of logic gates, you can factor out common terms (like <code>~A1</code> and <code>A1</code>).</p>
-<p>By grouping the sub-word variables, the final hardware gate configurations simplify to:</p>
+<h2 id="output-logic-core-definition">Output Logic (Core Definition)</h2>
+<p>The configuration of top-level outputs and storage modifications are governed dynamically by the internal submodules based on address offsets and structural control configurations.</p>
+<h3 id="rule-based-definition-preferred">Rule-based definition (preferred)</h3>
 <ul>
-<li><code>Mask[3] = W OR (~A1 AND (~A0 AND B OR H))</code></li>
-<li><code>Mask[2] = W OR (~A1 AND (A0 AND B OR ~A0 AND H))</code></li>
-<li><code>Mask[1] = W OR (A1 AND ~A0 AND B) OR (H AND (A1 XOR A0))</code></li>
-<li><code>Mask[0] = W OR (A1 AND (A0 AND B OR H))</code></li>
-</ul>
-<h3 id="logisim-implementation-tips">Logisim Implementation Tips</h3>
-<ul>
-<li><strong>Use a 3-input OR gate</strong> at the final output stage of each mask bit, tying the full-word command line (<code>W</code>) directly to the top pin of each gate.</li>
-</ul>
-<h1 id="component-byte-word-selector">Component: Byte / Word Selector</h1>
-<h2 id="description_1">Description</h2>
-<p>Pre-processes 32-bit raw word data read from a word-addressed RAM unit. It handles sub-word alignment by shifting the target byte or half-word into the least significant bit (LSB) positions based on the lower two bits of the calculated ALU address, then performs parallel extension.</p>
-<h3 id="data-bus-to-byte-offset-mapping">Data Bus to Byte Offset Mapping</h3>
-<p>Because the word architecture maps address offsets in descending order relative to the 32-bit data bus lanes:</p>
-<ul>
-<li><strong>Addr[1:0] = 00</strong> <span class="arithmatex">\(\rightarrow\)</span> Targets Byte 3 (Bits <code>[31:24]</code>) <span class="arithmatex">\(\rightarrow\)</span> Requires 24-bit R-Shift</li>
-<li><strong>Addr[1:0] = 01</strong> <span class="arithmatex">\(\rightarrow\)</span> Targets Byte 2 (Bits <code>[23:16]</code>) <span class="arithmatex">\(\rightarrow\)</span> Requires 16-bit R-Shift</li>
-<li><strong>Addr[1:0] = 10</strong> <span class="arithmatex">\(\rightarrow\)</span> Targets Byte 1 (Bits <code>[15:8]</code>) <span class="arithmatex">\(\rightarrow\)</span> Requires 8-bit R-Shift</li>
-<li><strong>Addr[1:0] = 11</strong> <span class="arithmatex">\(\rightarrow\)</span> Targets Byte 0 (Bits <code>[7:0]</code>) <span class="arithmatex">\(\rightarrow\)</span> Requires 0-bit R-Shift</li>
+<li><strong>Memory Addressing</strong>: Standardizes on word-aligned execution by routing <code>Addr[31:2]</code> directly to the internal RAM cell address bus.</li>
+<li><strong>Data Write Path</strong>: When <code>MemWrite</code> == <code>1</code>, the byte-enable pins of the RAM cell are modulated by the 4-bit block generated by <code>MaskGenerator</code>, while <code>StoreAligner</code> shifts <code>WData</code> to line up with the target byte offsets.</li>
+<li><strong>Data Read Path</strong>: <code>RData</code> is continuously evaluated combinationally from the raw RAM output payload by <code>LoadAligner</code> using <code>Addr[1:0]</code> and <code>Func3</code>.</li>
 </ul>
 <hr />
-<h2 id="1-inputs-outputs_1">1. Inputs &amp; Outputs</h2>
-<h3 id="inputs_1">Inputs</h3>
+<h2 id="internal-design">Internal Design</h2>
+<p>The <code>DMem</code> module uses a modular architecture that separates write-side formatting, byte-mask generation, physical storage, and read-side extension into dedicated subcircuits.</p>
 <ul>
-<li><strong><code>dataIn[31:0]</code></strong>: Raw 32-bit word directly from Logisim RAM output.</li>
-<li><strong><code>Addr[1:0]</code></strong>: The 2 lowest bits of the calculated effective memory address.</li>
-<li><strong><code>sel[2:0]</code></strong>: 3-bit control signal mapped directly from the main controller decoder.</li>
-<li><code>sel[0]</code> = <code>funct3[2]</code> (Unsigned flag)</li>
-<li><code>sel[1]</code> = <code>funct3[0]</code> (Half-word flag)</li>
-<li><code>sel[2]</code> = <code>funct3[1]</code> (Full-word flag)</li>
-</ul>
-<h3 id="outputs_1">Outputs</h3>
-<ul>
-<li><strong><code>dataOut[31:0]</code></strong>: Fully aligned and sign/zero-extended 32-bit output.</li>
+<li><strong>Structure</strong>: Core storage operates sequentially on the master clock edge, while formatting, steering, and bit-extension submodules operate entirely as combinational networks.</li>
+<li><strong>Subcircuits Used</strong>:</li>
+<li><code>StoreAligner</code>: Aligns write payloads to specific byte channels.</li>
+<li><code>MaskGenerator</code>: Generates byte-enabling vector configurations.</li>
+<li><code>LoadAligner</code>: Filters and extends read data.</li>
+<li><strong>Top-Level Routing</strong>: The address bus is split; <code>Addr[31:2]</code> is wired straight to the core RAM address lines, while <code>Addr[1:0]</code> routes downstream to the alignment and mask-generation submodules to configure byte lanes.</li>
 </ul>
 <hr />
-<h2 id="2-internal-schematic-routing-logic">2. Internal Schematic &amp; Routing Logic</h2>
-<h3 id="stage-1-shift-amount-calculation">Stage 1: Shift Amount Calculation</h3>
+<h2 id="operation">Operation</h2>
+<p>Step-by-step behavior:</p>
+<ol>
+<li><strong>Parameters Settle</strong>: <code>Addr</code>, <code>WData</code>, <code>Func3</code>, and <code>MemWrite</code> land at the input ports.</li>
+<li><strong>Parallel Submodule Evaluation</strong>: <code>MaskGenerator</code> creates the write mask, <code>StoreAligner</code> repositions the write word, and the RAM block combinationally outputs the 32-bit word located at <code>Addr[31:2]</code>.</li>
+<li><strong>Read Alignment</strong>: <code>LoadAligner</code> intercepts the raw RAM output, isolating and extending the correct sub-word based on <code>Addr[1:0]</code> and <code>Func3</code> to deliver a stable value to <code>RData</code>.</li>
+<li><strong>Synchronous State Change</strong>: If <code>MemWrite</code> is asserted, the masked and shifted write data commits to the RAM cells on the next active clock transition.</li>
+</ol>
+<hr />
+<h2 id="pipeline-interaction-if-applicable">Pipeline Interaction (if applicable)</h2>
 <ul>
-<li><strong>Logic</strong>: Inverts <code>Addr[1:0]</code> to swap the layout dependency, then shifts the value left by 3 bits (by appending three trailing zeros) to scale the byte offset into a bit-shift offset.</li>
-<li><strong>Mapping</strong>:</li>
-<li><code>00</code> <span class="arithmatex">\(\rightarrow\)</span> <code>5'b11000</code> (24 bits)</li>
-<li><code>01</code> <span class="arithmatex">\(\rightarrow\)</span> <code>5'b10000</code> (16 bits)</li>
-<li><code>10</code> <span class="arithmatex">\(\rightarrow\)</span> <code>5'b01000</code> (8 bits)</li>
-<li><code>11</code> <span class="arithmatex">\(\rightarrow\)</span> <code>5'b00000</code> (0 bits)</li>
-</ul>
-<h3 id="stage-2-pre-alignment-shift">Stage 2: Pre-Alignment Shift</h3>
-<ul>
-<li><strong>Logic</strong>: A 32-bit logical right shifter uses the calculated 5-bit shift amount to dynamically slide the target segment down to the <code>[7:0]</code> (byte) or <code>[15:0]</code> (half-word) boundaries.</li>
-</ul>
-<h3 id="stage-3-parallel-splitting-and-extension">Stage 3: Parallel Splitting and Extension</h3>
-<ul>
-<li><strong>Logic</strong>: The aligned data bus forks simultaneously into narrow splitters and extension logic blocks:</li>
-<li>Bits <code>[7:0]</code> run to a sign extender and a zero extender.</li>
-<li>Bits <code>[15:0]</code> run to a sign extender and a zero extender.</li>
-</ul>
-<h3 id="stage-4-final-selection-8-to-1-multiplexer">Stage 4: Final Selection (8-to-1 Multiplexer)</h3>
-<ul>
-<li><strong>Logic</strong>: An 8-to-1 multiplexer selects the final output configuration. The 3-bit <code>sel[2:0]</code> control bus wires directly to the multiplexer selection port, mapping the hardware paths cleanly to the corresponding operations:</li>
-<li><code>000</code> <span class="arithmatex">\(\rightarrow\)</span> Signed Byte (<code>funct3</code> = <code>000</code>)</li>
-<li><code>001</code> <span class="arithmatex">\(\rightarrow\)</span> Unsigned Byte (<code>funct3</code> = <code>100</code>)</li>
-<li><code>010</code> <span class="arithmatex">\(\rightarrow\)</span> Signed Half-Word (<code>funct3</code> = <code>001</code>)</li>
-<li><code>011</code> <span class="arithmatex">\(\rightarrow\)</span> Unsigned Half-Word (<code>funct3</code> = <code>101</code>)</li>
-<li><code>100</code> <span class="arithmatex">\(\rightarrow\)</span> Raw Full Word (<code>funct3</code> = <code>010</code>, Bypasses Stage 2 entirely)</li>
-</ul>
-<h1 id="component-store-aligner">Component: Store Aligner</h1>
-<h2 id="description_2">Description</h2>
-<p>Processes 32-bit data payloads from the register file and configuration signals from the controller before memory writes. It aligns sub-word data (<code>sb</code>, <code>sh</code>) to the correct byte lanes of a 32-bit wide memory bus based on a 2-bit address offset.</p>
-<p>It also contains the <strong>Store Mask Generator</strong>. While the aligner shifts the data bits into the correct slots on the 32-bit bus, the mask generator drives the RAM's write enable lines (<code>WriteMask[3:0]</code>) so only the targeted byte lanes update in memory.</p>
-<h3 id="data-bus-to-byte-offset-mapping_1">Data Bus to Byte Offset Mapping</h3>
-<p>Because this 32-bit Big-Endian architecture maps address offsets in descending order relative to the data bus lanes, the right-aligned register data must shift upward to its destination segment:</p>
-<ul>
-<li><strong>AddrOffset[1:0] = 00</strong> <span class="arithmatex">\(\rightarrow\)</span> Targets Byte 3 (Bits <code>[31:24]</code>) <span class="arithmatex">\(\rightarrow\)</span> Requires 24-bit L-Shift</li>
-<li><strong>AddrOffset[1:0] = 01</strong> <span class="arithmatex">\(\rightarrow\)</span> Targets Byte 2 (Bits <code>[23:16]</code>) <span class="arithmatex">\(\rightarrow\)</span> Requires 16-bit L-Shift</li>
-<li><strong>AddrOffset[1:0] = 10</strong> <span class="arithmatex">\(\rightarrow\)</span> Targets Byte 1 (Bits <code>[15:8]</code>) <span class="arithmatex">\(\rightarrow\)</span> Requires 8-bit L-Shift</li>
-<li><strong>AddrOffset[1:0] = 11</strong> <span class="arithmatex">\(\rightarrow\)</span> Targets Byte 0 (Bits <code>[7:0]</code>) <span class="arithmatex">\(\rightarrow\)</span> Requires 0-bit L-Shift</li>
+<li><strong>Pipeline stage involvement</strong>: Operates entirely within the <strong>MEM (Memory Access)</strong> pipeline stage window.</li>
+<li><strong>Signal propagation across stages</strong>: Accepts execution addresses directly from the EX/MEM pipeline registers and stabilizes the fully formatted read values (<code>RData</code>) before the next clock edge latches them into the MEM/WB writeback registers.</li>
+<li><strong>Dependencies</strong>: Interlocks directly with data hazard mitigation architectures. Because memory operations take a full clock cycle to read from storage, any immediate dependent instruction down-line requires the central pipeline controller to introduce a structural stall cycle to preserve data consistency.</li>
 </ul>
 <hr />
-<h2 id="1-inputs-outputs_2">1. Inputs &amp; Outputs</h2>
-<h3 id="inputs_2">Inputs</h3>
+<h2 id="examples">Examples</h2>
+<h3 id="example-storing-a-byte-eg-sb-x5-2x10">Example: Storing a Byte (e.g., <code>sb x5, 2(x10)</code>)</h3>
+<p>Inputs:</p>
 <ul>
-<li><strong><code>DataFromRegisterFile[31:0]</code></strong>: Raw 32-bit data from register file source (<code>rs2</code>).</li>
-<li><strong><code>AddrOffset[1:0]</code></strong>: The 2 lowest bits of the calculated effective memory address.</li>
-<li><strong><code>ByteSel</code></strong>: Control lines from the main controller decoder:</li>
-<li><code>ByteSel[0]</code> (<code>indicates unsigned loads, used in LoadAligner</code>)</li>
-<li><code>ByteSel[1]</code> (High for <code>sh</code>)</li>
-<li><code>ByteSel[2]</code> (High for <code>sw</code>)</li>
+<li><code>Addr</code> = <code>0x10000006</code> (<code>Addr[1:0]</code> = <code>10</code>)</li>
+<li><code>WData</code> = <code>0x11223344</code> (Low byte to write = <code>0x44</code>)</li>
+<li><code>Func3</code> = <code>000</code> (Byte mode)</li>
+<li><code>MemWrite</code> = <code>1</code></li>
 </ul>
-<h3 id="outputs_2">Outputs</h3>
+<p>Submodule Actions:</p>
 <ul>
-<li><strong><code>AlignedDataToMemory[31:0]</code></strong>: Shifted data connected to the RAM module data input.</li>
-<li><strong><code>WriteMask[3:0]</code></strong>: 4-bit byte write-enable mask connected to the RAM lane enable inputs.</li>
+<li><code>StoreAligner</code> shifts <code>0x44</code> to position 2, generating <code>0x00440000</code>.</li>
+<li><code>MaskGenerator</code> outputs a 4-bit write mask of <code>0100</code>.</li>
+<li><strong>Result</strong>: On the clock edge, only byte lane 2 of the word address <code>0x10000004</code> is updated with <code>0x44</code>.</li>
 </ul>
 <hr />
-<h2 id="2-internal-schematic-routing-logic_1">2. Internal Schematic &amp; Routing Logic</h2>
-<h3 id="stage-1-exception-detection-misalignment-flag">Stage 1: Exception Detection (Misalignment Flag)</h3>
+<h2 id="limitations-assumptions">Limitations / Assumptions</h2>
 <ul>
-<li><strong>Logic</strong>: Detects an unaligned half-word operation spanning internal boundaries. This flag goes high only when the offset is <code>01</code> during a half-word store instruction while a full word write is low.</li>
-<li><strong>Equation</strong>:
-  $<span class="arithmatex">\(\text{mis\_align} = \text{AddrOffset}[0] \ \text{AND} \ \sim\text{AddrOffset}[1] \ \text{AND} \ \text{Half} \ \text{AND} \ \sim\text{Word}\)</span>$</li>
+<li>Assumes memory access constraints match the natural size-alignment protocols dictated by standard RISC-V specifications. Unaligned memory accesses may trigger erroneous wrapping behavior if not isolated externally.</li>
+<li>Contains no exception tracking, misaligned memory trap hooks, or hardware-level bus parity checks.</li>
+<li>Purely dependent on stable clock transitions to handle structural operations without corrupting nearby data segments.</li>
 </ul>
-<h3 id="stage-2-shift-amount-calculation-shamt40">Stage 2: Shift Amount Calculation (<code>shamt[4:0]</code>)</h3>
+<hr />
+<h2 id="implementation-notes-logisim">Implementation Notes (Logisim)</h2>
 <ul>
-<li><strong>Logic</strong>: Maps the address and control signals into a 5-bit shift distance vector using pure gate logic instead of multiplexers. When the misalignment flag is high, it forces an 8-bit shift, overriding the standard calculation.</li>
-<li><strong>Equations</strong>:</li>
-<li><code>shamt[4]</code> = <span class="arithmatex">\((\sim\text{AddrOffset}[1] \ \text{AND} \ \sim\text{Word}) \ \text{AND} \ \sim\text{mis\_align}\)</span></li>
-<li><code>shamt[3]</code> = <span class="arithmatex">\((\sim\text{AddrOffset}[0] \ \text{AND} \ \text{Byte} \ \text{AND} \ \sim\text{Word}) \ \text{OR} \ \text{mis\_align}\)</span></li>
-<li><code>shamt[2:0]</code> = <span class="arithmatex">\(3'\text{b000}\)</span> (Permanently grounded; shifts are always multiples of 8 bits)</li>
+<li>Built cleanly using standard elements from Logisim's native <code>Memories</code> (RAM), <code>Plexers</code> (Multiplexers), and <code>Wiring</code> packages.</li>
+<li>Configured with a unified local tunnel system to cleanly distribute address byte slices (<code>Addr[1:0]</code>) and format controls without visual clutter.</li>
 </ul>
-<h3 id="stage-3-spatial-left-shifting">Stage 3: Spatial Left-Shifting</h3>
+<hr />
+<h2 id="submodules">Submodules</h2>
+<h3 id="storealigner">StoreAligner</h3>
+<h4 id="overview_1">Overview</h4>
+<p>A combinational steering network that shifts lower-order bits from the source register to align them with the target byte coordinates within the 32-bit memory word.</p>
 <ul>
-<li><strong>Logic</strong>: A 32-bit logical left barrel shifter takes the raw data from the register file and shifts it up using the calculated 5-bit <code>shamt[4:0]</code> vector. Full word operations set the shift amount to zero, passing the register data through unchanged.</li>
+<li><strong>Source</strong>: <code>logisim/RiskVMemory.circ</code>
+  <img alt="" src="../../../images/store-align.png" /></li>
 </ul>
-<h3 id="stage-4-write-mask-generation">Stage 4: Write Mask Generation</h3>
+<h4 id="interface_1">Interface</h4>
 <ul>
-<li><strong>Logic</strong>: Runs the integrated <code>StoreMaskGenerator</code> logic in parallel with the data shifter. It maps <code>AddrOffset[1:0]</code> and the instruction width signals to drive individual RAM write authorization pins (<code>WriteMask[3:0]</code>). This prevents data overwrites in non-targeted byte fields.</li>
-<li><strong>Mapping</strong>:</li>
-<li><code>sw</code> <span class="arithmatex">\(\rightarrow\)</span> <code>4'b1111</code></li>
-<li><code>sb</code> at <code>00</code>/<code>01</code>/<code>10</code>/<code>11</code> <span class="arithmatex">\(\rightarrow\)</span> <code>4'b1000</code> / <code>4'b0100</code> / <code>4'b0010</code> / <code>4'b0001</code></li>
-<li><code>sh</code> at <code>00</code>/<code>01</code>/<code>10</code> <span class="arithmatex">\(\rightarrow\)</span> <code>4'b1100</code> / <code>4'b0110</code> / <code>4'b0011</code></li>
+<li><strong>Inputs</strong>: <code>WData</code> (32 bits), <code>Addr_LSB</code> (2 bits, tracking <code>Addr[1:0]</code>)</li>
+<li><strong>Outputs</strong>: <code>Aligned_WData</code> (32 bits)</li>
 </ul>
-<div class="highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>
+<h4 id="logic-definition">Logic Definition</h4>
+<ul>
+<li>If <code>Addr_LSB</code> == <code>00</code> → <code>Aligned_WData</code> = <code>WData</code></li>
+<li>If <code>Addr_LSB</code> == <code>01</code> → <code>Aligned_WData</code> = <code>WData[23:0] &lt;&lt; 8</code> (Low byte moved to Byte 1)</li>
+<li>If <code>Addr_LSB</code> == <code>10</code> → <code>Aligned_WData</code> = <code>WData[15:0] &lt;&lt; 16</code> (Low half/byte moved to Byte 2)</li>
+<li>If <code>Addr_LSB</code> == <code>11</code> → <code>Aligned_WData</code> = <code>WData[7:0] &lt;&lt; 24</code> (Low byte moved to Byte 3)</li>
+</ul>
+<hr />
+<h3 id="maskgenerator">MaskGenerator</h3>
+<h4 id="overview_2">Overview</h4>
+<p>An operational decoding matrix that translates the instruction size code (<code>Func3</code>) and address offsets into a 4-bit byte-enable vector used to gate RAM write transactions.</p>
+<ul>
+<li><strong>Source</strong>: <code>logisim/RiskVMemory.circ</code>
+  <img alt="" src="../../../images/strore-mask-gen.png" /></li>
+</ul>
+<h4 id="interface_2">Interface</h4>
+<ul>
+<li><strong>Inputs</strong>: <code>Func3</code> (3 bits), <code>Addr_LSB</code> (2 bits, tracking <code>Addr[1:0]</code>)</li>
+<li><strong>Outputs</strong>: <code>Write_Mask</code> (4 bits, mapped directly to RAM byte-enables)</li>
+</ul>
+<h4 id="logic-definition_1">Logic Definition</h4>
+<ul>
+<li><strong>Byte Mode (<code>Func3</code> == <code>000</code>)</strong>:</li>
+<li><code>Addr_LSB</code> == <code>00</code> → <code>Write_Mask</code> = <code>0001</code></li>
+<li><code>Addr_LSB</code> == <code>01</code> → <code>Write_Mask</code> = <code>0010</code></li>
+<li><code>Addr_LSB</code> == <code>10</code> → <code>Write_Mask</code> = <code>0100</code></li>
+<li><code>Addr_LSB</code> == <code>11</code> → <code>Write_Mask</code> = <code>1000</code></li>
+<li><strong>Halfword Mode (<code>Func3</code> == <code>001</code>)</strong>:</li>
+<li><code>Addr_LSB</code> == <code>00</code> → <code>Write_Mask</code> = <code>0011</code></li>
+<li><code>Addr_LSB</code> == <code>10</code> → <code>Write_Mask</code> = <code>1100</code></li>
+<li><strong>Word Mode (<code>Func3</code> == <code>010</code>)</strong>:</li>
+<li><code>Write_Mask</code> = <code>1111</code></li>
+<li><strong>Default/Other Modes</strong>: <code>Write_Mask</code> = <code>0000</code></li>
+</ul>
+<hr />
+<h3 id="loadaligner">LoadAligner</h3>
+<h4 id="overview_3">Overview</h4>
+<p>An extraction and sign-extension framework that captures sub-word selections from memory and formats them into standardized 32-bit integers.</p>
+<ul>
+<li><strong>Source</strong>: <code>logisim/RiskVMemory.circ</code>
+  <img alt="" src="../../../images/load-align.png" /></li>
+</ul>
+<h4 id="interface_3">Interface</h4>
+<ul>
+<li><strong>Inputs</strong>: <code>RAM_DataOut</code> (32 bits), <code>Addr_LSB</code> (2 bits, tracking <code>Addr[1:0]</code>), <code>Func3</code> (3 bits)</li>
+<li><strong>Outputs</strong>: <code>RData</code> (32 bits)</li>
+</ul>
+<h4 id="logic-definition_2">Logic Definition</h4>
+<p>Extracts and pads values based on the active memory format configuration:</p>
+<ul>
+<li><strong><code>Func3</code> == <code>000</code> (Byte Load - <code>lb</code>)</strong>:</li>
+<li><code>Addr_LSB</code> == <code>00</code> → <code>RData</code> = <code>{{24{RAM_DataOut[7]}}, RAM_DataOut[7:0]}</code></li>
+<li><code>Addr_LSB</code> == <code>01</code> → <code>RData</code> = <code>{{24{RAM_DataOut[15]}}, RAM_DataOut[15:8]}</code></li>
+<li><code>Addr_LSB</code> == <code>10</code> → <code>RData</code> = <code>{{24{RAM_DataOut[23]}}, RAM_DataOut[23:16]}</code></li>
+<li><code>Addr_LSB</code> == <code>11</code> → <code>RData</code> = <code>{{24{RAM_DataOut[31]}}, RAM_DataOut[31:24]}</code></li>
+<li><strong><code>Func3</code> == <code>001</code> (Halfword Load - <code>lh</code>)</strong>:</li>
+<li><code>Addr_LSB</code> == <code>00</code> → <code>RData</code> = <code>{{16{RAM_DataOut[15]}}, RAM_DataOut[15:0]}</code></li>
+<li><code>Addr_LSB</code> == <code>10</code> → <code>RData</code> = <code>{{16{RAM_DataOut[31]}}, RAM_DataOut[31:16]}</code></li>
+<li><strong><code>Func3</code> == <code>010</code> (Word Load - <code>lw</code>)</strong>:</li>
+<li><code>RData</code> = <code>RAM_DataOut</code></li>
+<li><strong><code>Func3</code> == <code>100</code> (Byte Load Unsigned - <code>lbu</code>)</strong>:</li>
+<li><code>Addr_LSB</code> == <code>00</code> → <code>RData</code> = <code>{24'b0, RAM_DataOut[7:0]}</code></li>
+<li><code>Addr_LSB</code> == <code>01</code> → <code>RData</code> = <code>{24'b0, RAM_DataOut[15:8]}</code></li>
+<li><code>Addr_LSB</code> == <code>10</code> → <code>RData</code> = <code>{24'b0, RAM_DataOut[23:16]}</code></li>
+<li><code>Addr_LSB</code> == <code>11</code> → <code>RData</code> = <code>{24'b0, RAM_DataOut[31:24]}</code></li>
+<li><strong><code>Func3</code> == <code>101</code> (Halfword Load Unsigned - <code>lhu</code>)</strong>:</li>
+<li><code>Addr_LSB</code> == <code>00</code> → <code>RData</code> = <code>{16'b0, RAM_DataOut[15:0]}</code></li>
+<li><code>Addr_LSB</code> == <code>10</code> → <code>RData</code> = <code>{16'b0, RAM_DataOut[31:16]}</code></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>
 </span></code></pre></div>
 
 

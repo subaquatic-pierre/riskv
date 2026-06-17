@@ -14,7 +14,7 @@
         <link rel="prev" href="../../arithmetic/alu/">
       
       
-        <link rel="next" href="../instruction-memory/">
+        <link rel="next" href="../data-memory/">
       
       
         
@@ -76,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#32-word-discrete-register-file-module" class="md-skip">
+        <a href="#register-file" class="md-skip">
           Skip to content
         </a>
       
@@ -935,10 +935,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#functional-overview" class="md-nav__link">
+  <a href="#overview" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Functional Overview
+        Overview
       
     </span>
   </a>
@@ -946,22 +946,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#interface-specifications" class="md-nav__link">
+  <a href="#interface" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Interface Specifications
+        Interface
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Interface Specifications">
+    <nav class="md-nav" aria-label="Interface">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#input-signals" class="md-nav__link">
+  <a href="#inputs" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Input Signals
+        Inputs
       
     </span>
   </a>
@@ -969,10 +969,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#output-signals" class="md-nav__link">
+  <a href="#outputs" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Output Signals
+        Outputs
       
     </span>
   </a>
@@ -985,44 +985,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#internal-hardware-architecture" class="md-nav__link">
+  <a href="#output-logic-core-definition" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Internal Hardware Architecture
+        Output Logic (Core Definition)
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Internal Hardware Architecture">
+    <nav class="md-nav" aria-label="Output Logic (Core Definition)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-write-steering-layer-demultiplexer" class="md-nav__link">
+  <a href="#rule-based-definition" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Write Steering Layer (Demultiplexer)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-storage-layer-register-bank" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. Storage Layer (Register Bank)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-read-steering-layer-multiplexers" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. Read Steering Layer (Multiplexers)
+        Rule-based definition
       
     </span>
   </a>
@@ -1035,10 +1013,93 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#core-operational-mechanics" class="md-nav__link">
+  <a href="#transparent-register-functionality-internal-bypass" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Core Operational Mechanics
+        Transparent Register Functionality (Internal Bypass)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#internal-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Internal Design
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#operation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pipeline-interaction-if-applicable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pipeline Interaction (if applicable)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-simultaneous-read-write-intersect-bypass-active" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: Simultaneous Read-Write Intersect (Bypass Active)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#limitations-assumptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limitations / Assumptions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation Notes
       
     </span>
   </a>
@@ -1049,34 +1110,6 @@
   
 </nav>
       
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../instruction-memory/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Instruction Memory
-  
-
-    
-  </span>
-  
-  
-
-      </a>
     </li>
   
 
@@ -1549,6 +1582,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../../digital-design/multiplier/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multiplier
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../../digital-design/divider/" class="md-nav__link">
         
   
@@ -1775,10 +1836,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#functional-overview" class="md-nav__link">
+  <a href="#overview" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Functional Overview
+        Overview
       
     </span>
   </a>
@@ -1786,22 +1847,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#interface-specifications" class="md-nav__link">
+  <a href="#interface" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Interface Specifications
+        Interface
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Interface Specifications">
+    <nav class="md-nav" aria-label="Interface">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#input-signals" class="md-nav__link">
+  <a href="#inputs" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Input Signals
+        Inputs
       
     </span>
   </a>
@@ -1809,10 +1870,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#output-signals" class="md-nav__link">
+  <a href="#outputs" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Output Signals
+        Outputs
       
     </span>
   </a>
@@ -1825,44 +1886,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#internal-hardware-architecture" class="md-nav__link">
+  <a href="#output-logic-core-definition" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Internal Hardware Architecture
+        Output Logic (Core Definition)
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Internal Hardware Architecture">
+    <nav class="md-nav" aria-label="Output Logic (Core Definition)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-write-steering-layer-demultiplexer" class="md-nav__link">
+  <a href="#rule-based-definition" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Write Steering Layer (Demultiplexer)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-storage-layer-register-bank" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. Storage Layer (Register Bank)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-read-steering-layer-multiplexers" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. Read Steering Layer (Multiplexers)
+        Rule-based definition
       
     </span>
   </a>
@@ -1875,10 +1914,93 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#core-operational-mechanics" class="md-nav__link">
+  <a href="#transparent-register-functionality-internal-bypass" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Core Operational Mechanics
+        Transparent Register Functionality (Internal Bypass)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#internal-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Internal Design
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#operation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pipeline-interaction-if-applicable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pipeline Interaction (if applicable)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Examples
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-simultaneous-read-write-intersect-bypass-active" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: Simultaneous Read-Write Intersect (Bypass Active)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#limitations-assumptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limitations / Assumptions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implementation Notes
       
     </span>
   </a>
@@ -1902,113 +2024,174 @@
 
 
 
-<h1 id="32-word-discrete-register-file-module">32-Word Discrete Register File Module</h1>
-<h2 id="functional-overview">Functional Overview</h2>
-<p>The <strong>Register File (<code>RegisterFile</code>)</strong> serves as the central high-speed execution scratchpad for the processor core. It is built out of 32 discrete, independent 32-bit registers (<code>x0</code> to <code>x31</code>).</p>
-<p>It enforces the architectural constraint that register <code>x0</code> is hardwired to zero, discarding incoming writes and consistently emitting zero data.</p>
+<h1 id="register-file">Register File</h1>
 <hr />
-<h2 id="interface-specifications">Interface Specifications</h2>
-<h3 id="input-signals">Input Signals</h3>
+<h2 id="overview">Overview</h2>
+<p>The <code>RegisterFile</code> component acts as the centralized high-speed architectural storage unit within the Instruction Decode (ID) stage of the pipelined RV32I processor. It holds the 32 general-purpose registers (<code>x0</code> through <code>x31</code>) that serve as fast-access operands for arithmetic, logic, and memory processing paths.</p>
+<ul>
+<li><strong>Purpose in CPU</strong>: Temporarily stores variable data and instruction results, enabling rapid concurrent dual-register reads alongside a synchronized single-register write operation within each clock cycle.</li>
+<li>
+<p><strong>Role in datapath</strong>: Positioned within the Instruction Decode (ID) stage, it accepts decoded source addresses directly from the raw instruction bus to serve data to the execution stage, while capturing finalized return streams from the Writeback (WB) stage.</p>
+</li>
+<li>
+<p><strong>Source</strong>: <code>logisim/RiskVMemory.circ</code>
+  <img alt="" src="../../../images/register-file.png" /></p>
+</li>
+</ul>
+<hr />
+<h2 id="interface">Interface</h2>
+<h3 id="inputs">Inputs</h3>
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Pin Name</th>
-<th style="text-align: center;">Bit Width</th>
-<th style="text-align: center;">Direction</th>
-<th style="text-align: left;">Functional Description</th>
+<th>Signal</th>
+<th>Width</th>
+<th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><code>rs1</code></td>
-<td style="text-align: center;">5</td>
-<td style="text-align: center;">Input</td>
-<td style="text-align: left;">Source Register 1 address line (Instruction bits [19:15])</td>
+<td><code>clk</code></td>
+<td>1 bit</td>
+<td>Master system clock signal synchronization link.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><code>rs2</code></td>
-<td style="text-align: center;">5</td>
-<td style="text-align: center;">Input</td>
-<td style="text-align: left;">Source Register 2 address line (Instruction bits [24:20])</td>
+<td><code>RegWrite</code></td>
+<td>1 bit</td>
+<td>Active-high control signal enabling state modifications to be committed to the file.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><code>rd</code></td>
-<td style="text-align: center;">5</td>
-<td style="text-align: center;">Input</td>
-<td style="text-align: left;">Destination Register address line (Instruction bits [11:7])</td>
+<td><code>RadrA</code></td>
+<td>5 bits</td>
+<td>Source Register 1 (<code>rs1</code>) address mapping bus tracking the active instruction field.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><code>W_Data</code></td>
-<td style="text-align: center;">32</td>
-<td style="text-align: center;">Input</td>
-<td style="text-align: left;">32-bit data bus containing the value to commit to storage</td>
+<td><code>RadrB</code></td>
+<td>5 bits</td>
+<td>Source Register 2 (<code>rs2</code>) address mapping bus tracking the active instruction field.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><code>W_En</code></td>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">Input</td>
-<td style="text-align: left;">Master write-enable control signal from Main Controller</td>
+<td><code>Wadr</code></td>
+<td>5 bits</td>
+<td>Destination Register (<code>rd</code>) address mapping bus identifying where to write back data.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><code>Clk</code></td>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">Input</td>
-<td style="text-align: left;">Global system clock line (Synchronous write trigger)</td>
+<td><code>WData</code></td>
+<td>32 bits</td>
+<td>Decided 32-bit data payload arriving from the Writeback stage to commit into storage.</td>
 </tr>
 </tbody>
 </table>
-<h3 id="output-signals">Output Signals</h3>
+<h3 id="outputs">Outputs</h3>
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Pin Name</th>
-<th style="text-align: center;">Bit Width</th>
-<th style="text-align: center;">Direction</th>
-<th style="text-align: left;">Functional Description</th>
+<th>Signal</th>
+<th>Width</th>
+<th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><code>R_Data1</code></td>
-<td style="text-align: center;">32</td>
-<td style="text-align: center;">Output</td>
-<td style="text-align: left;">Real-time, asynchronous 32-bit data read from register <code>rs1</code></td>
+<td><code>RDataA</code></td>
+<td>32 bits</td>
+<td>Current 32-bit word read from the location specified by <code>RadrA</code>.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><code>R_Data2</code></td>
-<td style="text-align: center;">32</td>
-<td style="text-align: center;">Output</td>
-<td style="text-align: left;">Real-time, asynchronous 32-bit data read from register <code>rs2</code></td>
+<td><code>RDataB</code></td>
+<td>32 bits</td>
+<td>Current 32-bit word read from the location specified by <code>RadrB</code>.</td>
 </tr>
 </tbody>
 </table>
 <hr />
-<h2 id="internal-hardware-architecture">Internal Hardware Architecture</h2>
-<p>The structural layout inside the component is divided into three distinct layers:</p>
-<h3 id="1-write-steering-layer-demultiplexer">1. Write Steering Layer (Demultiplexer)</h3>
-<p>A 1-to-32 Demultiplexer handles incoming write routing:</p>
+<h2 id="output-logic-core-definition">Output Logic (Core Definition)</h2>
+<p>Defines how read channels reflect internal storage states while conforming to RISC-V structural constraints and data consistency optimizations.</p>
+<h3 id="rule-based-definition">Rule-based definition</h3>
 <ul>
-<li>The 1-bit master <code>W_En</code> line is tied to the data input of the demultiplexer.</li>
-<li>The 5-bit <code>rd</code> address bus acts as the selector input.</li>
-<li><strong>The <code>x0</code> Bypass:</strong> Output line 0 of the demultiplexer (corresponding to <code>rd = 00000</code>) is left completely unconnected. The remaining 31 output lines route directly to the individual write-enable ports of registers <code>x1</code> through <code>x31</code>, ensuring writes to <code>x0</code> are safely dropped.</li>
-</ul>
-<h3 id="2-storage-layer-register-bank">2. Storage Layer (Register Bank)</h3>
-<ul>
-<li><strong>Register <code>x0</code>:</strong> No physical register component is placed. The line representing <code>x0</code> is hardwired directly to a constant ground bus (<code>0x00000000</code>).</li>
-<li><strong>Registers <code>x1</code> to <code>x31</code>:</strong> 31 individual 32-bit registers are arrayed in parallel. Their data inputs (<code>D</code>) are tied concurrently to the master <code>W_Data</code> bus, and their clock pins link directly to the master <code>Clk</code> line. Execution triggers only if an individual register's specific write-enable line from the demultiplexer goes high.</li>
-</ul>
-<h3 id="3-read-steering-layer-multiplexers">3. Read Steering Layer (Multiplexers)</h3>
-<p>Two independent 32-bit 32-to-1 Multiplexers drive output streams:</p>
-<ul>
-<li><strong>Port 1 (<code>R_Data1</code>):</strong> Driven by a 32-to-1 MUX controlled by the 5-bit <code>rs1</code> address line. Input 0 of this MUX is tied to ground (<code>0</code>), while inputs 1 through 31 connect to the outputs of registers <code>x1</code> to <code>x31</code>.</li>
-<li><strong>Port 2 (<code>R_Data2</code>):</strong> Driven by an identical 32-to-1 MUX controlled by the 5-bit <code>rs2</code> address line, using the exact same input allocation schema.</li>
+<li><strong>Register <code>x0</code> Hardwiring</strong>:</li>
+<li>If <code>RadrA</code> == <code>00000</code> → <code>RDataA</code> = <code>0x00000000</code></li>
+<li>
+<p>If <code>RadrB</code> == <code>00000</code> → <code>RDataB</code> = <code>0x00000000</code></p>
+</li>
+<li>
+<p><strong>Transparent Internal Bypass (Write-First Behavior)</strong>:</p>
+</li>
+<li>If <code>RegWrite</code> == <code>1</code> and <code>Wadr</code> != <code>00000</code> and <code>Wadr</code> == <code>RadrA</code> → <code>RDataA</code> = <code>WData</code></li>
+<li>
+<p>If <code>RegWrite</code> == <code>1</code> and <code>Wadr</code> != <code>00000</code> and <code>Wadr</code> == <code>RadrB</code> → <code>RDataB</code> = <code>WData</code></p>
+</li>
+<li>
+<p><strong>Standard Storage Routing</strong>:</p>
+</li>
+<li>If none of the conditions above match for <code>RadrA</code> → <code>RDataA</code> = <code>Register_Array[RadrA]</code></li>
+<li>If none of the conditions above match for <code>RadrB</code> → <code>RDataB</code> = <code>Register_Array[RadrB]</code></li>
 </ul>
 <hr />
-<h2 id="core-operational-mechanics">Core Operational Mechanics</h2>
+<h2 id="transparent-register-functionality-internal-bypass">Transparent Register Functionality (Internal Bypass)</h2>
+<p>To maximize pipeline performance and eliminate avoidable data delays, the component includes built-in transparent register logic (also known as a write-first register file bypass).</p>
+<ul>
+<li><strong>The Problem</strong>: In a standard design, a register write occurs on the clock edge, while a register read is continuous and combinational. When an instruction in the Writeback stage commits data to a register that the current instruction in the Decode stage is attempting to read simultaneously, a raw structural delay would ordinarily occur, serving stale data until the next cycle.</li>
+<li><strong>The Solution</strong>: Digital equality comparators inside the circuit monitor the live execution tracks. If <code>RegWrite</code> is active and the destination address <code>Wadr</code> matches either read address (<code>RadrA</code> or <code>RadrB</code>), internal bypass multiplexers intercept the standard register array output. Instead of delivering the older data sitting inside the latch arrays, the module forwards the incoming <code>WData</code> directly to <code>RDataA</code> or <code>RDataB</code> within the exact same clock cycle.</li>
+<li><strong>Architectural Benefit</strong>: This achieves 0-cycle structural forwarding for immediate back-to-back instructions entering writeback and decode stages, removing the need for the central hazard controller to force pipeline stalls for this specific data conflict scenario.</li>
+</ul>
+<hr />
+<h2 id="internal-design">Internal Design</h2>
+<p>The <code>RegisterFile</code> consists of an array of synchronous storage blocks surrounding an asynchronous combinational reading and transparent bypassing framework.</p>
+<ul>
+<li><strong>Combinational vs Sequential Structure</strong>: The primary writing pathway is strictly sequential, synchronized to the edge of the master clock. Conversely, the read matching networks, equality checking logic, and bypass multiplexers are purely combinational to update output states dynamically within the active phase window.</li>
+<li><strong>Register Storage Array</strong>: Composed of 31 independent 32-bit edge-triggered registers representing architectural nodes <code>x1</code> through <code>x31</code>. Physical register <code>x0</code> is omitted from the sequential array and tied directly to a hardware ground constant block.</li>
+<li><strong>Decoding &amp; Write-Gating Architecture</strong>: Incoming address <code>Wadr</code> drives a 5-to-32 digital Demultiplexer line decoder. The output lines are combinatially gated with the <code>RegWrite</code> enable flag via standard <code>AND</code> logic blocks to derive independent write-enable signals for each physical register.</li>
+<li><strong>Bypass Logic &amp; Mux Matrix</strong>: Incorporates 5-bit identity comparators that cross-examine <code>Wadr</code> against <code>RadrA</code> and <code>RadrB</code>. The comparative output flags drive 2-to-1 32-bit multiplexers sitting directly on the final output stages of the primary 32-channel read selectors, forcing immediate propagation of <code>WData</code> when an address intersection is confirmed.</li>
+</ul>
+<hr />
+<h2 id="operation">Operation</h2>
+<p>Step-by-step behavior:</p>
 <ol>
-<li><strong>Asynchronous Read Operations:</strong> Any modification to the <code>rs1</code> or <code>rs2</code> address lines instantly ripples through the 32-to-1 multiplexer trees. The requested data values stabilize on <code>R_Data1</code> and <code>R_Data2</code> within the same clock phase, requiring no clock edge.</li>
-<li><strong>Synchronous Write Operations:</strong> When <code>W_En</code> is active, the data value on <code>W_Data</code> sits at the inputs of all registers, but only the register highlighted by <code>rd</code> has its write-enable pin asserted by the demultiplexer. On the subsequent rising edge of <code>Clk</code>, the selected register captures and saves the data value.</li>
+<li><strong>Addresses and Data Arrive</strong>: Decoded register address fields (<code>RadrA</code>, <code>RadrB</code>, <code>Wadr</code>) and target write data (<code>WData</code>) settle on their respective input tracking lines.</li>
+<li><strong>Parallel Address Comparisons</strong>: Internal equality comparators evaluate if <code>Wadr</code> matches <code>RadrA</code> or <code>RadrB</code> while checking the active state of <code>RegWrite</code>.</li>
+<li><strong>Bypass Evaluation</strong>: If a match is detected, the bypass multiplexer switches its input channel away from the register array bus and hooks directly onto the incoming <code>WData</code> stream.</li>
+<li><strong>Asynchronous Read Delivery</strong>: The final output streams settle continuously onto <code>RDataA</code> and <code>RDataB</code>, cleanly outputting either the stored historical values or the dynamically bypassed writeback data.</li>
+<li><strong>Synchronized State Commitment</strong>: If <code>RegWrite</code> is asserted and <code>Wadr</code> is not zero, the data vector sitting on the <code>WData</code> bus latches into the target storage register precisely on the next active system clock transition.</li>
 </ol>
+<hr />
+<h2 id="pipeline-interaction-if-applicable">Pipeline Interaction (if applicable)</h2>
+<ul>
+<li><strong>Pipeline stage involvement</strong>: Operates within the <strong>ID (Instruction Decode)</strong> stage for instruction parsing, while interfacing with the trailing edge of the <strong>WB (Writeback)</strong> stage for data preservation.</li>
+<li><strong>Signal propagation across stages</strong>: Extracted data payloads flow directly downstream to the EX stage forwarding multiplexers. Write loops track values across the complete pipeline lifecycle, returning via terminal pipeline feedback loops.</li>
+<li><strong>Dependencies</strong>: The internal transparency circuit resolves local ID/WB stage conflicts autonomously. Deeper execution dependencies (such as EX-to-ID or MEM-to-ID conflicts) must still be intercepted and managed by external pipeline forwarding networks or hazard controllers.</li>
+</ul>
+<hr />
+<h2 id="examples">Examples</h2>
+<h3 id="example-simultaneous-read-write-intersect-bypass-active">Example: Simultaneous Read-Write Intersect (Bypass Active)</h3>
+<p>Inputs:</p>
+<ul>
+<li><code>RegWrite</code> = <code>1</code></li>
+<li><code>Wadr</code> = <code>0x05</code> (Writing back to register <code>x5</code>)</li>
+<li><code>WData</code> = <code>0xDEADBEEF</code> (New computational result)</li>
+<li><code>RadrA</code> = <code>0x05</code> (Decode stage needs to read <code>x5</code> concurrently)</li>
+<li><code>RadrB</code> = <code>0x02</code> (Reading unconflicted register <code>x2</code>)</li>
+</ul>
+<p>Outputs / State Changes:</p>
+<ul>
+<li><code>RDataA</code> = <code>0xDEADBEEF</code> (Bypass intercepts the path; data is delivered instantly via transparency logic without waiting for the clock edge)</li>
+<li><code>RDataB</code> = Retrieves the standard historical value stored in <code>x2</code> from the register array.</li>
+<li><strong>On Next Clock Edge</strong>: Storage slot <code>x5</code> officially commits the value <code>0xDEADBEEF</code> into its internal static memory latches.</li>
+</ul>
+<hr />
+<h2 id="limitations-assumptions">Limitations / Assumptions</h2>
+<ul>
+<li>Assumes register <code>x0</code> remains read-only as zero; the transparent bypass logic suppresses forwarding alerts for address <code>00000</code> to prevent erroneous data passing if an instruction attempts to target or read <code>x0</code>.</li>
+<li>Purely combinational bypass path; layout trace propagation delays must be accounted for to ensure the bypass output stabilizes safely before the execution stage samples the data lines.</li>
+</ul>
+<hr />
+<h2 id="implementation-notes">Implementation Notes</h2>
+<ul>
+<li>Built strictly from native Logisim <code>Memories</code> (Registers), <code>Plexers</code> (Multiplexers/Demultiplexers), <code>Arithmetic</code> (Comparators), and <code>Wiring</code> components.</li>
+<li>Scaled to conform to 32-bit data pathways and 5-bit register field address limitations.</li>
+<li>Avoids overlapping layout lines by nesting connections inside clearly declared localized tunnel flags.</li>
+</ul>
+<hr />
 
 
 
