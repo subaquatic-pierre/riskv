@@ -1,4 +1,4 @@
-site_name: RiskV Pipeline Processor Project
+site_name: Risk-V
 site_description: Structural verification and architecture layout for a 5-stage RISC-V processor in Logisim.
 
 theme:
@@ -19,11 +19,13 @@ theme:
         icon: material/brightness-4
         name: Switch to light mode
   features:
-    - navigation.tabs
+    # - navigation.tabs
     - navigation.sections
     - content.code.copy
 
 markdown_extensions:
+  - pymdownx.arithmatex:
+      generic: true
   - pymdownx.superfences:
       custom_fences:
         - name: mermaid
@@ -37,36 +39,55 @@ markdown_extensions:
   - pymdownx.snippets
   - admonition
 
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
+
 nav:
   - Overview: index.md
-  - Project Roadmap: roadmap.md
-  - Datapath Elements:
-      - Program Counter: program_counter.md
-      - Register File: register_file.md
-      - Immediate Generator: immediate_generator.md
-      - Universal Shifter: universal_shifter.md
-      - ALU Core: alu.md
-      - Arithmetic Units:
-          - Half Adder: half_adder.md
-          - Full Adder: full_adder.md
-          - Adder Subtractor: adder_sub.md
-          - Multiplier: multiplier.md
-          - Divider: divider.md
-  - Control Logic:
-      - Main Controller: main_controller.md
-      - Hazard Controller: hazard_controller.md
-      - Branch Units:
-          - Branch Comparator: branch_comparitor.md
-          - Branch Control: branch_control.md
-          - Branch Selector: branch_selector.md
-  - Memory Subsystem:
-      - Memory Interconnect: memory.md
-      - Load Aligner: memory_load_aligner.md
-      - Store Aligner: memory_store_aligner.md
-      - Store Mask Generator: memory_store_mask_gen.md
-  - Core Elements & Logic:
-      - Encoder & Decoder: encoder_decoder.md
-      - Multiplexers & Demultiplexers: mux_demux.md
-      - Truth Tables Reference: truth_tables.md
-  - Verification & Test:
-      - Testing Methodology: tests.md
+
+  - Architecture:
+      - Overview: architecture/index.md
+      - Pipeline: architecture/pipeline.md
+      - Hazards: architecture/hazards.md
+
+  - CPU Components:
+      - Overview: components/index.md
+
+      - Control:
+          - Main Control Unit: components/control/main-controller.md
+          - Immediate Generator: components/control/immediate-generator.md
+          - Hazard Controller: components/control/hazard-controller.md
+          - Forwarding Unit: components/control/forward-controller.md # MAKE
+          - Branch Control Unit: components/control/branch-controller.md
+          - Write Back Controller: components/control/write-back-controller.md # MAKE
+
+      - Arithmetic:
+          - ALU: components/arithmetic/alu.md
+
+      - Memory:
+          - Register File: components/memory/register-file.md
+          - Instruction Memory: components/memory/instruction-memory.md # MAKE
+          - Data Memory: components/memory/data-memory.md
+
+      - Pipeline:
+          - IF/ID Register: components/pipeline/if-id.md
+          - ID/EX Register: components/pipeline/id-ex.md
+          - EX/MEM Register: components/pipeline/ex-mem.md
+          - MEM/WB Register: components/pipeline/mem-wb.md
+
+  - Digital Design:
+      - Overview: digital-design/index.md
+      - Truth Tables: digital-design/truth-tables.md
+      - Memory: digital-design/memory.md
+      - Multiplexers & Demultiplexers: digital-design/multiplexers.md
+      - Encoders & Decoders: digital-design/encoders.md
+      - Shifter: digital-design/shifter.md
+      - Adders: digital-design/adders.md
+      - Divider: digital-design/divider.md
+
+  - Development:
+      - Building the Project: development/building.md
+      - Running in Logisim: development/running.md
+      - Testing: development/testing.md
+      - Design Conventions: development/design-conventions.md
