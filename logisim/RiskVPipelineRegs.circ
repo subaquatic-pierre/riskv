@@ -44,9 +44,9 @@
   <lib desc="#BFH-Praktika" name="10"/>
   <lib desc="#Input/Output-Extra" name="11"/>
   <lib desc="#Soc" name="12"/>
-  <lib desc="file#RiskVMemory.circ" name="13"/>
+  <lib desc="file#RiskVControl.circ" name="13"/>
   <lib desc="file#RiskVALU.circ" name="14"/>
-  <lib desc="file#RiskVControl.circ" name="15"/>
+  <lib desc="file#RiskVMemory.circ" name="15"/>
   <main name="PipelineReg32Bit"/>
   <options>
     <a name="gateUndefined" val="ignore"/>
@@ -3311,12 +3311,12 @@
       <a name="width" val="2"/>
     </comp>
     <comp lib="0" loc="(740,930)" name="Tunnel">
-      <a name="label" val="CSRAddr"/>
+      <a name="label" val="ID_EX_CSRAddr"/>
       <a name="labelfont" val="SansSerif plain 12"/>
       <a name="width" val="12"/>
     </comp>
     <comp lib="0" loc="(740,980)" name="Tunnel">
-      <a name="label" val="CSRCtl"/>
+      <a name="label" val="ID_EX_CSRCtl"/>
       <a name="labelfont" val="SansSerif plain 12"/>
       <a name="width" val="4"/>
     </comp>

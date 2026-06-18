@@ -46,8 +46,8 @@
   <lib desc="#Soc" name="12"/>
   <lib desc="file#RiskVPipelineRegs.circ" name="13"/>
   <lib desc="file#RiskVControl.circ" name="14"/>
-  <lib desc="file#RiskVMemory.circ" name="15"/>
-  <lib desc="file#RiskVALU.circ" name="16"/>
+  <lib desc="file#RiskVALU.circ" name="15"/>
+  <lib desc="file#RiskVMemory.circ" name="16"/>
   <main name="RiskVCPU"/>
   <options>
     <a name="gateUndefined" val="ignore"/>
@@ -1714,6 +1714,41 @@
       <a name="labelfont" val="SansSerif plain 12"/>
       <a name="width" val="32"/>
     </comp>
+    <comp lib="0" loc="(4410,1510)" name="Tunnel">
+      <a name="facing" val="east"/>
+      <a name="label" val="EX_MEM_CSRAddr"/>
+      <a name="labelfont" val="SansSerif plain 12"/>
+      <a name="width" val="12"/>
+    </comp>
+    <comp lib="0" loc="(4410,1530)" name="Tunnel">
+      <a name="facing" val="east"/>
+      <a name="label" val="EX_MEM_RDataA"/>
+      <a name="labelfont" val="SansSerif plain 12"/>
+      <a name="width" val="32"/>
+    </comp>
+    <comp lib="0" loc="(4410,1550)" name="Tunnel">
+      <a name="facing" val="east"/>
+      <a name="label" val="EX_MEM_rdi"/>
+      <a name="labelfont" val="SansSerif plain 12"/>
+      <a name="width" val="5"/>
+    </comp>
+    <comp lib="0" loc="(4410,1570)" name="Tunnel">
+      <a name="facing" val="east"/>
+      <a name="label" val="EX_MEM_rs1"/>
+      <a name="labelfont" val="SansSerif plain 12"/>
+      <a name="width" val="5"/>
+    </comp>
+    <comp lib="0" loc="(4410,1590)" name="Tunnel">
+      <a name="facing" val="east"/>
+      <a name="label" val="EX_MEM_CSRCtl"/>
+      <a name="labelfont" val="SansSerif plain 12"/>
+      <a name="width" val="4"/>
+    </comp>
+    <comp lib="0" loc="(4410,1610)" name="Tunnel">
+      <a name="facing" val="east"/>
+      <a name="label" val="SysClk"/>
+      <a name="labelfont" val="SansSerif plain 12"/>
+    </comp>
     <comp lib="0" loc="(4460,1960)" name="Tunnel">
       <a name="facing" val="east"/>
       <a name="label" val="DMemOut"/>
@@ -1809,13 +1844,13 @@
       <a name="labelfont" val="SansSerif plain 12"/>
       <a name="width" val="4"/>
     </comp>
-    <comp lib="0" loc="(4650,1230)" name="Tunnel">
-      <a name="label" val="DMemOut"/>
+    <comp lib="0" loc="(4630,1510)" name="Tunnel">
+      <a name="label" val="CSROut"/>
       <a name="labelfont" val="SansSerif plain 12"/>
       <a name="width" val="32"/>
     </comp>
-    <comp lib="0" loc="(4680,1560)" name="Tunnel">
-      <a name="label" val="CSROut"/>
+    <comp lib="0" loc="(4650,1230)" name="Tunnel">
+      <a name="label" val="DMemOut"/>
       <a name="labelfont" val="SansSerif plain 12"/>
       <a name="width" val="32"/>
     </comp>
@@ -2288,12 +2323,13 @@
     <comp lib="14" loc="(3200,810)" name="ForwardControl"/>
     <comp lib="14" loc="(6060,790)" name="WriteBackControl"/>
     <comp lib="14" loc="(830,850)" name="ProgramCounter"/>
-    <comp lib="15" loc="(1800,1350)" name="RegisterFile"/>
-    <comp lib="15" loc="(4620,1000)" name="LoadAligner"/>
-    <comp lib="15" loc="(4620,800)" name="StoreAligner"/>
-    <comp lib="15" loc="(4630,1230)" name="DMem"/>
-    <comp lib="15" loc="(830,1140)" name="IMem"/>
-    <comp lib="16" loc="(3200,1350)" name="ALUControl"/>
+    <comp lib="15" loc="(3200,1350)" name="ALUControl"/>
+    <comp lib="16" loc="(1800,1350)" name="RegisterFile"/>
+    <comp lib="16" loc="(4620,1000)" name="LoadAligner"/>
+    <comp lib="16" loc="(4620,800)" name="StoreAligner"/>
+    <comp lib="16" loc="(4630,1230)" name="DMem"/>
+    <comp lib="16" loc="(4630,1510)" name="CSR"/>
+    <comp lib="16" loc="(830,1140)" name="IMem"/>
     <comp lib="2" loc="(350,1010)" name="Multiplexer"/>
     <comp lib="2" loc="(4510,1970)" name="Multiplexer">
       <a name="width" val="32"/>
@@ -2322,9 +2358,6 @@
     </comp>
     <comp lib="9" loc="(4500,715)" name="Text">
       <a name="text" val="MEM - Memory"/>
-    </comp>
-    <comp lib="9" loc="(4510,1555)" name="Text">
-      <a name="text" val="TODO: CSR REGISTER FILE"/>
     </comp>
     <comp lib="9" loc="(5085,710)" name="Text">
       <a name="text" val="MEM_WB"/>
