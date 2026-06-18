@@ -69,6 +69,7 @@ nav:
       - Memory:
           - Register File: components/memory/register-file.md
           - Data Memory: components/memory/data-memory.md
+          - CSR Register: components/memory/csr.md
 
       - Pipeline:
           - IF/ID Register: components/pipeline/if-id.md
