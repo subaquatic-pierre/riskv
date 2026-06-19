@@ -22,7 +22,7 @@ class TestCase:
     def __str__(self) -> str:
         return self.name
 
-    def exec_test(self) -> list[int]:
+    def exec_test(self) -> list[list[int]]:
         """Runs Logisim CLI.
         Returns parsed integer list representing the Result bus trace milestones.
         """
@@ -57,30 +57,36 @@ class TestCase:
             print(f"[{self.name}] Target execution failure: {e}")
             return []
 
-    def parse_output(self, output: list[str]) -> list[int]:
+    def parse_output(self, output: list[str]) -> list[list[int]]:
         """Parses the space-delimited raw binary output tokens into base-10 integers."""
-        parsed_values = []
+        parsed_lines = []
         for line in output:
+            parsed_values = []
             # Drop column delimiter spacing to form a clean binary chunk
-            binary_str = line.replace(" ", "")
-            try:
-                val = int(binary_str, 2)
-                parsed_values.append(val)
-            except ValueError:
-                # Catch trailing headers or anomalies if they slip through
-                continue
-        return parsed_values
+            binary_str_vals = line.split("\t")
+            for binary_str in binary_str_vals:
+                try:
+                    val = int(binary_str.replace(" ", ""), 2)
+                    parsed_values.append(val)
+                except ValueError:
+                    continue
+            parsed_lines.append(parsed_values)
+        return parsed_lines
 
-    def read_expected_output(self) -> list:
+    def read_expected_output(self) -> list[list]:
         path = Path.joinpath(self.path, "results.csv")
         lines = []
         with open(path, "r") as f:
-            for line in f.readlines()[1:]:
-                line = line.strip()
-                try:
-                    lines.append(int(line))
-                except:
-                    lines.append(line)
+            reader = csv.DictReader(f)
+            for line in reader:
+                out_line = []
+                for val in line.values():
+                    try:
+                        out_line.append(int(val))
+                    except:
+                        out_line.append(val)
+
+                lines.append(out_line)
 
         return lines
 
@@ -94,26 +100,25 @@ class TestCase:
 
         expected = self.read_expected_output()
 
-        print(f"Execution Log Trace (Raw Integers): {out}")
-        print(f"Expected results (Raw strings): {expected}")
-        # print(f"Initial State State Value: {initial_val}")
-        # print(f"Final State Halt Value:    {final_val}")
+        print(f"Execution Log Trace (Raw): {out}")
+        print(f"Expected results (Raw): {expected}")
 
         valid = True
 
-        for i, expected_out in enumerate(expected):
-            if expected_out == "X":
-                continue
+        for i_row, row in enumerate(expected):
+            for i_col, val in enumerate(row):
+                if val == "X":
+                    continue
 
-            try:
-                if out[i] != expected_out:
+                try:
+                    if out[i_row][i_col] != val:
+                        valid = False
+                        print(
+                            f"[{self.name}] Expected value = {out[i_row]}, Got: {row})"
+                        )
+                except Exception as e:
                     valid = False
-                    print(
-                        f"[{self.name}] Expected value = {out[i]}, Got: {expected_out[i]})"
-                    )
-            except Exception as e:
-                valid = False
-                print(f"[{self.name}] Exception raised {e}")
+                    print(f"[{self.name}] Exception raised {e}")
 
         if valid:
             print(f"[{self.name}] PASS ✅")
