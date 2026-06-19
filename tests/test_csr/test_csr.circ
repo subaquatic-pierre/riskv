@@ -80,7 +80,7 @@
     <a name="appearance" val="logisim_evolution"/>
     <a name="circuit" val="TestHarness"/>
     <a name="circuitnamedboxfixedsize" val="true"/>
-    <a name="simulationFrequency" val="16.0"/>
+    <a name="simulationFrequency" val="1.0"/>
     <comp lib="0" loc="(1010,1050)" name="Tunnel">
       <a name="label" val="Halt"/>
       <a name="labelfont" val="SansSerif plain 12"/>
@@ -182,7 +182,7 @@
     </comp>
     <comp lib="0" loc="(1330,980)" name="Tunnel">
       <a name="facing" val="east"/>
-      <a name="label" val="x31TestResult"/>
+      <a name="label" val="TestResult"/>
       <a name="labelfont" val="SansSerif plain 12"/>
       <a name="width" val="32"/>
     </comp>
@@ -350,7 +350,7 @@
       <a name="width" val="32"/>
     </comp>
     <comp lib="0" loc="(770,590)" name="Tunnel">
-      <a name="label" val="x31TestResult"/>
+      <a name="label" val="TestResult"/>
       <a name="labelfont" val="SansSerif plain 12"/>
       <a name="width" val="32"/>
     </comp>
@@ -414,8 +414,8 @@
       <a name="addrWidth" val="10"/>
       <a name="appearance" val="classic"/>
       <a name="contents">addr/data: 10 32
-ff00093 113 100193 91f3 19c63 a173 111863 40006f
-100f93 c0006f fff00f93 40006f 6f
+ff00093 113 100193 7c0091f3 19c63 7c00a173 111863 40006f
+7c00d073 c0006f 7c015073 40006f 6f
 </a>
       <a name="dataWidth" val="32"/>
       <a name="label" val="IMem"/>

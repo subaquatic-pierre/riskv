@@ -2,7 +2,9 @@ import argparse
 import os
 import subprocess
 from pathlib import Path
+import csv
 import sys
+from typing import Sequence
 
 ROOT_PATH = Path.cwd()
 
@@ -69,6 +71,19 @@ class TestCase:
                 continue
         return parsed_values
 
+    def read_expected_output(self) -> list:
+        path = Path.joinpath(self.path, "results.csv")
+        lines = []
+        with open(path, "r") as f:
+            for line in f.readlines()[1:]:
+                line = line.strip()
+                try:
+                    lines.append(int(line))
+                except:
+                    lines.append(line)
+
+        return lines
+
     def run(self) -> bool:
         print(f"--- Running Test: {self.name} ---")
         out = self.exec_test()
@@ -77,22 +92,35 @@ class TestCase:
             print(f"[{self.name}] FAIL: No valid execution metrics returned.")
             return False
 
-        # Ground truth: Line 0 is initial state, Line 1 (last item) is final state execution value
-        initial_val = out[0]
-        final_val = out[-1]
+        expected = self.read_expected_output()
 
         print(f"Execution Log Trace (Raw Integers): {out}")
-        print(f"Initial State State Value: {initial_val}")
-        print(f"Final State Halt Value:    {final_val}")
+        print(f"Expected results (Raw strings): {expected}")
+        # print(f"Initial State State Value: {initial_val}")
+        # print(f"Final State Halt Value:    {final_val}")
 
-        if final_val == 1:
+        valid = True
+
+        for i, expected_out in enumerate(expected):
+            if expected_out == "X":
+                continue
+
+            try:
+                if out[i] != expected_out:
+                    valid = False
+                    print(
+                        f"[{self.name}] Expected value = {out[i]}, Got: {expected_out[i]})"
+                    )
+            except Exception as e:
+                valid = False
+                print(f"[{self.name}] Exception raised {e}")
+
+        if valid:
             print(f"[{self.name}] PASS ✅")
-            return True
         else:
-            print(
-                f"[{self.name}] FAIL ❌ (Expected final Result register = 1, Got: {final_val})"
-            )
-            return False
+            print(f"[{self.name}] FAIL ❌ (Expected output {expected}, Got: {out})")
+
+        return valid
 
 
 def list_tests() -> dict[str, TestCase]:
