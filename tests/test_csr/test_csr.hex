@@ -1,14 +1,50 @@
 v2.0 raw
-0ff00093     # [0x0000] addi x1, x0, 0xff # set x1 0xff
-00000113     # [0x0004] addi x2, x0, 0x00 # set x2 0x00
-00100193     # [0x0008] addi x3, x0, 0x01 # set x3 0x01
-7c0091f3     # [0x000c] csrrw x3, 0x7C0, x1
-00019c63     # [0x0010] bne x3, x0, fail # jump to fail if x3 not zero
-7c00a173     # [0x0014] csrrs x2, 0x7C0, x1  # read previously updated value into x2
-00111863     # [0x0018] bne x2, x1, fail # check x2 gets new value from CSR 0x00
-0040006f     # [0x001c] j pass
-7c00d073     # [0x0020] csrrwi x0, 0x7C0, 1
-00c0006f     # [0x0024] j halt
-7c015073     # [0x0028] csrrwi x0, 0x7C0, 2
-0040006f     # [0x002c] j halt
-0000006f     # [0x0030] j halt...
+0ff00093     # [0x0000] addi x1, x0, 0xff       # Test pattern 1 (255)
+00f00113     # [0x0004] addi x2, x0, 0x0f       # Test pattern 2 (15)
+00000193     # [0x0008] addi x3, x0, 0x00       # Clear register for target tracking
+00100213     # [0x000c] addi x4, x0, 0x01       # Constant 1 for tracking increments
+7c0091f3     # [0x0010] csrrw x3, 0x7C0, x1     # x3 = old htest0 (0), htest0 = x1 (0xFF)
+0a019263     # [0x0014] bne x3, x0, fail        # Ensure old value read was 0
+7c0131f3     # [0x0018] csrrc x3, 0x7C0, x2     # x3 = old htest0 (0xFF), htest0 = 0xFF & ~0x0F = 0xF0
+08119e63     # [0x001c] bne x3, x1, fail        # Verify old value read back was 0xFF
+7c0021f3     # [0x0020] csrrs x3, 0x7C0, x0     # Read htest0 without modifying it (rs1 = x0)
+0f000293     # [0x0024] addi x5, x0, 0xF0       # Load expected value
+08519863     # [0x0028] bne x3, x5, fail        # Verify htest0 is exactly 0xF0
+7c12d1f3     # [0x002c] csrrwi x3, 0x7C1, 5     # x3 = old htest1 (0), htest1 = 5
+08019463     # [0x0030] bne x3, x0, fail
+7c1861f3     # [0x0034] csrrsi x3, 0x7C1, 16    # x3 = old htest1 (5), htest1 = 5 | 16 = 21
+00500293     # [0x0038] addi x5, x0, 5
+06519e63     # [0x003c] bne x3, x5, fail
+7c10f1f3     # [0x0040] csrrci x3, 0x7C1, 1     # x3 = old htest1 (21), htest1 = 21 & ~1 = 20
+01500293     # [0x0044] addi x5, x0, 21
+06519863     # [0x0048] bne x3, x5, fail
+7c1021f3     # [0x004c] csrrs x3, 0x7C1, x0     # Read htest1
+01400293     # [0x0050] addi x5, x0, 20
+06519263     # [0x0054] bne x3, x5, fail
+c00020f3     # [0x0058] csrrs x1, 0xC00, x0     # Snapshot cycle count at point A
+00000013     # [0x005c] nop                     # Consume processing steps
+00000013     # [0x0060] nop
+00000013     # [0x0064] nop
+c0002173     # [0x0068] csrrs x2, 0xC00, x0     # Snapshot cycle count at point B
+0020a1b3     # [0x006c] slt x3, x1, x2          # If x1 < x2, x3 = 1
+04419463     # [0x0070] bne x3, x4, fail        # If cycle didn't advance, crash test
+c02020f3     # [0x0074] csrrs x1, 0xC02, x0     # Snapshot retired instructions count at point A
+00100293     # [0x0078] addi x5, x0, 1          # 1 instruction
+00200293     # [0x007c] addi x5, x0, 2          # 2 instructions
+c0202173     # [0x0080] csrrs x2, 0xC02, x0     # Snapshot retired instructions count at point B
+401101b3     # [0x0084] sub x3, x2, x1          # Delta = x2 - x1
+00200293     # [0x0088] addi x5, x0, 2          # Expected delta
+02519663     # [0x008c] bne x3, x5, fail        # Verify exact structural retirement matches tracking
+7c0021f3     # [0x0090] csrrs x3, 0x7C0, x0     # Should execute as a pure structural read
+0f000293     # [0x0094] addi x5, x0, 0xF0
+02519063     # [0x0098] bne x3, x5, fail        # Read must match baseline state
+7c0071f3     # [0x009c] csrrci x3, 0x7C0, 0     # Should execute as a pure structural read
+00519c63     # [0x00a0] bne x3, x5, fail        # Read must match baseline state
+7c0021f3     # [0x00a4] csrrs x3, 0x7C0, x0
+00519863     # [0x00a8] bne x3, x5, fail
+0040006f     # [0x00ac] j pass
+7c00d073     # [0x00b0] csrrwi x0, 0x7C0, 1     # Hardware check matrix code 1: Pass
+00c0006f     # [0x00b4] j halt
+7c015073     # [0x00b8] csrrwi x0, 0x7C0, 2     # Hardware check matrix code 2: Fail
+0040006f     # [0x00bc] j halt
+0000006f     # [0x00c0] j halt...

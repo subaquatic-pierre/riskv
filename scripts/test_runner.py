@@ -113,9 +113,6 @@ class TestCase:
                 try:
                     if out[i_row][i_col] != val:
                         valid = False
-                        print(
-                            f"[{self.name}] Expected value = {out[i_row]}, Got: {row})"
-                        )
                 except Exception as e:
                     valid = False
                     print(f"[{self.name}] Exception raised {e}")

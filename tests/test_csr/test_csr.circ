@@ -333,7 +333,7 @@
       <a name="labelfont" val="SansSerif plain 12"/>
     </comp>
     <comp lib="0" loc="(700,790)" name="Constant">
-      <a name="value" val="0x30"/>
+      <a name="value" val="0xc0"/>
       <a name="width" val="32"/>
     </comp>
     <comp lib="0" loc="(720,790)" name="Tunnel">
@@ -469,8 +469,13 @@
       <a name="addrWidth" val="10"/>
       <a name="appearance" val="classic"/>
       <a name="contents">addr/data: 10 32
-ff00093 113 100193 7c0091f3 19c63 7c00a173 111863 40006f
-7c00d073 c0006f 7c015073 40006f 6f
+ff00093 f00113 193 100213 7c0091f3 a019263 7c0131f3 8119e63
+7c0021f3 f000293 8519863 7c12d1f3 8019463 7c1861f3 500293 6519e63
+7c10f1f3 1500293 6519863 7c1021f3 1400293 6519263 c00020f3 13
+13 13 c0002173 20a1b3 4419463 c02020f3 100293 200293
+c0202173 401101b3 200293 2519663 7c0021f3 f000293 2519063 7c0071f3
+519c63 7c0021f3 519863 40006f 7c00d073 c0006f 7c015073 40006f
+6f
 </a>
       <a name="dataWidth" val="32"/>
       <a name="label" val="IMem"/>
